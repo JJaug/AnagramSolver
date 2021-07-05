@@ -1,4 +1,5 @@
 ﻿using System;
+using AnagramSolver.BusinessLogic.Classes;
 
 namespace AnagramSolver.Cli
 {
@@ -6,14 +7,19 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
+            var result = new BusinessLogic.Classes.AnagramSolver();
             var command = "";
-            do
+            while(true)
             {
-                Console.WriteLine("Iveskite zodi kurio anogramos norite");
+                Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
                 command = Console.ReadLine();
+                if(command == "exit")
+                {
+                    break;
+                }
 
-
-            } while (command == "exit");
+                Console.WriteLine(result.GetAnagrams(command).Count);
+            }
         }
     }
 }
