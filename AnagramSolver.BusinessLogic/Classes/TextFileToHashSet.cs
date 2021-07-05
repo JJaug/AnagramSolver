@@ -6,7 +6,7 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class TextFileToHashSet
     {
-        public void GetAllWords()
+        public HashSet<string> GetAllWords()
         {
             HashSet<string> readyList = new HashSet<string>();
             HashSet<string> items = new HashSet<string>(File.ReadLines(@"C:\Users\jonas.jaugelis\source\repos\AnagramSolver\zodynas.txt"));
@@ -18,6 +18,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                     readyList.Add(separateItem);
                 }
             }
+            return readyList;
         }
     }
 }
