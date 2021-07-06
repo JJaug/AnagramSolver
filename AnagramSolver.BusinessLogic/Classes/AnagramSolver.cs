@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,11 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class AnagramSolver : IAnagramSolver
     {
         WordRepository word = new WordRepository();
-        public List<string> GetAnagrams(string command)
+        public HashSet<Anagram> GetAnagrams(string command)
         {
             var allWords = word.GetAllWords();
 
-            List<string> sameLengthWordToCharArray = new List<string>();
-            List<string> newList = new List<string>();
+            HashSet<Anagram> newList = new HashSet<Anagram>();
 
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
@@ -22,23 +22,21 @@ namespace AnagramSolver.BusinessLogic.Classes
             {
                 if(word.Length == command.Length)
                 {
-                    sameLengthWordToCharArray.Add(word);
-                }
-            }
-            foreach(var word in sameLengthWordToCharArray)
-            {
-                char[] wordChars = word.ToCharArray();
-                Array.Sort(wordChars);
-                for (int i = 0; i < command.Length; i++)
-                {
+
+                    char[] wordChars = word.ToCharArray();
+                    Array.Sort(wordChars);
+
                     bool isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
                     if (isEqual)
                     {
-                        newList.Add(word);
+                        Anagram anagram = new Anagram();
+                        anagram.Text = word;
+                        newList.Add(anagram);
+
                     }
  
+                               
                 }
-                
             }
             return newList;
         }

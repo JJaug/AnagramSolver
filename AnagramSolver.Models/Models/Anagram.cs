@@ -1,7 +1,8 @@
 ﻿namespace AnagramSolver.Models.Models
 {
-    public class AnagramBefore
+    public class Anagram
     {
         public string Text { get; set; }
+
     }
 }

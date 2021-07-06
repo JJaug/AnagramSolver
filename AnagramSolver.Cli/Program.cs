@@ -1,5 +1,4 @@
 ﻿using System;
-using AnagramSolver.BusinessLogic.Classes;
 
 namespace AnagramSolver.Cli
 {
@@ -17,8 +16,8 @@ namespace AnagramSolver.Cli
                 {
                     break;
                 }
-
-                Console.WriteLine(result.GetAnagrams(command).Count);
+                var listOfAnagrams = result.GetAnagrams(command);
+                
             }
         }
     }
