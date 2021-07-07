@@ -13,9 +13,11 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             var allWords = word.GetAllWords();
 
-            List<Anagram> newList = new List<Anagram>();
+            // var exists = allWords.FirstOrDefault(p => p.Equals("sula"));
 
-            char[] commandChars = command.ToCharArray();
+            var newList = new List<Anagram>();
+
+            var commandChars = command.ToCharArray();
             Array.Sort(commandChars);
 
             foreach (var word in allWords)
@@ -23,17 +25,17 @@ namespace AnagramSolver.BusinessLogic.Classes
                 if(word.Length == command.Length)
                 {
 
-                    char[] wordChars = word.ToCharArray();
+                    var wordChars = word.ToCharArray();
                     Array.Sort(wordChars);
 
-                    bool isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
+                    var isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
                     if (isEqual)
                     {
                         if (word != command)
                         {
-                        Anagram anagram = new Anagram();
-                        anagram.Text = word;
-                        newList.Add(anagram);
+                            var anagram = new Anagram();
+                            anagram.Text = word;
+                            newList.Add(anagram);
                         }
 
                     }

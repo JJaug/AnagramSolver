@@ -7,42 +7,47 @@ namespace AnagramSolver.Cli
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
-            using IHost host = CreateHostBuilder(args).Build();
+            var builder = new ConfigurationBuilder()
+               .AddJsonFile($"appsettings.json", true, true);
+            var config = builder.Build();
+            var minLength = config["MinWordLength"];
+            int minLengthAsNumber = Int32.Parse(minLength);
+            var maxAnagrams = config["MaxNumberOfAnagrams"];
+            int maxAnagramsAsNumber = Int32.Parse(maxAnagrams);
+            Console.WriteLine(maxAnagramsAsNumber);
 
             var result = new BusinessLogic.Classes.AnagramSolver();
             var command = "";
+            
+
             while(true)
             {
                 Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
                 command = Console.ReadLine();
+                if(command.Length < minLengthAsNumber)
+                {
+                    Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");
+                    command = Console.ReadLine();
+                }
                 if(command == "exit")
                 {
                     break;
                 }
                 var listOfAnagrams = result.GetAnagrams(command);
+
                 Console.WriteLine("___Anogramos___");
-                foreach(var anagram in listOfAnagrams)
+
+                for(int i = 0; i < maxAnagramsAsNumber; i++)
                 {
-                    Console.WriteLine(anagram.Text);
+                    Console.WriteLine(listOfAnagrams[i].Text);
                 }
             }
-            await host.RunAsync();
+
+
+
         }
 
-        static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-            .ConfigureAppConfiguration((hostingContext, configuration) =>
-            {
-                configuration.Sources.Clear();
-
-                IHostEnvironment env = hostingContext.HostingEnvironment;
-
-                configuration
-                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-
-                IConfigurationRoot configurationRoot = configuration.Build();
-            });
     }
 }
