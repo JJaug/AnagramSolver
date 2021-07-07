@@ -10,7 +10,8 @@ namespace AnagramSolver.Cli
         static void Main(string[] args)
         {
             int minLength, maxAnagrams;
-            ConfigureAppSettings(out minLength, out maxAnagrams);
+            string filePath;
+            ConfigureAppSettings(out minLength, out maxAnagrams, out filePath);
             var result = new BusinessLogic.Classes.AnagramSolver();
             var command = string.Empty;
 
@@ -28,11 +29,11 @@ namespace AnagramSolver.Cli
                 {
                     break;
                 }
-                var listOfAnagrams = result.GetAnagrams(command);
+                var listOfAnagrams = result.GetAnagrams(command, minLength, filePath);
 
                 Console.WriteLine("___Anogramos___");
 
-                for (int i = 0; i < maxAnagrams; i++)
+                for (int i = 0; i < listOfAnagrams.Count; i++)
                 {
                     Console.WriteLine(listOfAnagrams[i].ToString());
                 }
@@ -40,13 +41,14 @@ namespace AnagramSolver.Cli
 
         }
 
-        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams)
+        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath)
         {
             var builder = new ConfigurationBuilder()
                         .AddJsonFile($"appsettings.json", true, true);
             var config = builder.Build();
             minLength = Int32.Parse(config["MinWordLength"]);
             maxAnagrams = Int32.Parse(config["MaxNumberOfAnagrams"]);
+            filePath = config["FilePath"];
         }
     }
 }

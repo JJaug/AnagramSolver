@@ -5,6 +5,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        public HashSet<Words> GetAllWords();
+        public HashSet<Words> GetAllWords(string filePath);
     }
 }

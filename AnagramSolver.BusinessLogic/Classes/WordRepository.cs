@@ -8,10 +8,10 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class WordRepository : IWordRepository
     {
-        public HashSet<Words> GetAllWords()
+        public HashSet<Words> GetAllWords(string filePath)
         {
             HashSet<Words> newList = new HashSet<Words>();
-            HashSet<string> allLines = new HashSet<string>(File.ReadLines(@"C:\Users\jonas.jaugelis\source\repos\AnagramSolver\zodynas.txt"));
+            HashSet<string> allLines = new HashSet<string>(File.ReadLines(@filePath));
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();

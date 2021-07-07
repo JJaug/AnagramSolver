@@ -9,9 +9,9 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class AnagramSolver : IAnagramSolver
     {
         WordRepository wordRepository = new WordRepository();
-        public List<Anagram> GetAnagrams(string command)
+        public List<Anagram> GetAnagrams(string command, int minLength, string filePath)
         {
-            var allWords = wordRepository.GetAllWords();
+            var allWords = wordRepository.GetAllWords(filePath);
 
             // var exists = allWords.FirstOrDefault(p => p.Equals("sula"));
 
@@ -23,26 +23,26 @@ namespace AnagramSolver.BusinessLogic.Classes
             var remainingChars = commandChars;
             var result = string.Empty;
 
-            sentenceMaker();
+            sentenceMaker(remainingChars);
             
-            void sentenceMaker()
+            void sentenceMaker(List<char> remainingChars)
             {
                 foreach (var combination in allWords)
                 {
-                    var wordChars = combination.Word.ToList();
+                    var word = combination.Word;
+                    var wordChars = word.ToList();
                     var contains = wordChars.Intersect(remainingChars).Count() == wordChars.Count();
                     if (contains)
                     {
                         remainingChars = remainingChars.Except(wordChars).ToList();
-                        result = $"{combination.Word} ";
+                        result += $"{combination.Word} ";
                         if (!remainingChars.Any())
                         {
                             Anagram anagram = new Anagram();
                             anagram.Word = result;
                             newList.Add(anagram);
-
                         }
-                        sentenceMaker();
+                        sentenceMaker(remainingChars);
                     }
 
                 }
