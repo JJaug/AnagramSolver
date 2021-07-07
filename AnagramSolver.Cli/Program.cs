@@ -9,29 +9,22 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
-
-            var builder = new ConfigurationBuilder()
-            .AddJsonFile($"appsettings.json", true, true);
-            var config = builder.Build();
-            var minLength = config["MinWordLength"];
-            var minLengthAsNumber = Int32.Parse(minLength);
-            var maxAnagrams = config["MaxNumberOfAnagrams"];
-            var maxAnagramsAsNumber = Int32.Parse(maxAnagrams);
-
+            int minLength, maxAnagrams;
+            ConfigureAppSettings(out minLength, out maxAnagrams);
             var result = new BusinessLogic.Classes.AnagramSolver();
-            var command = "";
-            
+            var command = string.Empty;
 
-            while(true)
+
+            while (true)
             {
                 Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
                 command = Console.ReadLine();
-                if(command.Length < minLengthAsNumber)
+                if (command.Length < minLength)
                 {
                     Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");
                     command = Console.ReadLine();
                 }
-                if(command == "exit")
+                if (command == "exit")
                 {
                     break;
                 }
@@ -39,13 +32,21 @@ namespace AnagramSolver.Cli
 
                 Console.WriteLine("___Anogramos___");
 
-                for(int i = 0; i < maxAnagramsAsNumber; i++)
+                for (int i = 0; i < maxAnagrams; i++)
                 {
-                    Console.WriteLine(listOfAnagrams[i].Word);
+                    Console.WriteLine(listOfAnagrams[i].ToString());
                 }
             }
 
         }
 
+        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams)
+        {
+            var builder = new ConfigurationBuilder()
+                        .AddJsonFile($"appsettings.json", true, true);
+            var config = builder.Build();
+            minLength = Int32.Parse(config["MinWordLength"]);
+            maxAnagrams = Int32.Parse(config["MaxNumberOfAnagrams"]);
+        }
     }
 }

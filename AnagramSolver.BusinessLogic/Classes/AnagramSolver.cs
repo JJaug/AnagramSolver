@@ -8,37 +8,43 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class AnagramSolver : IAnagramSolver
     {
-        WordRepository word = new WordRepository();
+        WordRepository wordRepository = new WordRepository();
         public List<Anagram> GetAnagrams(string command)
         {
-            var allWords = word.GetAllWords();
+            var allWords = wordRepository.GetAllWords();
 
             // var exists = allWords.FirstOrDefault(p => p.Equals("sula"));
 
             var newList = new List<Anagram>();
 
-            var commandChars = command.ToCharArray();
-            Array.Sort(commandChars);
+            command = command.Replace(" ", string.Empty);
 
-            foreach (var word in allWords)
+            var commandChars = command.ToList();
+            var remainingChars = commandChars;
+            var result = string.Empty;
+
+            sentenceMaker();
+            
+            void sentenceMaker()
             {
-                if(word.Length == command.Length)
+                foreach (var combination in allWords)
                 {
-                    var wordChars = word.ToCharArray();
-                    Array.Sort(wordChars);
-
-                    var isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
-                    if (isEqual)
+                    var wordChars = combination.Word.ToList();
+                    var contains = wordChars.Intersect(remainingChars).Count() == wordChars.Count();
+                    if (contains)
                     {
-                        if (word != command)
+                        remainingChars = remainingChars.Except(wordChars).ToList();
+                        result = $"{combination.Word} ";
+                        if (!remainingChars.Any())
                         {
-                            var anagram = new Anagram();
-                            anagram.Word = word;
+                            Anagram anagram = new Anagram();
+                            anagram.Word = result;
                             newList.Add(anagram);
-                        }
 
+                        }
+                        sentenceMaker();
                     }
-                
+
                 }
             }
             return newList;

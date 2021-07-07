@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -15,7 +15,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AnagramSolver.BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
-    <ProjectReference Include="..\AnagramSolver.Contracts\AnagramSolver.Contracts.csproj" />
     <ProjectReference Include="..\AnagramSolver.Models\AnagramSolver.Models.csproj" />
   </ItemGroup>
 
