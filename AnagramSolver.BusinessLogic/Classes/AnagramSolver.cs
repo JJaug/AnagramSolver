@@ -9,11 +9,11 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class AnagramSolver : IAnagramSolver
     {
         WordRepository word = new WordRepository();
-        public HashSet<Anagram> GetAnagrams(string command)
+        public List<Anagram> GetAnagrams(string command)
         {
             var allWords = word.GetAllWords();
 
-            HashSet<Anagram> newList = new HashSet<Anagram>();
+            List<Anagram> newList = new List<Anagram>();
 
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);

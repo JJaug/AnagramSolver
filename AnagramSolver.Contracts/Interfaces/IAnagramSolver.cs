@@ -5,6 +5,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IAnagramSolver
     {
-        public HashSet<Anagram> GetAnagrams(string command);
+        public List<Anagram> GetAnagrams(string command);
     }
 }
