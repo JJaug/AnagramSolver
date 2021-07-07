@@ -24,7 +24,6 @@ namespace AnagramSolver.BusinessLogic.Classes
             {
                 if(word.Length == command.Length)
                 {
-
                     var wordChars = word.ToCharArray();
                     Array.Sort(wordChars);
 
@@ -34,7 +33,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                         if (word != command)
                         {
                             var anagram = new Anagram();
-                            anagram.Text = word;
+                            anagram.Word = word;
                             newList.Add(anagram);
                         }
 

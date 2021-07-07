@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -14,10 +15,9 @@ namespace AnagramSolver.BusinessLogic.Classes
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();
-                for (var i = 2; i == 2; i++)
-                {
-                    newList.Add(itemsInLine[i]);
-                }
+                Words word = new Words();
+                word.Type = itemsInLine[1];
+                word.Word = itemsInLine[2];
             }
             return newList;
         }

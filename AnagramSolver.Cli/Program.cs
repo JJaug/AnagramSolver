@@ -9,14 +9,14 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
+
             var builder = new ConfigurationBuilder()
-               .AddJsonFile($"appsettings.json", true, true);
+            .AddJsonFile($"appsettings.json", true, true);
             var config = builder.Build();
             var minLength = config["MinWordLength"];
-            int minLengthAsNumber = Int32.Parse(minLength);
+            var minLengthAsNumber = Int32.Parse(minLength);
             var maxAnagrams = config["MaxNumberOfAnagrams"];
-            int maxAnagramsAsNumber = Int32.Parse(maxAnagrams);
-            Console.WriteLine(maxAnagramsAsNumber);
+            var maxAnagramsAsNumber = Int32.Parse(maxAnagrams);
 
             var result = new BusinessLogic.Classes.AnagramSolver();
             var command = "";
@@ -41,11 +41,9 @@ namespace AnagramSolver.Cli
 
                 for(int i = 0; i < maxAnagramsAsNumber; i++)
                 {
-                    Console.WriteLine(listOfAnagrams[i].Text);
+                    Console.WriteLine(listOfAnagrams[i].Word);
                 }
             }
-
-
 
         }
 
