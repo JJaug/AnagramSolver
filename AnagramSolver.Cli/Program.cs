@@ -17,7 +17,11 @@ namespace AnagramSolver.Cli
                     break;
                 }
                 var listOfAnagrams = result.GetAnagrams(command);
-                
+                Console.WriteLine("___Anogramos___");
+                foreach(var anagram in listOfAnagrams)
+                {
+                    Console.WriteLine(anagram.Text);
+                }
             }
         }
     }

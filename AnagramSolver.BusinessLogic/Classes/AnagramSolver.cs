@@ -29,13 +29,15 @@ namespace AnagramSolver.BusinessLogic.Classes
                     bool isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
                     if (isEqual)
                     {
+                        if (word != command)
+                        {
                         Anagram anagram = new Anagram();
                         anagram.Text = word;
                         newList.Add(anagram);
+                        }
 
                     }
- 
-                               
+                
                 }
             }
             return newList;
