@@ -2,6 +2,7 @@
 {
     public class Anagram
     {
-        
+        public string Text { get; set; }
+
     }
 }
