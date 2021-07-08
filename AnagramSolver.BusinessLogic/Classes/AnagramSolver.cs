@@ -8,38 +8,46 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class AnagramSolver : IAnagramSolver
     {
-        WordRepository word = new WordRepository();
-        public List<Anagram> GetAnagrams(string command)
+        WordRepository wordRepository = new WordRepository();
+        public List<Anagram> GetAnagrams(string command, int minLength, string filePath)
         {
-            var allWords = word.GetAllWords();
+            var allWords = wordRepository.GetAllWords(filePath, minLength);
 
             // var exists = allWords.FirstOrDefault(p => p.Equals("sula"));
 
             var newList = new List<Anagram>();
 
-            var commandChars = command.ToCharArray();
-            Array.Sort(commandChars);
+            command = command.Replace(" ", string.Empty);
 
-            foreach (var word in allWords)
+            var commandChars = command.ToList();
+            var remainingChars = commandChars;
+            var result = string.Empty;
+
+            sentenceMaker(remainingChars);
+            
+            void sentenceMaker(List<char> remainingChars)
             {
-                if(word.Length == command.Length)
+                if(remainingChars.Count >= minLength)
                 {
-
-                    var wordChars = word.ToCharArray();
-                    Array.Sort(wordChars);
-
-                    var isEqual = Enumerable.SequenceEqual(wordChars, commandChars);
-                    if (isEqual)
+                    foreach (var combination in allWords)
                     {
-                        if (word != command)
+                        var word = combination.Word;
+                        var wordChars = word.ToList();
+                        var contains = wordChars.Intersect(remainingChars).Count() == wordChars.Count();
+                        if (contains)
                         {
-                            var anagram = new Anagram();
-                            anagram.Text = word;
-                            newList.Add(anagram);
+                            remainingChars = remainingChars.Except(wordChars).ToList();
+                            result += $"{combination.Word} ";
+                            if (!remainingChars.Any())
+                            {
+                                Anagram anagram = new Anagram();
+                                anagram.Word = result;
+                                newList.Add(anagram);
+                            }
+                            sentenceMaker(remainingChars);
                         }
 
                     }
-                
                 }
             }
             return newList;
