@@ -1,4 +1,4 @@
-1000-as	dkt	mirti	1
+1000-as	sktv	1000-ajam	1
 1000-is	sktv	1000-iui	5
 100-as	sktv	100-ąsias	2
 100-as	sktv	100-osios	1
@@ -105480,6 +105480,7 @@ sukviesti	vksm	sukviestos	1
 sukviesti	vksm	sukvietė	1
 sukviesti	vksm	sukvietę	1
 sukviskėti	vksm	sukivsėdamos	1
+sula	dkt	sula	1
 sula	dkt	sulos	1
 sulaikymas	dkt	sulaikymas	2
 sulaikymas	dkt	sulaikymo	3
