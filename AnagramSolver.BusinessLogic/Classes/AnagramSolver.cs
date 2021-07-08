@@ -8,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class AnagramSolver : IAnagramSolver
     {
-        WordRepository wordRepository = new WordRepository();
+        IWordRepository wordRepository = new WordRepository();
         public List<Anagram> GetAnagrams(string command, int minLength, string filePath)
         {
             var allWords = wordRepository.GetAllWords(filePath, minLength);

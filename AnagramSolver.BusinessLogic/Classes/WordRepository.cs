@@ -1,5 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Models.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,8 +10,16 @@ namespace AnagramSolver.BusinessLogic.Classes
     {
         public HashSet<string> GetAllWords(string filePath, int minLength)
         {
+            var allLines = new HashSet<string>();
             var newList = new HashSet<string>();
-            var allLines = new HashSet<string>(File.ReadLines(@filePath));
+            try
+            {
+                allLines = new HashSet<string>(File.ReadLines(@filePath));
+            }
+            catch
+            {
+                return null;
+            }
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();
@@ -22,5 +30,6 @@ namespace AnagramSolver.BusinessLogic.Classes
             }
             return newList;
         }
+
     }
 }
