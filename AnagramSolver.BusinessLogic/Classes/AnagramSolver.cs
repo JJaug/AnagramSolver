@@ -18,28 +18,25 @@ namespace AnagramSolver.BusinessLogic.Classes
 
             command = command.Replace(" ", string.Empty);
 
-            Dictionary<int, char> commandDict = new Dictionary<int, char>();
 
-            var commandChars = command.ToCharArray();
+            var commandChars = command.ToList();
 
-            for(int i=0; i < commandChars.Length; i++)
-            {
-                commandDict.Add(i, commandChars[i]);
-            }
             var remainingChars = commandChars;
             var result = string.Empty;
 
             sentenceMaker(remainingChars);
             
-            void sentenceMaker(char[] remainingChars)
+            void sentenceMaker(List<char> remainingChars)
             {
                 foreach (var combination in allWords)
                 {
                     if(combination.Word.Length >= minLength)
                     {
                         var word = combination.Word;
-                        var wordChars = word.ToCharArray();
+                        var wordChars = word.ToList();
+
                         var contains = !wordChars.Except(remainingChars).Any();
+
                         if (contains)
                         {
                             //remainingChars = remainingChars.;
