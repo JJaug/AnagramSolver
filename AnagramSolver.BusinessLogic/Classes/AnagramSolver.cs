@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,24 +18,31 @@ namespace AnagramSolver.BusinessLogic.Classes
 
             command = command.Replace(" ", string.Empty);
 
-            var commandChars = command.ToList();
+            Dictionary<int, char> commandDict = new Dictionary<int, char>();
+
+            var commandChars = command.ToCharArray();
+
+            for(int i=0; i < commandChars.Length; i++)
+            {
+                commandDict.Add(i, commandChars[i]);
+            }
             var remainingChars = commandChars;
             var result = string.Empty;
 
             sentenceMaker(remainingChars);
             
-            void sentenceMaker(List<char> remainingChars)
+            void sentenceMaker(char[] remainingChars)
             {
-                if(remainingChars.Count >= minLength)
+                foreach (var combination in allWords)
                 {
-                    foreach (var combination in allWords)
+                    if(combination.Word.Length >= minLength)
                     {
                         var word = combination.Word;
-                        var wordChars = word.ToList();
-                        var contains = wordChars.Intersect(remainingChars).Count() == wordChars.Count();
+                        var wordChars = word.ToCharArray();
+                        var contains = !wordChars.Except(remainingChars).Any();
                         if (contains)
                         {
-                            remainingChars = remainingChars.Except(wordChars).ToList();
+                            //remainingChars = remainingChars.;
                             result += $"{combination.Word} ";
                             if (!remainingChars.Any())
                             {
@@ -46,8 +52,8 @@ namespace AnagramSolver.BusinessLogic.Classes
                             }
                             sentenceMaker(remainingChars);
                         }
-
                     }
+
                 }
             }
             return newList;

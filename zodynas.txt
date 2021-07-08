@@ -1,4 +1,4 @@
-1000-as	sktv	1000-ajam	1
+1000-as	dkt	mirti	1
 1000-is	sktv	1000-iui	5
 100-as	sktv	100-ąsias	2
 100-as	sktv	100-osios	1
