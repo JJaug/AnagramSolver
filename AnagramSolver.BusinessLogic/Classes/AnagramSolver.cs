@@ -20,34 +20,47 @@ namespace AnagramSolver.BusinessLogic.Classes
 
 
             var commandChars = command.ToList();
-
             var remainingChars = commandChars;
             var result = string.Empty;
 
-            sentenceMaker(remainingChars);
+            SentenceMaker(remainingChars);
             
-            void sentenceMaker(List<char> remainingChars)
+            void SentenceMaker(List<char> remainingChars)
             {
+                var contains = false;
                 foreach (var combination in allWords)
                 {
                     if(combination.Word.Length >= minLength)
                     {
                         var word = combination.Word;
-                        var wordChars = word.ToList();
+                        var wordChars = word.ToCharArray();
 
-                        var contains = !wordChars.Except(remainingChars).Any();
+                        foreach (char charInWord in word)
+                        {
+                            if (remainingChars.Contains(charInWord))
+                            {
+                                contains = true;
+                            }else
+                            {
+                                contains = false;
+                                break;
+                            }
+                        }
 
                         if (contains)
                         {
-                            //remainingChars = remainingChars.;
-                            result += $"{combination.Word} ";
+                            foreach (char charInWord in word)
+                            {
+                                remainingChars.Remove(charInWord);
+                            }
+                            result += $"{word} ";
                             if (!remainingChars.Any())
                             {
                                 Anagram anagram = new Anagram();
                                 anagram.Word = result;
                                 newList.Add(anagram);
                             }
-                            sentenceMaker(remainingChars);
+                            SentenceMaker(remainingChars);
                         }
                     }
 
