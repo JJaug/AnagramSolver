@@ -1,10 +1,9 @@
-﻿using AnagramSolver.Models.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        public HashSet<Words> GetAllWords(string filePath, int minLength);
+        public HashSet<string> GetAllWords(string filePath, int minLength);
     }
 }
