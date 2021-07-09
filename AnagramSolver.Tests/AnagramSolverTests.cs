@@ -22,5 +22,13 @@ namespace AnagramSolver.Tests
 
             Assert.That(allAnagrams[0].Word, Is.EqualTo(anagram));
         }
+        [Test]
+        [TestCase("balos", "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas.txt")]
+        public void Should_ReturnAllAnagrams_When_GivenOneWord(string command, string filePath)
+        {
+            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @filePath);
+
+            Assert.That(allAnagrams.Count, Is.GreaterThan(1));
+        }
     }
 }

@@ -1,0 +1,5 @@
+alus	dkt	alus	5
+sula	dkt	sula	1
+rimti	vksm	rimti	1
+mirti	vksm	mirti	9
+rimti	vksm	rimti	1

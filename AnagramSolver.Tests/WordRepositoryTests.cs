@@ -28,5 +28,12 @@ namespace AnagramSolver.Tests
             var allWords = _wordRepository.GetAllWords(@filePath, 4);
             Assert.IsNull(allWords);
         }
+        [Test]
+        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\trumpasZodynas.txt")]
+        public void Should_Return4Words_When_Given5Words(string filePath)
+        {
+            var allWords = _wordRepository.GetAllWords(@filePath, 4);
+            Assert.That(allWords.Count, Is.EqualTo(4));
+        }
     }
 }
