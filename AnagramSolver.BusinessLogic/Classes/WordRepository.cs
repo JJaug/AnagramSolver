@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,10 +23,18 @@ namespace AnagramSolver.BusinessLogic.Classes
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();
-                if (itemsInLine[2].Length >= minLength)   
+                try
                 {
-                    newList.Add(itemsInLine[2]);
+                    if (itemsInLine[2].Length >= minLength)   
+                    {
+                        newList.Add(itemsInLine[2]);
+                    }
                 }
+                catch
+                {
+                    return null; ;
+                }
+
             }
             return newList;
         }

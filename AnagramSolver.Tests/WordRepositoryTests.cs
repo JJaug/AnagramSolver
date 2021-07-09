@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using NUnit.Framework;
+using System;
 
 namespace AnagramSolver.Tests
 {
@@ -33,6 +34,13 @@ namespace AnagramSolver.Tests
         {
             var allWords = _wordRepository.GetAllWords(@filePath, 4);
             Assert.That(allWords.Count, Is.EqualTo(4));
+        }
+        [Test]
+        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\netaisyklingasZodynas.txt")]
+        public void Should_ReturnNull_When_GivenIncorrectFile(string filePath)
+        {
+            var allWords = _wordRepository.GetAllWords(@filePath, 4);
+            Assert.That(allWords, Is.Null);
         }
     }
 }
