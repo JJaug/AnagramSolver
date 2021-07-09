@@ -23,11 +23,21 @@ namespace AnagramSolver.BusinessLogic.Classes
             }
             foreach (string line in allLines)
             {
-                string[] itemsInLine = line.Split("\t").ToArray();
-
-                if (itemsInLine[2].Length >= minLength)   
+                try
                 {
-                    newList.Add(itemsInLine[2]);
+                    string[] itemsInLine = line.Split("\t").ToArray();
+                    if (itemsInLine[2].Length >= minLength)
+                    {
+                        newList.Add(itemsInLine[2]);
+                    }
+                }
+                catch (IndexOutOfRangeException e)
+                {
+                    throw new IndexOutOfRangeException("Defined index doesn't exist");
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Corrupted file");
                 }
             }
             return newList;

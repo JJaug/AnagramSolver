@@ -26,7 +26,7 @@ namespace AnagramSolver.Tests
         public void Should_CatchException_When_GivenWrongFilePath()
         {
             var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas2.txt";
-            var ex = Assert.Throws<Exception>(() => _wordRepository.GetAllWords(filePath, 4));
+            var ex = Assert.Throws<FileNotFoundException>(() => _wordRepository.GetAllWords(filePath, 4));
             Assert.That(ex.Message, Is.EqualTo("File not found"));
 
         }
@@ -38,11 +38,18 @@ namespace AnagramSolver.Tests
             Assert.That(allWords.Count, Is.EqualTo(4));
         }
         [Test]
-        public void Should_ReturnNull_When_GivenIncorrectFile()
+        public void Should_CatchException_When_NoDefinedIndex()
         {
             var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\netaisyklingasZodynas.txt";
-            var allWords = _wordRepository.GetAllWords(filePath, 4);
-            Assert.That(allWords, Is.Null);
+            var ex = Assert.Throws<IndexOutOfRangeException>(() => _wordRepository.GetAllWords(filePath, 4));
+            Assert.That(ex.Message, Is.EqualTo("Defined index doesn't exist"));
+        }
+        [Test]
+        public void Should_CatchException_When_GivenIncorrectFile()
+        {
+            var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\netaisyklingasZodynas.txt";
+            var ex = Assert.Throws<Exception>(() => _wordRepository.GetAllWords(filePath, 4));
+            Assert.That(ex.Message, Is.EqualTo("Corrupted file"));
         }
     }
 }
