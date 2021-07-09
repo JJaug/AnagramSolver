@@ -7,7 +7,7 @@ namespace AnagramSolver.Tests
     public class WordRepositoryTests
     {
         private WordRepository _wordRepository;
-
+        public const string _filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas.txt";
         [SetUp] public void Setup()
         {
             _wordRepository = new WordRepository();
@@ -15,10 +15,9 @@ namespace AnagramSolver.Tests
 
 
         [Test]
-        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas.txt")]
-        public void Should_ReturnListOfWords_When_GivenFileOfWords(string filePath)
+        public void Should_ReturnListOfWords_When_GivenFileOfWords()
         {
-            var allWords = _wordRepository.GetAllWords(@filePath, 4);
+            var allWords = _wordRepository.GetAllWords(_filePath, 4);
             Assert.That(allWords, !Is.Null);
         }
         [Test]
