@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using NUnit.Framework;
 using System;
+using System.IO;
 
 namespace AnagramSolver.Tests
 {
@@ -22,24 +23,25 @@ namespace AnagramSolver.Tests
             Assert.That(allWords, !Is.Null);
         }
         [Test]
-        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas2.txt")]
-        public void Should_ReturnNull_When_GivenWrongFilePath(string filePath)
+        public void Should_CatchException_When_GivenWrongFilePath()
         {
-            var allWords = _wordRepository.GetAllWords(@filePath, 4);
-            Assert.IsNull(allWords);
+            var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\zodynas2.txt";
+            var ex = Assert.Throws<Exception>(() => _wordRepository.GetAllWords(filePath, 4));
+            Assert.That(ex.Message, Is.EqualTo("File not found"));
+
         }
         [Test]
-        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\trumpasZodynas.txt")]
-        public void Should_Return4Words_When_Given5Words(string filePath)
+        public void Should_Return4Words_When_Given5Words()
         {
-            var allWords = _wordRepository.GetAllWords(@filePath, 4);
+            var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\trumpasZodynas.txt";
+            var allWords = _wordRepository.GetAllWords(filePath, 4);
             Assert.That(allWords.Count, Is.EqualTo(4));
         }
         [Test]
-        [TestCase("C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\netaisyklingasZodynas.txt")]
-        public void Should_ReturnNull_When_GivenIncorrectFile(string filePath)
+        public void Should_ReturnNull_When_GivenIncorrectFile()
         {
-            var allWords = _wordRepository.GetAllWords(@filePath, 4);
+            var filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\netaisyklingasZodynas.txt";
+            var allWords = _wordRepository.GetAllWords(filePath, 4);
             Assert.That(allWords, Is.Null);
         }
     }

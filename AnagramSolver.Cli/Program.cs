@@ -33,7 +33,7 @@ namespace AnagramSolver.Cli
 
                 for (int i = 0; i < listOfAnagrams.Count; i++)
                 {
-                    Console.WriteLine(listOfAnagrams[i].ToString());
+                    Console.WriteLine(listOfAnagrams[i]);
                 }
             }
 

@@ -20,25 +20,26 @@ namespace AnagramSolver.Tests
         [TestCase("rimti", "mirti")]
         public void Should_ReturnOneAnagram_When_GivenOneWord(string command, string anagram)
         {
-            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @_filePath);
+            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, _filePath);
 
-            Assert.That(allAnagrams[0].Word, Is.EqualTo(anagram));
+            Assert.That(allAnagrams[0], Is.EqualTo(anagram));
+            Assert.AreEqual(anagram, allAnagrams[0]);
         }
 
         [Test]
-        [TestCase("balos")]
-        public void Should_ReturnAllAnagrams_When_GivenOneWord(string command)
+        public void Should_ReturnAllAnagrams_When_GivenOneWord()
         {
-            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @_filePath);
+            var word = "balos";
+            var allAnagrams = _anagramSolver.GetAnagrams(word, 4, _filePath);
 
             Assert.That(allAnagrams.Count, Is.GreaterThan(1));
         }
 
         [Test]
-        [TestCase("abcd")]
-        public void Should_ReturnEmptyList_When_GivenWordWithNoAnagrams(string command)
+        public void Should_ReturnEmptyList_When_GivenWordWithNoAnagrams()
         {
-            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @_filePath);
+            var word = "abcd";
+            var allAnagrams = _anagramSolver.GetAnagrams(word, 4, _filePath);
 
             Assert.That(allAnagrams, Is.Empty);
         }
@@ -47,9 +48,9 @@ namespace AnagramSolver.Tests
         [TestCase("rimti sula", "mirti alus")]
         public void Should_ReturnOneAnagram_When_GivenMoreThanOneWord(string command, string anagram)
         {
-            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @_filePath);
+            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, _filePath);
 
-            Assert.That(allAnagrams[0].Word, Is.EqualTo(anagram));
+            Assert.That(allAnagrams[0], Is.EqualTo(anagram));
         }
 
         [Test]
@@ -58,7 +59,7 @@ namespace AnagramSolver.Tests
         [TestCase("labas rytas")]
         public void Should_ReturnAllAnagrams_When_GivenMoreThanOneWord(string command)
         {
-            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, @_filePath);
+            var allAnagrams = _anagramSolver.GetAnagrams(command, 4, _filePath);
 
             Assert.That(allAnagrams.Count, Is.GreaterThanOrEqualTo(1));
         }

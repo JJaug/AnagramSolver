@@ -16,25 +16,19 @@ namespace AnagramSolver.BusinessLogic.Classes
             {
                 allLines = new HashSet<string>(File.ReadLines(@filePath));
             }
-            catch
+            catch (FileNotFoundException e)
             {
-                return null;
+                throw new FileNotFoundException("File not found");
+
             }
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();
-                try
-                {
-                    if (itemsInLine[2].Length >= minLength)   
-                    {
-                        newList.Add(itemsInLine[2]);
-                    }
-                }
-                catch
-                {
-                    return null; ;
-                }
 
+                if (itemsInLine[2].Length >= minLength)   
+                {
+                    newList.Add(itemsInLine[2]);
+                }
             }
             return newList;
         }
