@@ -5,21 +5,13 @@ using System.IO;
 
 namespace AnagramSolver.Tests
 {
+
     [TestFixture]
     public class WordRepositoryTests
     {
         private WordRepository _wordRepository;
         public const string _filePath = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\Data\\zodynas.txt";
-        public string result;
-        public const string dirName = "C:\\Users\\jonas.jaugelis\\source\\repos\\AnagramSolver\\AnagramSolver.Tests\\";
-        public static string MakeRelative(string filePath, string referencePath)
-        {
-            var fileUri = new Uri(filePath);
-            var referenceUri = new Uri(referencePath);
-            return Uri.UnescapeDataString(referenceUri.MakeRelativeUri(fileUri).ToString());
-        }
-
-
+       
         [SetUp] public void Setup()
         {
             _wordRepository = new WordRepository();
@@ -29,8 +21,7 @@ namespace AnagramSolver.Tests
         [Test]
         public void Should_ReturnListOfWords_When_GivenFileOfWords()
         {
-            var result = MakeRelative(_filePath, dirName);
-            var allWords = _wordRepository.GetAllWords(result, 4);
+            var allWords = _wordRepository.GetAllWords(_filePath, 4);
             Assert.That(allWords, !Is.Null);
         }
         [Test]
