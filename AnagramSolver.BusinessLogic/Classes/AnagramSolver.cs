@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes
@@ -10,6 +11,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         IWordRepository wordRepository = new WordRepository();
         public List<string> GetAnagrams(string command, int minLength, string filePath)
         {
+            string value3 = ConfigurationManager.AppSettings["MaxNumberOfAnagrams"];
             var allWords = wordRepository.GetAllWords(filePath, minLength);
 
             var newList = new List<string>();

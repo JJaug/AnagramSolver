@@ -5,6 +5,7 @@ using System.IO;
 
 namespace AnagramSolver.Tests
 {
+
     [TestFixture]
     public class WordRepositoryTests
     {
