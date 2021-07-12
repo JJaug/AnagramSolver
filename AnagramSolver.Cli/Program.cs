@@ -11,17 +11,13 @@ namespace AnagramSolver.Cli
         static void Main(string[] args)
         {
             IWordRepository wordRepository = new WordRepository();
-            int minLength, maxAnagrams;
-            string filePath;
-            ConfigureAppSettings(out minLength, out maxAnagrams, out filePath);
+            ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath);
             var allWords = wordRepository.GetAllWords(filePath, minLength);
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var command = string.Empty;
-
             while (true)
             {
                 Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
-                command = Console.ReadLine();
+                string command = Console.ReadLine();
                 if (command.Length < minLength)
                 {
                     Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");

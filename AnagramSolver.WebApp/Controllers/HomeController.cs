@@ -20,6 +20,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index()
         {
+            _logger.LogDebug("Labas");
             return View();
         }
 

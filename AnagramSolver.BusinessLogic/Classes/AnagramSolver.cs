@@ -9,7 +9,7 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class AnagramSolver : IAnagramSolver
     {
 
-        HashSet<string> _allWords;
+        private readonly HashSet<string> _allWords;
         public AnagramSolver(HashSet<string> allWords)
         {
             _allWords = allWords;

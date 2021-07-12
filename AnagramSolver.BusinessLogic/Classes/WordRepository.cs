@@ -10,13 +10,13 @@ namespace AnagramSolver.BusinessLogic.Classes
     {
         public HashSet<string> GetAllWords(string filePath, int minLength)
         {
-            var allLines = new HashSet<string>();
+            HashSet<string> allLines;
             var newList = new HashSet<string>();
             try
             {
                 allLines = new HashSet<string>(File.ReadLines(@filePath));
             }
-            catch (FileNotFoundException e)
+            catch (FileNotFoundException)
             {
                 throw new FileNotFoundException("File not found");
 
@@ -31,11 +31,11 @@ namespace AnagramSolver.BusinessLogic.Classes
                         newList.Add(itemsInLine[2]);
                     }
                 }
-                catch (IndexOutOfRangeException e)
+                catch (IndexOutOfRangeException)
                 {
                     throw new IndexOutOfRangeException("Defined index doesn't exist");
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     throw new Exception("Corrupted file");
                 }
