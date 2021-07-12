@@ -4,6 +4,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IAnagramSolver
     {
-        public List<string> GetAnagrams(string command, int minLength, string filePath);
+        public List<string> GetAnagrams(string command);
     }
 }

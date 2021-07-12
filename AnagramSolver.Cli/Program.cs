@@ -1,5 +1,8 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using AnagramSolver.BusinessLogic.Classes;
+using AnagramSolver.Contracts.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
+using System.Configuration;
 
 namespace AnagramSolver.Cli
 {
@@ -7,12 +10,13 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
+            IWordRepository wordRepository = new WordRepository();
             int minLength, maxAnagrams;
             string filePath;
             ConfigureAppSettings(out minLength, out maxAnagrams, out filePath);
-            var result = new BusinessLogic.Classes.AnagramSolver();
+            var allWords = wordRepository.GetAllWords(filePath, minLength);
+            var result = new BusinessLogic.Classes.AnagramSolver(allWords);
             var command = string.Empty;
-
 
             while (true)
             {
@@ -27,7 +31,7 @@ namespace AnagramSolver.Cli
                 {
                     break;
                 }
-                var listOfAnagrams = result.GetAnagrams(command, minLength, filePath);
+                var listOfAnagrams = result.GetAnagrams(command);
 
                 Console.WriteLine("___Anogramos___");
 

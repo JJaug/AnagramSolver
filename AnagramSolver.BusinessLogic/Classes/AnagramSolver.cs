@@ -8,17 +8,19 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class AnagramSolver : IAnagramSolver
     {
-        IWordRepository wordRepository = new WordRepository();
-        public List<string> GetAnagrams(string command, int minLength, string filePath)
-        {
-            string value3 = ConfigurationManager.AppSettings["MaxNumberOfAnagrams"];
-            var allWords = wordRepository.GetAllWords(filePath, minLength);
 
+        HashSet<string> _allWords;
+        public AnagramSolver(HashSet<string> allWords)
+        {
+            _allWords = allWords;
+        }
+        public List<string> GetAnagrams(string command)
+        {
             var newList = new List<string>();
 
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
-            foreach (var word in allWords)
+            foreach (var word in _allWords)
             {
                 if (word.Length == command.Length)
                 {
