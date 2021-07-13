@@ -8,25 +8,36 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class WordRepository : IWordRepository
     {
-        public List<string> GetSpecificAmountOfWords(string filePath)
+        private readonly string _filePath;
+        private readonly int _minLength;
+        public WordRepository(string filePath, int minLength)
         {
+            _filePath = filePath;
+            _minLength = minLength;
+        }
+        public HashSet<string> GetSpecificPage(int id)
+        {
+            var howManySkip = (id * 100) - 100;
             HashSet<string> allLines;
-            var newList = new List<string>();
-            allLines = new HashSet<string>(File.ReadLines(@filePath));
+            var newList = new HashSet<string>();
+            allLines = new HashSet<string>(File.ReadLines(_filePath));
             foreach (string line in allLines)
             {
                 string[] itemsInLine = line.Split("\t").ToArray();
-                newList.Add(itemsInLine[2]);
+                if (itemsInLine[2].Length >= _minLength)
+                {
+                    newList.Add(itemsInLine[2]);
+                }
             }
-            return newList.Take(100).ToList();
+            return newList.Skip(howManySkip).Take(100).ToHashSet();
         }
-        public HashSet<string> GetAllWords(string filePath, int minLength)
+        public HashSet<string> GetAllWords()
         {
             HashSet<string> allLines;
             var newList = new HashSet<string>();
             try
             {
-                allLines = new HashSet<string>(File.ReadLines(@filePath));
+                allLines = new HashSet<string>(File.ReadLines(_filePath));
             }
             catch (FileNotFoundException)
             {
@@ -38,7 +49,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                 try
                 {
                     string[] itemsInLine = line.Split("\t").ToArray();
-                    if (itemsInLine[2].Length >= minLength)
+                    if (itemsInLine[2].Length >= _minLength)
                     {
                         newList.Add(itemsInLine[2]);
                     }

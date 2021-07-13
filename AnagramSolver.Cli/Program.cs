@@ -10,9 +10,9 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
-            IWordRepository wordRepository = new WordRepository();
             ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath);
-            var allWords = wordRepository.GetAllWords(filePath, minLength);
+            IWordRepository wordRepository = new WordRepository(filePath, minLength);
+            var allWords = wordRepository.GetAllWords();
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
             while (true)
             {

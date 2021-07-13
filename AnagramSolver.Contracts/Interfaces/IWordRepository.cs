@@ -4,7 +4,7 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IWordRepository
     {
-        public HashSet<string> GetAllWords(string filePath, int minLength);
-        public List<string> GetSpecificAmountOfWords(string filePath);
+        public HashSet<string> GetAllWords();
+        public HashSet<string> GetSpecificPage(int id);
     }
 }
