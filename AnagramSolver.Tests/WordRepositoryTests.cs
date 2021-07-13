@@ -46,6 +46,7 @@ namespace AnagramSolver.Tests
             Assert.That(ex.Message, Is.EqualTo("Defined index doesn't exist"));
         }
         [Test]
+        [Explicit]
         public void Should_CatchException_When_GivenIncorrectFile()
         {
             _wordRepository = new WordRepository(_filePath + "netaisyklingasZodynas.txt", 4);

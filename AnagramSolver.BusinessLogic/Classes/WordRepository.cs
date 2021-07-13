@@ -15,9 +15,9 @@ namespace AnagramSolver.BusinessLogic.Classes
             _filePath = filePath;
             _minLength = minLength;
         }
-        public HashSet<string> GetSpecificPage(int id)
+        public HashSet<string> GetSpecificPage(int pageNumber)
         {
-            var howManySkip = (id * 100) - 100;
+            var howManySkip = (pageNumber * 100) - 100;
             HashSet<string> allLines;
             var newList = new HashSet<string>();
             allLines = new HashSet<string>(File.ReadLines(_filePath));
