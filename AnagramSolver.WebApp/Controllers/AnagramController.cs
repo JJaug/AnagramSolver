@@ -35,8 +35,7 @@ namespace AnagramSolver.WebApp.Controllers
             }
             var pager = new Pager(totalItems: words.Count, pageSize: 30);
             ViewBag.newList = newList;
-            ViewBag.pager = pager;
-            return View(pager);
+            return View(newList);
         }
         public IActionResult Details(string id)
         {

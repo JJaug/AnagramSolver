@@ -21,4 +21,16 @@
     <ProjectReference Include="..\AnagramSolver.Models\AnagramSolver.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Data\netaisyklingasZodynas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\trumpasZodynas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\zodynas.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
