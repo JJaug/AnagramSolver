@@ -50,7 +50,7 @@ namespace AnagramSolver.WebApp.Controllers
                 newList.Add(anagram);
             }
             ViewBag.newList = newList;
-            return View();
+            return View(newList);
         }
 
     }
