@@ -1,1 +1,12 @@
-﻿
+﻿<table border="1" cellpadding="2" cellspacing="2">
+    <tr>
+        <th>Anagrams</th>
+    </tr>
+    @foreach (var item in ViewBag.result)
+    {
+        <tr>
+            <td>@item</td>
+
+        </tr>
+    }
+</table>
