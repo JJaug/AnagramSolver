@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.WebApp.Models;
+using JW;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -25,23 +26,32 @@ namespace AnagramSolver.WebApp.Controllers
             var _wordRepository = new WordRepository();
             var words = _wordRepository.GetSpecificAmountOfWords(_filePath);
 
-            HashSet<AnagramViewModel> newList = new HashSet<AnagramViewModel>();
+            var newList = new HashSet<AnagramViewModel>();
             foreach (var word in words)
             {
                 var anagram = new AnagramViewModel();
                 anagram.Word = word;
                 newList.Add(anagram);
             }
+            var pager = new Pager(totalItems: words.Count, pageSize: 30);
             ViewBag.newList = newList;
-            return View();
+            ViewBag.pager = pager;
+            return View(pager);
         }
         public IActionResult Details(string id)
         {
+            var newList = new HashSet<AnagramViewModel>();
             var _wordRepository = new WordRepository();
             var allWords = _wordRepository.GetAllWords(_filePath, 4);
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var result = _anagramSolver.GetAnagrams(id);
-            ViewBag.result = result;
+            foreach (var word in result)
+            {
+                var anagram = new AnagramViewModel();
+                anagram.AnagramWord = word;
+                newList.Add(anagram);
+            }
+            ViewBag.newList = newList;
             return View();
         }
 

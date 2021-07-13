@@ -1,11 +1,14 @@
-﻿<table border="1" cellpadding="2" cellspacing="2">
+﻿@{
+    Layout = "_Layout";
+}
+<table border="1" cellpadding="2" cellspacing="2">
     <tr>
         <th>Anagrams</th>
     </tr>
-    @foreach (var item in ViewBag.result)
+    @foreach (var item in ViewBag.newList)
     {
         <tr>
-            <td>@item</td>
+            <td>@item.AnagramWord</td>
 
         </tr>
     }
