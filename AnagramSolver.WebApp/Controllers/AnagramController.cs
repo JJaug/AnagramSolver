@@ -35,7 +35,7 @@ namespace AnagramSolver.WebApp.Controllers
                 newList.Add(anagram);
             }
             ViewBag.newList = newList;
-            return View(newList);
+            return View(id);
         }
         public IActionResult Details(string id)
         {

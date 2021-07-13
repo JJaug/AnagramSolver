@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "_Layout";
 }
-
+@model Int32
 <table border="1" cellpadding="2" cellspacing="2">
     <tr>
         <th>Word</th>
@@ -12,6 +12,7 @@
             <td><a>@Html.ActionLink($"{@item.Word}", "Details", new { @id = @item.Word })</a></td>
         </tr>
     }
-
 </table>
+    <a>@Html.ActionLink($"Page{Model+1}", $"Index", new { @id = Model+1 })</a>
+    <a>@Html.ActionLink($"Page{Model+2}", $"Index", new { @id = Model+2 })</a>
 
