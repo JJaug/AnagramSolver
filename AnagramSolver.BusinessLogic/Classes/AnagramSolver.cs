@@ -1,7 +1,6 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes
@@ -9,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class AnagramSolver : IAnagramSolver
     {
 
-        HashSet<string> _allWords;
+        private readonly HashSet<string> _allWords;
         public AnagramSolver(HashSet<string> allWords)
         {
             _allWords = allWords;

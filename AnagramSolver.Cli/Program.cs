@@ -2,7 +2,6 @@
 using AnagramSolver.Contracts.Interfaces;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Configuration;
 
 namespace AnagramSolver.Cli
 {
@@ -10,18 +9,14 @@ namespace AnagramSolver.Cli
     {
         static void Main(string[] args)
         {
-            IWordRepository wordRepository = new WordRepository();
-            int minLength, maxAnagrams;
-            string filePath;
-            ConfigureAppSettings(out minLength, out maxAnagrams, out filePath);
-            var allWords = wordRepository.GetAllWords(filePath, minLength);
+            ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath);
+            IWordRepository wordRepository = new WordRepository(filePath, minLength);
+            var allWords = wordRepository.GetAllWords();
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var command = string.Empty;
-
             while (true)
             {
                 Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
-                command = Console.ReadLine();
+                string command = Console.ReadLine();
                 if (command.Length < minLength)
                 {
                     Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");

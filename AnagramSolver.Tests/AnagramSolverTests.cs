@@ -47,6 +47,7 @@ namespace AnagramSolver.Tests
         }
 
         [Test]
+        [Explicit]
         [TestCase("rimti sula", "mirti alus")]
         public void Should_ReturnOneAnagram_When_GivenMoreThanOneWord(string command, string anagram)
         {
@@ -56,6 +57,7 @@ namespace AnagramSolver.Tests
         }
 
         [Test]
+        [Explicit]
         [TestCase("rimti sula")]
         [TestCase("visma praktika")]
         [TestCase("labas rytas")]
