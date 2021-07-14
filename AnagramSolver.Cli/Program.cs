@@ -27,6 +27,7 @@ namespace AnagramSolver.Cli
                     break;
                 }
                 var listOfAnagrams = result.GetAnagrams(command);
+                var listOfAnagrams = // ateina is http request
 
                 Console.WriteLine("___Anogramos___");
 
