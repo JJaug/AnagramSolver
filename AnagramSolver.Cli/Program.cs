@@ -1,13 +1,20 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.WebApp.Models;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.Cli
 {
     class Program
     {
-        static void Main(string[] args)
+        static readonly HttpClient client = new HttpClient();
+        static async Task Main(string[] args)
         {
             ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath);
             IWordRepository wordRepository = new WordRepository(filePath, minLength);
@@ -26,15 +33,24 @@ namespace AnagramSolver.Cli
                 {
                     break;
                 }
-                var listOfAnagrams = result.GetAnagrams(command);
-                var listOfAnagrams = // ateina is http request
-
-                Console.WriteLine("___Anogramos___");
-
-                for (int i = 0; i < listOfAnagrams.Count; i++)
+                try
                 {
-                    Console.WriteLine(listOfAnagrams[i]);
+                    var jsonString = await client.GetStringAsync("https://localhost:44385/api/get/" + $"{command}");
+                    HashSet<AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
+                    Console.WriteLine("___Anogramos___");
+
+                    foreach(var anagram in listOfAnagrams)
+                    {
+                        Console.WriteLine(anagram.AnagramWord);
+                    }
                 }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine("\nException Caught!");
+                    Console.WriteLine("Message :{0} ", e.Message);
+                }
+
+
             }
 
         }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
@@ -24,7 +25,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         }
         [HttpGet("[action]/{id}")]
-        public HashSet<AnagramViewModel> Get(string id)
+        public string Get(string id)
         {
             var newList = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
@@ -37,7 +38,8 @@ namespace AnagramSolver.WebApp.Controllers
                 anagram.Word = id;
                 newList.Add(anagram);
             }
-            return newList;
+            string jsonString = JsonSerializer.Serialize(newList);
+            return jsonString;
         }
     }
 }
