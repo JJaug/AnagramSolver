@@ -15,7 +15,7 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath);
+            ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi);
             IWordRepository wordRepository = new WordRepository(filePath, minLength);
             var allWords = wordRepository.GetAllWords();
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
@@ -32,10 +32,11 @@ namespace AnagramSolver.Cli
                 {
                     break;
                 }
+                var path = $"{anagramApi}{command}";
                 try
                 {
-                    var jsonString = await client.GetStringAsync("https://localhost:44385/api/get/" + $"{command}");
-                    HashSet<AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
+                    var jsonString = await client.GetStringAsync(path);
+                    HashSet <AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
 
                     Console.WriteLine("___Anogramos___");
                     foreach (var anagram in listOfAnagrams)
@@ -54,13 +55,14 @@ namespace AnagramSolver.Cli
 
         }
 
-        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath)
+        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi)
         {
             var builder = new ConfigurationBuilder()
                         .AddJsonFile($"appsettings.json", true, true);
             var config = builder.Build();
             minLength = Int32.Parse(config["MinWordLength"]);
             maxAnagrams = Int32.Parse(config["MaxNumberOfAnagrams"]);
+            anagramApi = config["AnagramApi"];
             filePath = config["FilePath"];
         }
     }
