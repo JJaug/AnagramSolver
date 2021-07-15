@@ -2,7 +2,6 @@
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.Extensions.Configuration;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -37,9 +36,9 @@ namespace AnagramSolver.Cli
                 {
                     var jsonString = await client.GetStringAsync("https://localhost:44385/api/get/" + $"{command}");
                     HashSet<AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
-                    Console.WriteLine("___Anogramos___");
 
-                    foreach(var anagram in listOfAnagrams)
+                    Console.WriteLine("___Anogramos___");
+                    foreach (var anagram in listOfAnagrams)
                     {
                         Console.WriteLine(anagram.AnagramWord);
                     }

@@ -7,12 +7,12 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-    public class AnagramController : Controller
+    public class DownloaderController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly WordRepository _wordRepository;
-        public AnagramController(ILogger<HomeController> logger)
+        public DownloaderController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _wordRepository = new WordRepository(_filePath, 4);
@@ -47,6 +47,5 @@ namespace AnagramSolver.WebApp.Controllers
             ViewBag.newList = newList;
             return View(newList);
         }
-
     }
 }

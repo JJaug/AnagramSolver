@@ -4,21 +4,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
-namespace AnagramSolver.WebApp.Controllers
+namespace AnagramSolver.WebApp.Controllers.Api
 {
     [ApiController]
     [Route("[controller]")]
-    public class ApiController : ControllerBase
+    public class AnagramApiController : ControllerBase
     {
-        private readonly ILogger<ApiController> _logger;
+        private readonly ILogger<AnagramApiController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly WordRepository _wordRepository;
-        public ApiController(ILogger<ApiController> logger)
+        public AnagramApiController(ILogger<AnagramApiController> logger)
         {
             _logger = logger;
             _wordRepository = new WordRepository(_filePath, 4);
