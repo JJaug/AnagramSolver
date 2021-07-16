@@ -15,6 +15,7 @@
         $.get(`/anagramapi/getForJS/${word}`, function (data) {
             data.forEach(element => console.log(element));
             document.getElementById("getAnagram").value = data;
+            $("#getAnagram").value = data;
         });
 
     }
