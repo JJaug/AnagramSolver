@@ -11,7 +11,7 @@ namespace AnagramSolver.Tests
     public class WordRepositoryTests
     {
         private WordRepository _wordRepository;
-        private string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/";
+        private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/";
 
 
         [Test]

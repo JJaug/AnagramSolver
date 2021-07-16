@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AnagramSolver.BusinessLogic\AnagramSolver.BusinessLogic.csproj" />
     <ProjectReference Include="..\AnagramSolver.Models\AnagramSolver.Models.csproj" />
+    <ProjectReference Include="..\AnagramSolver.WebApp\AnagramSolver.WebApp.csproj" />
   </ItemGroup>
 
   <ItemGroup>

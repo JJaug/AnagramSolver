@@ -1,17 +1,24 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<a href="api/getvocabulary" download>Download Vocabulary</a>
+<br />
 
-<h3><b>Form</b></h3>
+<input type="text" name="word" id="wordForAnagram"/>
+<button onclick="searchAnagrams()">Search for anagrams</button>
+<h3>Anagrams</h3>
+<textarea id="getAnagram"></textarea>
+<script type="text/javascript">
 
-<form action="Form" method="post">
-    <table>
-        <tr>
-            <td>Enter Word you wish to see anagrams of: </td>
-            <td><input type="text" name="txtWord" /></td>
-        </tr>
-        <tr>
-            <td colspan="2"><input type="submit" value="Submit Form" /></td>
-        </tr>
-    </table>
-</form>
+    function searchAnagrams() {
+        var word = document.getElementById('wordForAnagram').value;
+        $.get(`/anagramapi/getForJS/${word}`, function (data) {
+            data.forEach(element => console.log(element));
+            document.getElementById("getAnagram").value = data;
+            $("#getAnagram").value = data;
+        });
+
+    }
+
+</script>
+

@@ -1,39 +1,30 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
-using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AnagramSolver.WebApp.Controllers
+namespace AnagramSolver.WebApi.Controllers
 {
-    public class DownloaderController : Controller
+    [ApiController]
+    [Route("[controller]")]
+    public class ApiController : ControllerBase
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<ApiController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
-        private readonly IWordRepository _wordRepository;
-        public DownloaderController(ILogger<HomeController> logger)
+        private readonly WordRepository _wordRepository;
+        public ApiController(ILogger<ApiController> logger)
         {
             _logger = logger;
             _wordRepository = new WordRepository(_filePath, 4);
-        }
 
-        public IActionResult Index(int id = 1)
-        {
-            var words = _wordRepository.GetSpecificPage(id);
-
-            var newList = new HashSet<AnagramViewModel>();
-            foreach (var word in words)
-            {
-                var anagram = new AnagramViewModel();
-                anagram.Word = word;
-                newList.Add(anagram);
-            }
-            ViewBag.newList = newList;
-            return View(id);
         }
-        public IActionResult Details(string id)
+        [HttpGet]
+        public HashSet<AnagramViewModel> Get(string id)
         {
             var newList = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
@@ -45,8 +36,7 @@ namespace AnagramSolver.WebApp.Controllers
                 anagram.AnagramWord = word;
                 newList.Add(anagram);
             }
-            ViewBag.newList = newList;
-            return View(newList);
+            return newList;
         }
     }
 }

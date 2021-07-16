@@ -18,10 +18,15 @@ namespace AnagramSolver.WebApp.Controllers
             _logger = logger;
             _wordRepository = new WordRepository(_filePath, 4);
         }
-
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
+        }
+        [HttpPost]
+        public string PostUsingParameters(string wordToAnagram)
+        {
+            return $"From parameters  {wordToAnagram}";
         }
 
         public IActionResult Form(string txtWord)
