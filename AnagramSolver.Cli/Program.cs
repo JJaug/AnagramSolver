@@ -36,7 +36,7 @@ namespace AnagramSolver.Cli
                 try
                 {
                     var jsonString = await client.GetStringAsync(path);
-                    HashSet <AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
+                    HashSet<AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
 
                     Console.WriteLine("___Anogramos___");
                     foreach (var anagram in listOfAnagrams)

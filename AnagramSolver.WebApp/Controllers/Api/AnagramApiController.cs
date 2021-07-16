@@ -22,7 +22,7 @@ namespace AnagramSolver.WebApp.Controllers.Api
 
         }
         [HttpGet("[action]/{id}")]
-        public string Get(string id)
+        public string GetJsonString(string id)
         {
             var newList = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
@@ -37,6 +37,19 @@ namespace AnagramSolver.WebApp.Controllers.Api
             }
             string jsonString = JsonSerializer.Serialize(newList);
             return jsonString;
+        }
+        [HttpGet("[action]/{id}")]
+        public List<string> GetForJS(string id)
+        {
+            var newList = new List<string>();
+            var allWords = _wordRepository.GetAllWords();
+            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
+            var result = _anagramSolver.GetAnagrams(id);
+            foreach (var word in result)
+            {
+                newList.Add(word);
+            }
+            return newList;
         }
     }
 }

@@ -4,24 +4,20 @@
 <a href="api/getvocabulary" download>Download Vocabulary</a>
 <br />
 
-@*@using (Html.BeginForm("PostUsingParameters", "Home"))
-{
-    <input type="text" id="id" name="wordToAnagram" />
-    <input type="submit" value="Search for anagrams" />
-}*@
-
 <input type="text" name="word" id="wordForAnagram"/>
-<button onclick="test1()">Search</button>
+<button onclick="searchAnagrams()">Search for anagrams</button>
+<h3>Anagrams</h3>
+<textarea id="getAnagram"></textarea>
 <script type="text/javascript">
 
-    function test1() {
+    function searchAnagrams() {
         var word = document.getElementById('wordForAnagram').value;
-        $.get("/anagramapi/get", { name: 'wordForAnagram' }, function (data) {
-            alert(data);
+        $.get(`/anagramapi/getForJS/${word}`, function (data) {
+            data.forEach(element => console.log(element));
+            document.getElementById("getAnagram").value = data;
         });
-        console.log(word)
-    }
 
+    }
 
 </script>
 
