@@ -8,15 +8,14 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.WebApp.Controllers
 {
-    public class DownloaderController : Controller
+    public class AnagramController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly IWordRepository _wordRepository;
-        public DownloaderController(ILogger<HomeController> logger)
+        public AnagramController()
         {
-            _logger = logger;
-            _wordRepository = new WordRepository(_filePath, 4);
+            _wordRepository = new WordDBRepository();
         }
 
         public IActionResult Index(int id = 1)
@@ -27,7 +26,7 @@ namespace AnagramSolver.WebApp.Controllers
             foreach (var word in words)
             {
                 var anagram = new AnagramViewModel();
-                anagram.Word = word;
+                anagram.Word = word.Word;
                 newList.Add(anagram);
             }
             ViewBag.newList = newList;

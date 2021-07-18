@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -16,11 +17,12 @@ namespace AnagramSolver.Cli
         static async Task Main(string[] args)
         {
             ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi);
-            IWordRepository wordRepository = new WordRepository(filePath, minLength);
+            IWordRepository wordRepository = new WordDBRepository();
             var allWords = wordRepository.GetAllWords();
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
             while (true)
             {
+
                 Console.WriteLine("Iveskite zodi kurio anogramos norite arba iveskite exit jei norite iseiti is konsoles");
                 string command = Console.ReadLine();
                 if (command.Length < minLength)
