@@ -10,7 +10,6 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class AnagramController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly IWordRepository _wordRepository;
         public AnagramController()
@@ -20,17 +19,17 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index(int id = 1)
         {
-            var words = _wordRepository.GetSpecificPage(id);
+            var words = _wordRepository.GetSpecificPage(id: id);
 
             var newList = new HashSet<AnagramViewModel>();
             foreach (var word in words)
             {
                 var anagram = new AnagramViewModel();
                 anagram.Word = word.Word;
-                newList.Add(anagram);
+                newList.Add(item: anagram);
             }
             ViewBag.newList = newList;
-            return View(id);
+            return View(model: id);
         }
         public IActionResult Details(string id)
         {

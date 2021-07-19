@@ -1,5 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.Contracts.Interfaces;
+using System.Configuration;
+using System.Collections.Specialized;
 using AnagramSolver.Models.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.Data.SqlClient;
@@ -19,7 +21,18 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi);
+            // ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi);
+            
+            string filePath;
+            int minLength;
+            string anagramApi;
+
+            // Read a particular key from the config file 
+            filePath = ConfigurationManager.AppSettings.Get("FilePath");
+            minLength = Int32.Parse(ConfigurationManager.AppSettings.Get("minLength"));
+            anagramApi = ConfigurationManager.AppSettings.Get("AnagramApi");
+            Console.WriteLine("The value of Key0: " + filePath);
+            
             Insert(filePath, minLength);
             IWordRepository wordRepository = new WordDBRepository();
             var allWords = wordRepository.GetAllWords();
@@ -31,7 +44,7 @@ namespace AnagramSolver.Cli
                 string command = Console.ReadLine();
                 if (command.Length < minLength)
                 {
-                    Console.WriteLine($"Zodis turi buti bent is raidziu");
+                    Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");
                     command = Console.ReadLine();
                 }
                 if (command == "exit")
@@ -70,14 +83,17 @@ namespace AnagramSolver.Cli
             maxAnagrams = Int32.Parse(config["MaxNumberOfAnagrams"]);
             anagramApi = config["AnagramApi"];
             filePath = config["FilePath"];
+            
         }
+
         private static void Insert(string filePath, int minLength)
         {
             int id = 1;
             HashSet<string> allLines;
             allLines = new HashSet<string>(File.ReadLines(filePath));
             var newList = new HashSet<string>();
-            string connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
+            string connectionString =
+                @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
             foreach (string line in allLines)
             {
                 string[] wordsInLine = line.Split("\t").ToArray();
@@ -87,25 +103,26 @@ namespace AnagramSolver.Cli
                     newList.Add(word);
                 }
             }
+
             try
             {
-                SqlConnection conn = new SqlConnection(connectionString);
+                var conn = new SqlConnection(connectionString);
                 conn.Open();
-                foreach (string word in newList)
+                foreach (var word in newList)
                 {
-                    SqlCommand cmd = new SqlCommand("INSERT INTO Words (ID, Word) VALUES (@id, @word)", conn);
+                    var cmd = new SqlCommand("INSERT INTO Words (ID, Word) VALUES (@id, @word)", conn);
                     cmd.Parameters.AddWithValue("@id", id);
                     cmd.Parameters.AddWithValue("@word", word);
                     cmd.ExecuteNonQuery();
                     id++;
                 }
+
                 conn.Close();
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-            
-
         }
     }
 }

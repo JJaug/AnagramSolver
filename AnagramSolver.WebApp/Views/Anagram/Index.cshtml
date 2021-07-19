@@ -1,7 +1,9 @@
 ﻿@{
     Layout = "_Layout";
 }
-@model Int32
+@Model Int32
+
+
 <table border="1" cellpadding="2" cellspacing="2">
     <tr>
         <th>Word</th>
@@ -13,6 +15,9 @@
         </tr>
     }
 </table>
+
+
+
 @if (Model - 2 > 0)
 {
     <a>@Html.ActionLink($"Page{Model - 2}", $"Index", new { @id = Model - 2 })</a>

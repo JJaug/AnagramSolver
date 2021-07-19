@@ -7,5 +7,6 @@ namespace AnagramSolver.Contracts.Interfaces
     {
         public HashSet<WordModel> GetAllWords();
         public HashSet<WordModel> GetSpecificPage(int id);
+        public HashSet<string> GetSpecificWords(string word);
     }
 }

@@ -24,11 +24,6 @@ namespace AnagramSolver.WebApp.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public string PostUsingParameters(string wordToAnagram)
-        {
-            return $"From parameters  {wordToAnagram}";
-        }
 
         public IActionResult Form(string txtWord)
         {

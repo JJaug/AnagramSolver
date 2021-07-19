@@ -69,5 +69,26 @@ namespace AnagramSolver.BusinessLogic.Classes
 
             return wordsFromDB.Skip(howManySkip).Take(wordsInPage).ToHashSet();
         }
+
+        public HashSet<string> GetSpecificWords(string word)
+        {
+            var neededWords = new HashSet<string>();
+            var con = new SqlConnection(@"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True");
+            con.Open();
+            var cmd = new SqlCommand();
+            cmd.Connection = con;
+            cmd.CommandText = $"SELECT * FROM Words WHERE Word LIKE '%{word}%'";
+            var rdr = cmd.ExecuteReader();
+            if (rdr.HasRows)
+            {
+                while (rdr.Read())
+                {
+                    neededWords.Add(rdr["Word"].ToString());
+                }
+                
+            }
+            con.Close();
+            return neededWords;
+        }
     }
 }

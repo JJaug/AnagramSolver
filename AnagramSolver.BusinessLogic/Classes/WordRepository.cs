@@ -39,6 +39,12 @@ namespace AnagramSolver.BusinessLogic.Classes
             }
             return newList.Skip(howManySkip).Take(wordsInPage).ToHashSet();
         }
+
+        public HashSet<string> GetSpecificWords(string word)
+        {
+            throw new NotImplementedException();
+        }
+
         public HashSet<WordModel> GetAllWords()
         {
             HashSet<string> allLines;

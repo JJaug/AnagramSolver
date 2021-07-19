@@ -3,6 +3,26 @@
 }
 <a href="api/getvocabulary" download>Download Vocabulary</a>
 <br />
+<input type="text" name="word" id="partOfWord"/>
+<button onclick="searchWords()">Search for words</button>
+<div id="words">
+    
+</div>
+<script type="text/javascript">
+
+    function searchWords() {
+        let word = document.getElementById('partOfWord').value;
+        $.get(`/anagramapi/getSearchList/${word}`, function (data) {
+            data.forEach(element => console.log(element));
+            document.getElementById("words").value = data;
+            $("#words").html(data);
+        });
+
+    }
+
+</script>
+<br />
+
 
 <input type="text" name="word" id="wordForAnagram"/>
 <button onclick="searchAnagrams()">Search for anagrams</button>
