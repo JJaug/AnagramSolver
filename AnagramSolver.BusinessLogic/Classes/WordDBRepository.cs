@@ -13,18 +13,18 @@ namespace AnagramSolver.BusinessLogic.Classes
     {
         private const int wordsInPage = 100;
         private const int _minLength = 4;
-        private string connString;
+        private string connectionString;
 
         public string Init()
         {
             var appSettings = ConfigurationManager.AppSettings;
-            string connString = appSettings["ConnectionString"] ?? "Not Found";
-            return connString;
+            string connectionString = appSettings["ConnectionString"] ?? "Not Found";
+            return connectionString;
         }
         public HashSet<WordModel> GetAllWords()
         {
-            connString = Init();
-            SqlConnection con = new SqlConnection(connString);
+            connectionString = Init();
+            SqlConnection con = new SqlConnection(connectionString);
             string query = "select * from Words";
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
@@ -54,8 +54,8 @@ namespace AnagramSolver.BusinessLogic.Classes
         public HashSet<WordModel> GetSpecificPage(int pageNumber)
         {
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
-            connString = Init();
-            SqlConnection con = new SqlConnection(connString);
+            connectionString = Init();
+            SqlConnection con = new SqlConnection(connectionString);
             string query = "select * from Words";
             SqlCommand cmd = new SqlCommand();
             cmd.Connection = con;
@@ -85,8 +85,8 @@ namespace AnagramSolver.BusinessLogic.Classes
         public HashSet<string> GetSpecificWords(string word)
         {
             var neededWords = new HashSet<string>();
-            connString = Init();
-            SqlConnection con = new SqlConnection(connString);
+            connectionString = Init();
+            SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             var cmd = new SqlCommand();
             cmd.Connection = con;

@@ -19,31 +19,31 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index(int id = 1)
         {
-            var words = _wordRepository.GetSpecificPage(id);
-            var newList = new HashSet<AnagramViewModel>();
-            foreach (var word in words)
+            var allWords = _wordRepository.GetSpecificPage(id);
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
+            foreach (var word in allWords)
             {
                 var anagram = new AnagramViewModel();
                 anagram.Word = word.Word;
-                newList.Add(item: anagram);
+                vocabularyByModel.Add(item: anagram);
             }
-            ViewBag.newList = newList;
+            ViewBag.vocabularyByModel = vocabularyByModel;
             return View(model: id);
         }
         public IActionResult Details(string id)
         {
-            var newList = new HashSet<AnagramViewModel>();
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var result = _anagramSolver.GetAnagrams(id);
-            foreach (var word in result)
+            var anagramsById = _anagramSolver.GetAnagrams(id);
+            foreach (var word in anagramsById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
-                newList.Add(anagram);
+                vocabularyByModel.Add(anagram);
             }
-            ViewBag.newList = newList;
-            return View(newList);
+            ViewBag.vocabularyByModel = vocabularyByModel;
+            return View(vocabularyByModel);
         }
     }
 }

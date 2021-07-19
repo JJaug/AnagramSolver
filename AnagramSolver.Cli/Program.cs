@@ -1,13 +1,10 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.Contracts.Interfaces;
-using System.Configuration;
-using System.Collections.Specialized;
 using AnagramSolver.Models.Models;
-using AnagramSolver.WebApp.Models;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -22,16 +19,10 @@ namespace AnagramSolver.Cli
         static async Task Main(string[] args)
         {
 
-
-            var filePath = ReadSetting("FilePath");
-            int minLength = Int32.Parse(ReadSetting("MinWordLength"));
+            var fillDatabase = new PersistentRepository();
+            fillDatabase.PopulateDataBaseFromFile();
             var anagramApi = ReadSetting("AnagramApi");
-            var connString = ReadSetting("ConnectionString");
-
-            Insert(filePath, minLength, connString);
-            IWordRepository wordRepository = new WordDBRepository();
-            var allWords = wordRepository.GetAllWords();
-            var result = new BusinessLogic.Classes.AnagramSolver(allWords);
+            var minLength = int.Parse(ReadSetting("MinWordLength"));
             while (true)
             {
 
@@ -50,7 +41,7 @@ namespace AnagramSolver.Cli
                 try
                 {
                     var jsonString = await client.GetStringAsync(path);
-                    HashSet<AnagramViewModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramViewModel>>(jsonString);
+                    HashSet<AnagramModel> listOfAnagrams = JsonSerializer.Deserialize<HashSet<AnagramModel>>(jsonString);
 
                     Console.WriteLine("___Anogramos___");
                     foreach (var anagram in listOfAnagrams)
@@ -66,52 +57,14 @@ namespace AnagramSolver.Cli
 
 
             }
-
-        }
-
-        private static void Insert(string filePath, int minLength, string connectionString)
-        {
-            int id = 1;
-            HashSet<string> allLines;
-            allLines = new HashSet<string>(File.ReadLines(filePath));
-            var newList = new HashSet<string>();
-
-            foreach (string line in allLines)
+            static string ReadSetting(string key)
             {
-                string[] wordsInLine = line.Split("\t").ToArray();
-                if (wordsInLine[2].Length >= minLength)
-                {
-                    var word = wordsInLine[2];
-                    newList.Add(word);
-                }
-            }
 
-            try
-            {
-                var conn = new SqlConnection(connectionString);
-                conn.Open();
-                foreach (var word in newList)
-                {
-                    var cmd = new SqlCommand("INSERT INTO Words (ID, Word) VALUES (@id, @word)", conn);
-                    cmd.Parameters.AddWithValue("@id", id);
-                    cmd.Parameters.AddWithValue("@word", word);
-                    cmd.ExecuteNonQuery();
-                    id++;
-                }
+                var appSettings = ConfigurationManager.AppSettings;
+                string specificSetting = appSettings[key] ?? "Not Found";
+                return specificSetting;
 
-                conn.Close();
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-        static string ReadSetting(string key)
-        {
-
-            var appSettings = ConfigurationManager.AppSettings;
-            string result = appSettings[key] ?? "Not Found";
-            return result;
 
         }
     }
