@@ -31,7 +31,7 @@ namespace AnagramSolver.Cli
                 string command = Console.ReadLine();
                 if (command.Length < minLength)
                 {
-                    Console.WriteLine($"Zodis turi buti bent is {minLength} raidziu");
+                    Console.WriteLine($"Zodis turi buti bent is raidziu");
                     command = Console.ReadLine();
                 }
                 if (command == "exit")
