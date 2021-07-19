@@ -24,10 +24,11 @@ namespace AnagramSolver.Cli
 
 
             var filePath = ReadSetting("FilePath");
-            int minLength = Int32.Parse(ReadSetting("FilePath"));
-            var anagramApi = ReadSetting("FilePath");
+            int minLength = Int32.Parse(ReadSetting("MinWordLength"));
+            var anagramApi = ReadSetting("AnagramApi");
+            var connString = ReadSetting("ConnectionString");
 
-            Insert(filePath, minLength);
+            Insert(filePath, minLength, connString);
             IWordRepository wordRepository = new WordDBRepository();
             var allWords = wordRepository.GetAllWords();
             var result = new BusinessLogic.Classes.AnagramSolver(allWords);
@@ -68,14 +69,13 @@ namespace AnagramSolver.Cli
 
         }
 
-        private static void Insert(string filePath, int minLength)
+        private static void Insert(string filePath, int minLength, string connectionString)
         {
             int id = 1;
             HashSet<string> allLines;
             allLines = new HashSet<string>(File.ReadLines(filePath));
             var newList = new HashSet<string>();
-            string connectionString =
-                @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
+
             foreach (string line in allLines)
             {
                 string[] wordsInLine = line.Split("\t").ToArray();
