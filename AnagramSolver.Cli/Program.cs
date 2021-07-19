@@ -78,30 +78,28 @@ namespace AnagramSolver.Cli
             allLines = new HashSet<string>(File.ReadLines(filePath));
             var newList = new HashSet<string>();
             string connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
+            foreach (string line in allLines)
+            {
+                string[] wordsInLine = line.Split("\t").ToArray();
+                if (wordsInLine[2].Length >= minLength)
+                {
+                    var word = wordsInLine[2];
+                    newList.Add(word);
+                }
+            }
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                SqlConnection conn = new SqlConnection(connectionString);
+                conn.Open();
+                foreach (string word in newList)
                 {
-                    conn.Open();
-                    foreach (string line in allLines)
-                    {
-                        string[] wordsInLine = line.Split("\t").ToArray();
-                        if (wordsInLine[2].Length >= minLength)
-                        {
-                            var word = wordsInLine[2];
-                            newList.Add(word);
-                        }
-                    }
-                    foreach (string word in newList)
-                    {
-                        SqlCommand cmd = new SqlCommand("INSERT INTO Words (ID, Word) VALUES (@id, @word)", conn);
-                        cmd.Parameters.AddWithValue("@id", id);
-                        cmd.Parameters.AddWithValue("@word", word);
-                        cmd.ExecuteNonQuery();
-                        id++;
-                    }
-                    conn.Close();
+                    SqlCommand cmd = new SqlCommand("INSERT INTO Words (ID, Word) VALUES (@id, @word)", conn);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@word", word);
+                    cmd.ExecuteNonQuery();
+                    id++;
                 }
+                conn.Close();
             } catch (Exception e)
             {
                 Console.WriteLine(e.Message);
