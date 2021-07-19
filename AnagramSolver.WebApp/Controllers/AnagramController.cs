@@ -2,7 +2,6 @@
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
@@ -10,7 +9,6 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class AnagramController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly IWordRepository _wordRepository;
         public AnagramController()
@@ -20,32 +18,31 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index(int id = 1)
         {
-            var words = _wordRepository.GetSpecificPage(id);
-
-            var newList = new HashSet<AnagramViewModel>();
-            foreach (var word in words)
+            var allWords = _wordRepository.GetSpecificPage(id);
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
+            foreach (var word in allWords)
             {
                 var anagram = new AnagramViewModel();
                 anagram.Word = word.Word;
-                newList.Add(anagram);
+                vocabularyByModel.Add(item: anagram);
             }
-            ViewBag.newList = newList;
-            return View(id);
+            ViewBag.vocabularyByModel = vocabularyByModel;
+            return View(model: id);
         }
         public IActionResult Details(string id)
         {
-            var newList = new HashSet<AnagramViewModel>();
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var result = _anagramSolver.GetAnagrams(id);
-            foreach (var word in result)
+            var anagramsById = _anagramSolver.GetAnagrams(id);
+            foreach (var word in anagramsById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
-                newList.Add(anagram);
+                vocabularyByModel.Add(anagram);
             }
-            ViewBag.newList = newList;
-            return View(newList);
+            ViewBag.vocabularyByModel = vocabularyByModel;
+            return View(vocabularyByModel);
         }
     }
 }

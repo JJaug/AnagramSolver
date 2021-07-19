@@ -1,8 +1,8 @@
 ﻿namespace AnagramSolver.Models.Models
 {
-    public class WordModel
+    public class AnagramModel
     {
-        public int ID { get; set; }
         public string Word { get; set; }
+        public string AnagramWord { get; set; }
     }
 }

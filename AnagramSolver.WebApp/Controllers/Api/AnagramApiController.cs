@@ -25,32 +25,39 @@ namespace AnagramSolver.WebApp.Controllers.Api
         [HttpGet("[action]/{id}")]
         public string GetJsonString(string id)
         {
-            var newList = new HashSet<AnagramViewModel>();
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var result = _anagramSolver.GetAnagrams(id);
-            foreach (var word in result)
+            var allAnagramById = _anagramSolver.GetAnagrams(id);
+            foreach (var word in allAnagramById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
                 anagram.Word = id;
-                newList.Add(anagram);
+                vocabularyByModel.Add(anagram);
             }
-            string jsonString = JsonSerializer.Serialize(newList);
+            string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
         }
         [HttpGet("[action]/{id}")]
         public List<string> GetForJS(string id)
         {
-            var newList = new List<string>();
+            var listOfAnagrams = new List<string>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var result = _anagramSolver.GetAnagrams(id);
-            foreach (var word in result)
+            var anagramsById = _anagramSolver.GetAnagrams(id);
+            foreach (var word in anagramsById)
             {
-                newList.Add(word);
+                listOfAnagrams.Add(word);
             }
-            return newList;
+            return listOfAnagrams;
+        }
+        [HttpGet("[action]/{word}")]
+        public HashSet<string> GetSearchList(string wordPart)
+        {
+            var wordsContainingSpecificPart = _wordRepository.GetSpecificWords(wordPart);
+
+            return wordsContainingSpecificPart;
         }
     }
 }

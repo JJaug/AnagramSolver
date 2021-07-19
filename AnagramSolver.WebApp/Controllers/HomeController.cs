@@ -24,25 +24,20 @@ namespace AnagramSolver.WebApp.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public string PostUsingParameters(string wordToAnagram)
-        {
-            return $"From parameters  {wordToAnagram}";
-        }
 
         public IActionResult Form(string txtWord)
         {
-            var newList = new HashSet<AnagramViewModel>();
+            var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var result = _anagramSolver.GetAnagrams(txtWord);
-            foreach (var word in result)
+            var anagramById = _anagramSolver.GetAnagrams(txtWord);
+            foreach (var word in anagramById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
-                newList.Add(anagram);
+                vocabularyByModel.Add(anagram);
             }
-            return View(newList);
+            return View(vocabularyByModel);
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

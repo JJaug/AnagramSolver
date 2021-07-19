@@ -8,12 +8,12 @@ namespace AnagramSolver.Tests
     class AnagramSolverTests
     {
         private BusinessLogic.Classes.AnagramSolver _anagramSolver;
-        private string[] values = {"rimti", "mirti", "sula", "alus", "balos", "labos", "balso"};
+        private readonly string[] values = { "rimti", "mirti", "sula", "alus", "balos", "labos", "balso" };
         [SetUp]
         public void Setup()
         {
             var allWords = new HashSet<WordModel>();
-            for(int i = 0; i < 7; i++)
+            for (int i = 0; i < 7; i++)
             {
                 var word = new WordModel();
                 word.ID = i + 1;
