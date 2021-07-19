@@ -21,9 +21,9 @@ namespace AnagramSolver.BusinessLogic.Classes
             var newList = new List<string>();
             var appSettings = ConfigurationManager.AppSettings;
             string connString = appSettings["ConnectionString"] ?? "Not Found";
-            SqlConnection con = new SqlConnection(connString);
+            SqlConnection con = new(connString);
             string query = "select * from CachedWord";
-            SqlCommand cmd = new SqlCommand();
+            SqlCommand cmd = new();
             cmd.Connection = con;
             cmd.CommandText = query;
             con.Open();

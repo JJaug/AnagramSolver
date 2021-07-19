@@ -1,12 +1,8 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
-using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
-using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;

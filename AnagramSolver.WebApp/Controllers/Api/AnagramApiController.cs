@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
-using Microsoft.Data.SqlClient;
 
 namespace AnagramSolver.WebApp.Controllers.Api
 {
@@ -54,11 +53,11 @@ namespace AnagramSolver.WebApp.Controllers.Api
             return listOfAnagrams;
         }
         [HttpGet("[action]/{word}")]
-        public HashSet<string> GetSearchList(string specificWord)
+        public HashSet<string> GetSearchList(string wordPart)
         {
-            var neededWords = _wordRepository.GetSpecificWords(specificWord);
+            var wordsContainingSpecificPart = _wordRepository.GetSpecificWords(wordPart);
 
-            return neededWords;
+            return wordsContainingSpecificPart;
         }
     }
 }

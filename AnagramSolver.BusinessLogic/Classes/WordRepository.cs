@@ -10,7 +10,7 @@ namespace AnagramSolver.BusinessLogic.Classes
     public class WordRepository : IWordRepository
     {
         private readonly string _filePath;
-        private readonly int _minLength; 
+        private readonly int _minLength;
         private const int wordsInPage = 100;
 
         public WordRepository(string filePath, int minLength)
@@ -44,7 +44,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             var allWords = GetAllWords();
             var specificVocabulary = new HashSet<string>();
-            foreach(var word in allWords)
+            foreach (var word in allWords)
             {
                 if (word.Word.Contains(wordPart))
                 {
