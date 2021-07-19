@@ -21,18 +21,12 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            // ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi);
-            
-            string filePath;
-            int minLength;
-            string anagramApi;
 
-            // Read a particular key from the config file 
-            filePath = ConfigurationManager.AppSettings.Get("FilePath");
-            minLength = Int32.Parse(ConfigurationManager.AppSettings.Get("minLength"));
-            anagramApi = ConfigurationManager.AppSettings.Get("AnagramApi");
-            Console.WriteLine("The value of Key0: " + filePath);
-            
+
+            var filePath = ReadSetting("FilePath");
+            int minLength = Int32.Parse(ReadSetting("FilePath"));
+            var anagramApi = ReadSetting("FilePath");
+
             Insert(filePath, minLength);
             IWordRepository wordRepository = new WordDBRepository();
             var allWords = wordRepository.GetAllWords();
@@ -74,18 +68,6 @@ namespace AnagramSolver.Cli
 
         }
 
-        private static void ConfigureAppSettings(out int minLength, out int maxAnagrams, out string filePath, out string anagramApi)
-        {
-            var builder = new ConfigurationBuilder()
-                        .AddJsonFile($"appsettings.json", true, true);
-            var config = builder.Build();
-            minLength = Int32.Parse(config["MinWordLength"]);
-            maxAnagrams = Int32.Parse(config["MaxNumberOfAnagrams"]);
-            anagramApi = config["AnagramApi"];
-            filePath = config["FilePath"];
-            
-        }
-
         private static void Insert(string filePath, int minLength)
         {
             int id = 1;
@@ -123,6 +105,14 @@ namespace AnagramSolver.Cli
             {
                 Console.WriteLine(e.Message);
             }
+        }
+        static string ReadSetting(string key)
+        {
+
+            var appSettings = ConfigurationManager.AppSettings;
+            string result = appSettings[key] ?? "Not Found";
+            return result;
+
         }
     }
 }

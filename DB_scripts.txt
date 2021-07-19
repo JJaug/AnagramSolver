@@ -1,3 +1,5 @@
+Base:
+
 CREATE DATABASE VocabularyDB;
 CREATE TABLE WORD (
     ID int NOT NULL PRIMARY KEY,
@@ -7,3 +9,9 @@ INSERT INTO Words
 VALUES (1, 'alus'), (3, 'sula'), (2, 'rimti');
 INSERT INTO Words
 VALUES (4, 'mirti'), (5, 'balos'), (6, 'labos'), (7, 'balso');
+
+
+Extra:
+
+SELECT * FROM Words
+WHERE Word='sula';

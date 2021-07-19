@@ -42,7 +42,16 @@ namespace AnagramSolver.BusinessLogic.Classes
 
         public HashSet<string> GetSpecificWords(string word)
         {
-            throw new NotImplementedException();
+            var allWords = GetAllWords();
+            var newList = new HashSet<string>();
+            foreach(var aWord in allWords)
+            {
+                if (aWord.Word.Contains(word))
+                {
+                    newList.Add(aWord.Word);
+                }
+            }
+            return newList;
         }
 
         public HashSet<WordModel> GetAllWords()

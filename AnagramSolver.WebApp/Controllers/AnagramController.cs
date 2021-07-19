@@ -19,8 +19,7 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index(int id = 1)
         {
-            var words = _wordRepository.GetSpecificPage(id: id);
-
+            var words = _wordRepository.GetSpecificPage(id);
             var newList = new HashSet<AnagramViewModel>();
             foreach (var word in words)
             {
