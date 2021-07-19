@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using AnagramSolver.Models.Models;
+using NUnit.Framework;
 using System.Collections.Generic;
 
 namespace AnagramSolver.Tests
@@ -7,11 +8,18 @@ namespace AnagramSolver.Tests
     class AnagramSolverTests
     {
         private BusinessLogic.Classes.AnagramSolver _anagramSolver;
-
+        private string[] values = {"rimti", "mirti", "sula", "alus", "balos", "labos", "balso"};
         [SetUp]
         public void Setup()
         {
-            HashSet<string> allWords = new HashSet<string>(7) { "rimti", "mirti", "sula", "alus", "balos", "labos", "balso" };
+            var allWords = new HashSet<WordModel>();
+            for(int i = 0; i < 7; i++)
+            {
+                var word = new WordModel();
+                word.ID = i + 1;
+                word.Word = values[i];
+                allWords.Add(word);
+            }
             _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
         }
 

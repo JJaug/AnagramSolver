@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
+using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -14,11 +15,11 @@ namespace AnagramSolver.WebApp.Controllers.Api
     {
         private readonly ILogger<AnagramApiController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
-        private readonly WordRepository _wordRepository;
+        private readonly IWordRepository _wordRepository;
         public AnagramApiController(ILogger<AnagramApiController> logger)
         {
             _logger = logger;
-            _wordRepository = new WordRepository(_filePath, 4);
+            _wordRepository = new WordDBRepository();
 
         }
         [HttpGet("[action]/{id}")]
