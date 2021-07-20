@@ -2,8 +2,6 @@
 using AnagramSolver.Models.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes
@@ -19,7 +17,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         public List<string> GetAnagrams(string command)
         {
             var listOfAnagrams = new List<string>();
-            
+
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
             foreach (var word in _allWords)

@@ -100,8 +100,8 @@ namespace AnagramSolver.Cli
                 Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.MaxNumberOfAnagrams}");
             }
         );
-          
-        
+
+
         static string ReadSetting(string key)
         {
 

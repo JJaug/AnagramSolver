@@ -1,11 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes
 {
@@ -41,7 +37,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         public void PutAnagramToCache(string command, List<string> listOfAnagrams)
         {
             var anagramToDB = "";
-            foreach(var anagram in listOfAnagrams)
+            foreach (var anagram in listOfAnagrams)
             {
                 anagramToDB += $"{anagram}  ";
             }

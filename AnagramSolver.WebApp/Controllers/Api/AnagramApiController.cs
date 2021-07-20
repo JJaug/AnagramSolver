@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Net.Http;
 using System.Text.Json;
 
 namespace AnagramSolver.WebApp.Controllers.Api
@@ -92,7 +91,7 @@ namespace AnagramSolver.WebApp.Controllers.Api
             cmd.Connection = con;
             cmd.CommandText = query;
             cmd.Parameters.AddWithValue("@ip", "1.1.1.1");
-            cmd.Parameters.AddWithValue("@word", id); 
+            cmd.Parameters.AddWithValue("@word", id);
             cmd.Parameters.AddWithValue("@anagrams", numberOfAnagrams);
             cmd.Parameters.AddWithValue("@searchTime", elapsedTime);
             cmd.Parameters.AddWithValue("@createdAt", createdAt);
