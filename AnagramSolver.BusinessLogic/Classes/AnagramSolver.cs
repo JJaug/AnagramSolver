@@ -40,7 +40,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                 }
             }
             con.Close();
-
+            var anagramToDB = "";
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
             foreach (var word in _allWords)
@@ -54,6 +54,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                     {
                         if (word.Word != command)
                         {
+                            anagramToDB += $"{word.Word}  ";
                             newList.Add(word.Word);
                         }
                     }
@@ -61,10 +62,10 @@ namespace AnagramSolver.BusinessLogic.Classes
                 }
             }
             con.Open();
-            var cmd2 = new SqlCommand("INSERT INTO CachedWord (Word, Anagram) VALUES (@id, @word)", con);
-            cmd.Parameters.AddWithValue("@word", command);
-            cmd.Parameters.AddWithValue("@anagram", newList.ToString());
-            cmd.ExecuteNonQuery();
+            var cmd2 = new SqlCommand("INSERT INTO CachedWord (Word, Anagram) VALUES (@word, @anagram)", con);
+            cmd2.Parameters.AddWithValue("@word", command);
+            cmd2.Parameters.AddWithValue("@anagram", anagramToDB);
+            cmd2.ExecuteNonQuery();
 
             con.Close();
             return newList;
