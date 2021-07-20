@@ -20,10 +20,13 @@ namespace AnagramSolver.WebApp.Controllers.Api
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly string connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
         private readonly IWordRepository _wordRepository;
+        private readonly ICacheAnagram _cachedAnagrams;
         public AnagramApiController(ILogger<AnagramApiController> logger)
         {
             _logger = logger;
             _wordRepository = new WordDBRepository();
+            _cachedAnagrams = new CacheAnagram();
+
 
         }
         [HttpGet("[action]/{id}")]
@@ -32,8 +35,17 @@ namespace AnagramSolver.WebApp.Controllers.Api
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var allAnagramById = _anagramSolver.GetAnagrams(id);
-            foreach (var word in allAnagramById)
+            List<string> anagramsById;
+            if (_cachedAnagrams.GetCachedAnagram(id) != null)
+            {
+                anagramsById = _cachedAnagrams.GetCachedAnagram(id);
+            }
+            else
+            {
+                anagramsById = _anagramSolver.GetAnagrams(id);
+                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
+            }
+            foreach (var word in anagramsById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
@@ -46,13 +58,22 @@ namespace AnagramSolver.WebApp.Controllers.Api
         [HttpGet("[action]/{id}")]
         public List<string> GetForJS(string id)
         {
-            Stopwatch stopWatch = new Stopwatch();
+            var stopWatch = new Stopwatch();
             stopWatch.Start();
             var numberOfAnagrams = 0;
             var listOfAnagrams = new List<string>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var anagramsById = _anagramSolver.GetAnagrams(id);
+            List<string> anagramsById;
+            if (_cachedAnagrams.GetCachedAnagram(id) != null)
+            {
+                anagramsById = _cachedAnagrams.GetCachedAnagram(id);
+            }
+            else
+            {
+                anagramsById = _anagramSolver.GetAnagrams(id);
+                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
+            }
             foreach (var word in anagramsById)
             {
                 numberOfAnagrams++;
@@ -62,17 +83,15 @@ namespace AnagramSolver.WebApp.Controllers.Api
 
             var createdAt = DateTime.Now;
             TimeSpan ts = stopWatch.Elapsed;
-            string elapsedTime = String.Format("{0:00} s,{1:00} ms",
+            string elapsedTime = string.Format("{0:00} s,{1:00} ms",
             ts.Seconds, ts.Milliseconds / 10);
-            var httpClient = new HttpClient();
-            var ip = httpClient.GetStringAsync("https://api.ipify.org");
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             string query = "INSERT INTO SearchLog (UserIp, Word, Anagrams, SearchTime, CreatedAt) VALUES (@ip, @word, @anagrams, @searchTime, @createdAt)";
             var cmd = new SqlCommand();
             cmd.Connection = con;
             cmd.CommandText = query;
-            cmd.Parameters.AddWithValue("@ip", "1");
+            cmd.Parameters.AddWithValue("@ip", "1.1.1.1");
             cmd.Parameters.AddWithValue("@word", id); 
             cmd.Parameters.AddWithValue("@anagrams", numberOfAnagrams);
             cmd.Parameters.AddWithValue("@searchTime", elapsedTime);

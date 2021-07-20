@@ -1,6 +1,8 @@
 ﻿using AnagramSolver.Models.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+
 
 namespace AnagramSolver.Tests
 {

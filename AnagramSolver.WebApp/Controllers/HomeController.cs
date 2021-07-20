@@ -14,10 +14,12 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly IWordRepository _wordRepository;
+        private readonly ICacheAnagram _cachedAnagrams;
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
             _wordRepository = new WordDBRepository();
+            _cachedAnagrams = new CacheAnagram();
         }
         [HttpGet]
         public IActionResult Index()
@@ -30,8 +32,17 @@ namespace AnagramSolver.WebApp.Controllers
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var anagramById = _anagramSolver.GetAnagrams(txtWord);
-            foreach (var word in anagramById)
+            var anagramsById = new List<string>();
+            if (_cachedAnagrams.GetCachedAnagram(txtWord) != null)
+            {
+                anagramsById = _cachedAnagrams.GetCachedAnagram(txtWord);
+            }
+            else
+            {
+                anagramsById = _anagramSolver.GetAnagrams(txtWord);
+                _cachedAnagrams.PutAnagramToCache(txtWord, anagramsById);
+            }
+            foreach (var word in anagramsById)
             {
                 var anagram = new AnagramViewModel();
                 anagram.AnagramWord = word;
