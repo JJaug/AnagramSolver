@@ -15,3 +15,17 @@ Extra:
 
 SELECT * FROM Words
 WHERE Word='sula';
+
+CREATE PROCEDURE sp_EmptyTable @tableName varchar(50)
+AS
+DECLARE @SQL VARCHAR(2000)
+SET @SQL='DELETE FROM ' + @tableName
+EXEC (@SQL)
+
+CREATE TABLE SearchLog (
+    UserIp nvarchar (255) NOT NULL,
+    Word nvarchar(255) NOT NULL,
+	Anagrams int,
+	SearchTime nvarchar(255),
+	CreatedAt datetime2(7) PRIMARY KEY
+);
