@@ -1,5 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Classes;
 using AnagramSolver.Models.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -14,6 +16,7 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
+            using IHost host = CreateHostBuilder(args).Build();
 
             var fillDatabase = new PersistentRepository();
             fillDatabase.PopulateDataBaseFromFile();
@@ -51,17 +54,50 @@ namespace AnagramSolver.Cli
                     Console.WriteLine("Message :{0} ", e.Message);
                 }
 
+                await host.RunAsync();
 
-            }
-            static string ReadSetting(string key)
-            {
-
-                var appSettings = ConfigurationManager.AppSettings;
-                string specificSetting = appSettings[key] ?? "Not Found";
-                return specificSetting;
 
             }
 
         }
+
+        static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+            .ConfigureAppConfiguration((hostingContext, configuration) =>
+            {
+                configuration.Sources.Clear();
+
+                IHostEnvironment env = hostingContext.HostingEnvironment;
+
+                configuration
+                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                    .AddJsonFile($"appsettings.{env.EnvironmentName}.json", true, true);
+                IConfigurationRoot configurationRoot = configuration.Build();
+
+                AppSettings options = new();
+                configurationRoot.GetSection(nameof(AppSettings))
+                                 .Bind(options);
+
+                Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.FilePath}");
+                Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.MaxNumberOfAnagrams}");
+            });
+           
+        static string ReadSetting(string key)
+        {
+
+        var appSettings = ConfigurationManager.AppSettings;
+        string specificSetting = appSettings[key] ?? "Not Found";
+        return specificSetting;
+
+        }
+        public class AppSettings
+        {
+            public string FilePath { get; set; }
+            public int MaxNumberOfAnagrams { get; set; }
+            public int MinWordLength { get; set; }
+            public string AnagramApi { get; set; }
+        }
+
     }
 }
+
