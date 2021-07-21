@@ -1,11 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes
 {
@@ -13,18 +9,13 @@ namespace AnagramSolver.BusinessLogic.Classes
     {
         public CacheModel GetCachedAnagram(string command)
         {
-            var listOfAnagramsToReturn = new List<string>();
             var cachedModel = new CacheModel();
             using (var context = new VocabularyDBContext())
-            {                
-                var listOfAnagrams = context.CachedWords
-                    .Where(c => c.Word.Equals(command))
-                    .ToList();
-                foreach(var element in listOfAnagrams)
+            {
+                var cachedAnagram = context.CachedWords.Find(command);
+                if (cachedAnagram != null)
                 {
-                    var anagramsToReturn = element.Anagram;
-                    listOfAnagramsToReturn.Add(anagramsToReturn);
-                    cachedModel.Caches = listOfAnagramsToReturn;
+                    cachedModel.Caches.Add(cachedAnagram.Anagram);
                     cachedModel.IsSuccessful = true;
                 }
             }
@@ -33,7 +24,7 @@ namespace AnagramSolver.BusinessLogic.Classes
 
         public void PutAnagramToCache(string command, List<string> listOfAnagrams)
         {
-            var anagramToDB = "";
+            var anagramToDB = string.Empty;
             foreach (var anagram in listOfAnagrams)
             {
                 anagramToDB += $"{anagram}  ";

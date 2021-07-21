@@ -18,7 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _wordRepository = new WordDBRepository();
+            _wordRepository = new WordRepositoryWithEF();
             _cachedAnagrams = new CacheAnagram();
         }
         [HttpGet]

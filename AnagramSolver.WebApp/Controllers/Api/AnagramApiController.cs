@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Text.Json;
 
@@ -20,12 +19,13 @@ namespace AnagramSolver.WebApp.Controllers.Api
         private readonly string _connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
         private readonly IWordRepository _wordRepository;
         private readonly ICacheAnagram _cachedAnagrams;
+        private readonly ISearchLog _searchLog;
         public AnagramApiController(ILogger<AnagramApiController> logger)
         {
             _logger = logger;
-            _wordRepository = new WordDBRepository();
+            _wordRepository = new WordRepositoryWithEF();
             _cachedAnagrams = new CacheAnagramWithEF();
-
+            _searchLog = new SearchLogWithEF();
 
         }
         [HttpGet("[action]/{wordForAnagrams}")]
@@ -71,23 +71,10 @@ namespace AnagramSolver.WebApp.Controllers.Api
                 listOfAnagrams.Add(word);
             }
             stopWatch.Stop();
-
-            var createdAt = DateTime.Now;
             TimeSpan ts = stopWatch.Elapsed;
             var elapsedTime = ts.Milliseconds;
-            SqlConnection con = new SqlConnection(_connectionString);
-            con.Open();
-            string query = "INSERT INTO SearchLog (UserIp, Word, Anagrams, SearchTime, CreatedAt) VALUES (@ip, @word, @anagrams, @searchTime, @createdAt)";
-            var cmd = new SqlCommand();
-            cmd.Connection = con;
-            cmd.CommandText = query;
-            cmd.Parameters.AddWithValue("@ip", "1.1.1.1");
-            cmd.Parameters.AddWithValue("@word", wordForAnagrams);
-            cmd.Parameters.AddWithValue("@anagrams", listOfAnagrams.Count);
-            cmd.Parameters.AddWithValue("@searchTime", elapsedTime);
-            cmd.Parameters.AddWithValue("@createdAt", createdAt);
-            cmd.ExecuteNonQuery();
-            con.Close();
+
+            _searchLog.updateSearchLog(elapsedTime, wordForAnagrams, listOfAnagrams);
 
             return listOfAnagrams;
         }

@@ -14,7 +14,7 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly ICacheAnagram _cachedAnagrams;
         public AnagramController()
         {
-            _wordRepository = new WordDBRepository();
+            _wordRepository = new WordRepositoryWithEF();
             _cachedAnagrams = new CacheAnagram();
         }
 

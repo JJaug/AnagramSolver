@@ -20,7 +20,7 @@ namespace AnagramSolver.Cli
         {
             using IHost host = CreateHostBuilder(args).Build();
 
-            var fillDatabase = new PersistentRepository();
+            var fillDatabase = new PersistentRepositoryWithEF();
             fillDatabase.PopulateDataBaseFromFile();
             RemoveCachedWordTableInDB();
             var anagramApi = ReadSetting("AnagramApi");
@@ -66,6 +66,7 @@ namespace AnagramSolver.Cli
 
         static void RemoveCachedWordTableInDB()
         {
+
             using (var conn = new SqlConnection(@"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True"))
             using (var command = new SqlCommand("sp_EmptyTable", conn)
             {

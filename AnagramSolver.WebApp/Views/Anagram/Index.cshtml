@@ -1,14 +1,14 @@
 ﻿@{
     Layout = "_Layout";
 }
-@Model Int32
+@Model
 
 
 <table border="1" cellpadding="2" cellspacing="2">
     <tr>
         <th>Word</th>
     </tr>
-    @foreach (var item in ViewBag.newList)
+    @foreach (var item in ViewBag.vocabularyByModel)
     {
         <tr>
             <td><a>@Html.ActionLink($"{@item.Word}", "Details", new { @id = @item.Word })</a></td>
