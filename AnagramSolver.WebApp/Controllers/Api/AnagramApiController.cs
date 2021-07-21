@@ -24,7 +24,7 @@ namespace AnagramSolver.WebApp.Controllers.Api
         {
             _logger = logger;
             _wordRepository = new WordDBRepository();
-            _cachedAnagrams = new CacheAnagram();
+            _cachedAnagrams = new CacheAnagramWithEF();
 
 
         }
