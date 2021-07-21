@@ -18,9 +18,9 @@ namespace AnagramSolver.WebApp.Controllers
             _cachedAnagrams = new CacheAnagram();
         }
 
-        public IActionResult Index(int id = 1)
+        public IActionResult Index(int pageNumber = 1)
         {
-            var allWords = _wordRepository.GetSpecificPage(id);
+            var allWords = _wordRepository.GetSpecificPage(pageNumber);
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             foreach (var word in allWords)
             {
@@ -29,22 +29,19 @@ namespace AnagramSolver.WebApp.Controllers
                 vocabularyByModel.Add(item: anagram);
             }
             ViewBag.vocabularyByModel = vocabularyByModel;
-            return View(model: id);
+            return View(model: pageNumber);
         }
-        public IActionResult Details(string id)
+        public IActionResult Details(string wordForAnagrams)
         {
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            List<string> anagramsById;
-            if (_cachedAnagrams.GetCachedAnagram(id) != null)
+            var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
+            var anagramsById = cachedModels.Caches;
+            if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _cachedAnagrams.GetCachedAnagram(id);
-            }
-            else
-            {
-                anagramsById = _anagramSolver.GetAnagrams(id);
-                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
+                anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
+                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
             }
             foreach (var word in anagramsById)
             {

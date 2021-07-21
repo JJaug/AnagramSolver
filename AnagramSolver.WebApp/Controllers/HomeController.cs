@@ -32,12 +32,9 @@ namespace AnagramSolver.WebApp.Controllers
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var anagramsById = new List<string>();
-            if (_cachedAnagrams.GetCachedAnagram(txtWord) != null)
-            {
-                anagramsById = _cachedAnagrams.GetCachedAnagram(txtWord);
-            }
-            else
+            var cachedModels = _cachedAnagrams.GetCachedAnagram(txtWord);
+            var anagramsById = cachedModels.Caches;
+            if (!cachedModels.IsSuccessful)
             {
                 anagramsById = _anagramSolver.GetAnagrams(txtWord);
                 _cachedAnagrams.PutAnagramToCache(txtWord, anagramsById);

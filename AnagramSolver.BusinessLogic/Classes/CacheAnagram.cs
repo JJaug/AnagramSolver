@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -7,9 +8,9 @@ namespace AnagramSolver.BusinessLogic.Classes
 {
     public class CacheAnagram : ICacheAnagram
     {
-        public List<string> GetCachedAnagram(string command)
+        public CacheModel GetCachedAnagram(string command)
         {
-            var cachedAnagrams = new List<string>();
+            var cachedAnagrams = new CacheModel();
             var appSettings = ConfigurationManager.AppSettings;
             string connString = appSettings["ConnectionString"] ?? "Not Found";
             SqlConnection con = new(connString);
@@ -25,13 +26,16 @@ namespace AnagramSolver.BusinessLogic.Classes
                 {
                     if (rdr["Word"].ToString().Contains(command))
                     {
-                        cachedAnagrams.Add(rdr["Anagram"].ToString());
+                        var list = new List<string>();
+                        list.Add(rdr["Anagram"].ToString());
+                        cachedAnagrams.Caches = list;
+                        cachedAnagrams.IsSuccessful = true;
                         return cachedAnagrams;
                     }
                 }
             }
             con.Close();
-            return null;
+            return cachedAnagrams;
         }
 
         public void PutAnagramToCache(string command, List<string> listOfAnagrams)
