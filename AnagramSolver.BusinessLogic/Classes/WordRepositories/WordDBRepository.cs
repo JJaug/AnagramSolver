@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
 
     public class WordDBRepository : IWordRepository

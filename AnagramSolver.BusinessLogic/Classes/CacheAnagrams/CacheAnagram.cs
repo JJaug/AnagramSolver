@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
     public class CacheAnagram : ICacheAnagram
     {

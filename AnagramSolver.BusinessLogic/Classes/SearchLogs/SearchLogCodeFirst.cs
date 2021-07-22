@@ -1,15 +1,15 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DatabaseFirst.Models;
+using AnagramSolver.EF.CodeFirst.Models;
 using System;
 using System.Collections.Generic;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.SearchLogs
 {
-    public class SearchLogWithEF : ISearchLog
+    public class SearchLogCodeFirst : ISearchLog
     {
-        public void updateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams)
+        public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams)
         {
-            using (var context = new VocabularyDBContext())
+            using (var context = new VocabularyCodeFirstContext())
             {
                 var logToAdd = new SearchLog { UserIp = "2.2.2.2", Word = wordForAnagrams, Anagrams = listOfAnagrams.Count, SearchTime = elapsedTime, CreatedAt = DateTime.Now };
                 context.SearchLogs.Add(logToAdd);

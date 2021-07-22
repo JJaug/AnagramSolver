@@ -1,12 +1,10 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.EF.CodeFirst.Models;
 using AnagramSolver.Models.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
-using System.Data.SqlClient;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -18,10 +16,10 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            using IHost host = CreateHostBuilder(args).Build();
+            //using IHost host = CreateHostBuilder(args).Build();
 
-            var fillDatabase = new PersistentRepositoryWithEF();
-            fillDatabase.PopulateDataBaseFromFile();
+            //var fillDatabase = new PersistentRepositoryCodeFirst();
+            //fillDatabase.PopulateDataBaseFromFile();
             RemoveCachedWordTableInDB();
             var anagramApi = ReadSetting("AnagramApi");
             var minLength = int.Parse(ReadSetting("MinWordLength"));
@@ -57,7 +55,7 @@ namespace AnagramSolver.Cli
                     Console.WriteLine("Message :{0} ", e.Message);
                 }
 
-                await host.RunAsync();
+                //await host.RunAsync();
 
 
             }
@@ -67,16 +65,14 @@ namespace AnagramSolver.Cli
         static void RemoveCachedWordTableInDB()
         {
 
-            using (var conn = new SqlConnection(@"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True"))
-            using (var command = new SqlCommand("sp_EmptyTable", conn)
+
+            using (var context = new VocabularyCodeFirstContext())
             {
-                CommandType = CommandType.StoredProcedure
-            })
-            {
-                conn.Open();
-                command.Parameters.Add("@tableName", SqlDbType.VarChar).Value = "CachedWord";
-                command.ExecuteNonQuery();
-                conn.Close();
+                foreach (var cachedWord in context.CachedWords)
+                {
+                    context.CachedWords.Remove(cachedWord);
+                }
+                context.SaveChanges();
             }
 
         }

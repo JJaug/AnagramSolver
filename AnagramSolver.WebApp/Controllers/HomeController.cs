@@ -1,4 +1,5 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
+using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,8 @@ namespace AnagramSolver.WebApp.Controllers
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _wordRepository = new WordRepositoryWithEF();
-            _cachedAnagrams = new CacheAnagram();
+            _wordRepository = new WordRepositoryCodeFirst();
+            _cachedAnagrams = new CacheAnagramCodeFirst();
         }
         [HttpGet]
         public IActionResult Index()
@@ -27,17 +28,17 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Form(string txtWord)
+        public IActionResult Form(string id)
         {
             var vocabularyByModel = new HashSet<AnagramViewModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(txtWord);
+            var cachedModels = _cachedAnagrams.GetCachedAnagram(id);
             var anagramsById = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _anagramSolver.GetAnagrams(txtWord);
-                _cachedAnagrams.PutAnagramToCache(txtWord, anagramsById);
+                anagramsById = _anagramSolver.GetAnagrams(id);
+                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
             }
             foreach (var word in anagramsById)
             {

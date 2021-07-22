@@ -1,0 +1,2 @@
+After creating models and context (Primary Key and Identity needs to be defined with attributes):
+EntityFrameworkCore\Add-Migration Initial

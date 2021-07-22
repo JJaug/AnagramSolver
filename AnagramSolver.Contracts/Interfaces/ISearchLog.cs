@@ -4,6 +4,6 @@ namespace AnagramSolver.Contracts.Interfaces
 {
     public interface ISearchLog
     {
-        public void updateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams);
+        public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams);
     }
 }

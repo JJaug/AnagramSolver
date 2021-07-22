@@ -1,20 +1,18 @@
-﻿using System;
+﻿using AnagramSolver.EF.DatabaseFirst.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
 {
-    public class PersistentRepository
+    public class PersistentRepositoryDatabaseFirst
     {
         public void PopulateDataBaseFromFile()
         {
             var filePath = ReadSetting("FilePath");
-            var connectionString = ReadSetting("ConnectionString");
             var minLength = int.Parse(ReadSetting("MinWordLength"));
-
 
             HashSet<string> fileLines;
             fileLines = new HashSet<string>(File.ReadLines(filePath));
@@ -29,32 +27,35 @@ namespace AnagramSolver.BusinessLogic.Classes
                     vocabulary.Add(word);
                 }
             }
-
             try
             {
-                var connection = new SqlConnection(connectionString);
-                connection.Open();
-                foreach (var word in vocabulary)
+                using (var context = new VocabularyDBContext())
                 {
-                    var cmd = new SqlCommand("INSERT INTO Words (Word) VALUES (@word)", connection);
-                    cmd.Parameters.AddWithValue("@word", word);
-                    cmd.ExecuteNonQuery();
-                }
+                    foreach (var word in vocabulary)
+                    {
 
-                connection.Close();
+                        var wordToAdd = new Word { Word1 = word };
+                        context.Words.Add(wordToAdd);
+                        if (context.Words.Count() % 30000 == 0)
+                            context.SaveChanges();
+
+                    }
+                    context.SaveChanges();
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
+
+
         }
+
         public string ReadSetting(string key)
         {
-
             var appSettings = ConfigurationManager.AppSettings;
             string specificSetting = appSettings[key] ?? "Not Found";
             return specificSetting;
-
         }
     }
 }

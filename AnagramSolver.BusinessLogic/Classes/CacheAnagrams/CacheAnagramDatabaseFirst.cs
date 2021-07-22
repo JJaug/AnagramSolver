@@ -3,9 +3,9 @@ using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
 using System.Collections.Generic;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
-    public class CacheAnagramWithEF : ICacheAnagram
+    public class CacheAnagramDatabaseFirst : ICacheAnagram
     {
         public CacheModel GetCachedAnagram(string command)
         {

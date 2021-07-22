@@ -1,26 +1,26 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.EF.DatabaseFirst.Models;
+using AnagramSolver.EF.CodeFirst.Models;
 using AnagramSolver.Models.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
-    public class WordRepositoryWithEF : IWordRepository
+    public class WordRepositoryCodeFirst : IWordRepository
     {
         private const int wordsInPage = 100;
         private const int _minLength = 4;
         public HashSet<WordModel> GetAllWords()
         {
             var wordsFromDB = new HashSet<WordModel>();
-            var wordModel = new WordModel();
-            using (var context = new VocabularyDBContext())
+            using (var context = new VocabularyCodeFirstContext())
             {
                 var allWords = context.Words.ToList();
                 foreach (var word in allWords)
                 {
                     if (word.Word1.Length >= _minLength)
                     {
+                        var wordModel = new WordModel();
                         wordModel.ID = word.Id;
                         wordModel.Word = word.Word1;
                         wordsFromDB.Add(wordModel);
@@ -34,7 +34,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
             var wordsFromDB = new HashSet<WordModel>();
-            using (var context = new VocabularyDBContext())
+            using (var context = new VocabularyCodeFirstContext())
             {
                 var allWords = context.Words.ToList();
                 foreach (var word in allWords)
@@ -55,7 +55,7 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             var specificWords = new HashSet<string>();
             var wordModel = new WordModel();
-            using (var context = new VocabularyDBContext())
+            using (var context = new VocabularyCodeFirstContext())
             {
                 var wordsFromDb = context.Words
                     .Where(w => w.Word1.Contains(wordPart))

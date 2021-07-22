@@ -3,12 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.SearchLogs
 {
     public class SearchLogWithSql : ISearchLog
     {
         private readonly string _connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
-        public void updateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams)
+        public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams)
         {
             var createdAt = DateTime.Now;
             SqlConnection con = new SqlConnection(_connectionString);

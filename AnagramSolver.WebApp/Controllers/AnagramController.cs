@@ -1,4 +1,5 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
+using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +15,8 @@ namespace AnagramSolver.WebApp.Controllers
         private readonly ICacheAnagram _cachedAnagrams;
         public AnagramController()
         {
-            _wordRepository = new WordRepositoryWithEF();
-            _cachedAnagrams = new CacheAnagramWithEF();
+            _wordRepository = new WordRepositoryCodeFirst();
+            _cachedAnagrams = new CacheAnagramCodeFirst();
         }
 
         public IActionResult Index(int pageNumber = 1)

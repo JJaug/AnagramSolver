@@ -1,4 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
