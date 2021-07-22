@@ -1,6 +1,4 @@
-﻿#nullable disable
-
-namespace AnagramSolver.EF.DatabaseFirst.Models
+﻿namespace AnagramSolver.EF.CodeFirst.Models
 {
     public partial class UserWord
     {

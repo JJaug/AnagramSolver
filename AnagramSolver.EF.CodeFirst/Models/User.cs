@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace AnagramSolver.EF.CodeFirst.Models
 {
@@ -17,6 +13,6 @@ namespace AnagramSolver.EF.CodeFirst.Models
         public string LastName { get; set; }
         public string Email { get; set; }
         public string Pass { get; set; }
-        public virtual ICollection<Word> Words {get;set;}
+        public virtual ICollection<Word> Words { get; set; }
     }
 }
