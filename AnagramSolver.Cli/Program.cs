@@ -64,17 +64,11 @@ namespace AnagramSolver.Cli
 
         static void RemoveCachedWordTableInDB()
         {
-
-
             using (var context = new VocabularyCodeFirstContext())
             {
-                foreach (var cachedWord in context.CachedWords)
-                {
-                    context.CachedWords.Remove(cachedWord);
-                }
+                context.CachedWords.RemoveRange(context.CachedWords);
                 context.SaveChanges();
             }
-
         }
 
         static IHostBuilder CreateHostBuilder(string[] args) =>

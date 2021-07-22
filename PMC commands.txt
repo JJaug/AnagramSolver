@@ -1,2 +1,16 @@
-After creating models and context (Primary Key and Identity needs to be defined with attributes):
+1 After creating models and context (Primary Key and Identity needs to be defined with attributes):
 EntityFrameworkCore\Add-Migration Initial
+2 After migration is successful (creates database):
+EntityFrameworkCore\Update-Database
+
+
+
+If you want to update DatabaseFisrst, after adding new table to database:
+Scaffold-DbContext "Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -Force
+
+DatabaseFirst aproach to create PK from 2 FK:
+CREATE TABLE UserWord(
+	UserId bigint Foreign key references Users(ID),
+	WordId bigint foreign key references Words(ID),
+	Constraint UsersWords Primary key (UserId, WordId)
+);

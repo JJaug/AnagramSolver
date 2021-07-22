@@ -4,14 +4,16 @@ using AnagramSolver.EF.CodeFirst.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace AnagramSolver.EF.CodeFirst.Migrations
 {
     [DbContext(typeof(VocabularyCodeFirstContext))]
-    partial class VocabularyCodeFirstContextModelSnapshot : ModelSnapshot
+    [Migration("20210722120016_AddedUsersAndJoined")]
+    partial class AddedUsersAndJoined
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 #nullable disable
 
@@ -17,6 +19,8 @@ namespace AnagramSolver.EF.DatabaseFirst.Models
 
         public virtual DbSet<CachedWord> CachedWords { get; set; }
         public virtual DbSet<SearchLog> SearchLogs { get; set; }
+        public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<UserWord> UserWords { get; set; }
         public virtual DbSet<Word> Words { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -57,6 +61,39 @@ namespace AnagramSolver.EF.DatabaseFirst.Models
                 entity.Property(e => e.Word)
                     .IsRequired()
                     .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("ID");
+
+                entity.Property(e => e.Email).HasMaxLength(255);
+
+                entity.Property(e => e.FirstName).HasMaxLength(255);
+
+                entity.Property(e => e.LastName).HasMaxLength(255);
+
+                entity.Property(e => e.Pass).HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<UserWord>(entity =>
+            {
+                entity.HasKey(e => new { e.UserId, e.WordId })
+                    .HasName("UsersWords");
+
+                entity.ToTable("UserWord");
+
+                entity.HasOne(d => d.User)
+                    .WithMany(p => p.UserWords)
+                    .HasForeignKey(d => d.UserId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserWord__UserId__534D60F1");
+
+                entity.HasOne(d => d.Word)
+                    .WithMany(p => p.UserWords)
+                    .HasForeignKey(d => d.WordId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__UserWord__WordId__5441852A");
             });
 
             modelBuilder.Entity<Word>(entity =>

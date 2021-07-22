@@ -5,15 +5,18 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.EF.DatabaseFirst.Models
 {
-    public partial class Word
+    public partial class User
     {
-        public Word()
+        public User()
         {
             UserWords = new HashSet<UserWord>();
         }
 
-        public string Word1 { get; set; }
         public long Id { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Email { get; set; }
+        public string Pass { get; set; }
 
         public virtual ICollection<UserWord> UserWords { get; set; }
     }
