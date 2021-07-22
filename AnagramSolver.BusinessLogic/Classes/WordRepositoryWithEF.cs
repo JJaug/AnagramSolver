@@ -34,7 +34,6 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
             var wordsFromDB = new HashSet<WordModel>();
-            var wordModel = new WordModel();
             using (var context = new VocabularyDBContext())
             {
                 var allWords = context.Words.ToList();
@@ -42,8 +41,9 @@ namespace AnagramSolver.BusinessLogic.Classes
                 {
                     if (word.Word1.Length >= _minLength)
                     {
-                        wordModel.ID = word.Id;
+                        var wordModel = new WordModel();
                         wordModel.Word = word.Word1;
+                        wordModel.ID = word.Id;
                         wordsFromDB.Add(wordModel);
                     }
                 }

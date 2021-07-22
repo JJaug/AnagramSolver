@@ -2,7 +2,6 @@
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,15 +13,11 @@ namespace AnagramSolver.WebApp.Controllers.Api
     [Route("[controller]")]
     public class AnagramApiController : ControllerBase
     {
-        private readonly ILogger<AnagramApiController> _logger;
-        private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
-        private readonly string _connectionString = @"Data Source=LT-LIT-SC-0597\MSSQLSERVER01;Initial Catalog=VocabularyDB;Integrated Security=True";
         private readonly IWordRepository _wordRepository;
         private readonly ICacheAnagram _cachedAnagrams;
         private readonly ISearchLog _searchLog;
-        public AnagramApiController(ILogger<AnagramApiController> logger)
+        public AnagramApiController()
         {
-            _logger = logger;
             _wordRepository = new WordRepositoryWithEF();
             _cachedAnagrams = new CacheAnagramWithEF();
             _searchLog = new SearchLogWithEF();

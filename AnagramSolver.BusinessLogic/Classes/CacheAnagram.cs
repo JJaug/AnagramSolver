@@ -40,7 +40,7 @@ namespace AnagramSolver.BusinessLogic.Classes
 
         public void PutAnagramToCache(string command, List<string> listOfAnagrams)
         {
-            var anagramToDB = "";
+            var anagramToDB = string.Empty;
             foreach (var anagram in listOfAnagrams)
             {
                 anagramToDB += $"{anagram}  ";

@@ -78,6 +78,7 @@ namespace AnagramSolver.Cli
                 command.ExecuteNonQuery();
                 conn.Close();
             }
+
         }
 
         static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -97,8 +98,6 @@ namespace AnagramSolver.Cli
                 configurationRoot.GetSection(nameof(AppSettings))
                                  .Bind(options);
 
-                Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.FilePath}");
-                Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.MaxNumberOfAnagrams}");
             }
         );
 

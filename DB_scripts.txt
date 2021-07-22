@@ -29,3 +29,19 @@ CREATE TABLE SearchLog (
 	SearchTime nvarchar(255),
 	CreatedAt datetime2(7) PRIMARY KEY
 );
+
+Papildomos uzduotys:
+1.
+SELECT * FROM SearchLog
+ORDER BY SearchTime ASC;
+2. 
+SELECT * FROM SearchLog
+ORDER BY Anagrams ASC, SearchTime
+3.
+SELECT *
+FROM SearchLog
+WHERE Word='alus'
+4.
+SELECT UserIp, COUNT(UserIp)
+FROM SearchLog
+GROUP BY UserIp

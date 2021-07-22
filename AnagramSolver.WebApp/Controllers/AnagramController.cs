@@ -15,7 +15,7 @@ namespace AnagramSolver.WebApp.Controllers
         public AnagramController()
         {
             _wordRepository = new WordRepositoryWithEF();
-            _cachedAnagrams = new CacheAnagram();
+            _cachedAnagrams = new CacheAnagramWithEF();
         }
 
         public IActionResult Index(int pageNumber = 1)

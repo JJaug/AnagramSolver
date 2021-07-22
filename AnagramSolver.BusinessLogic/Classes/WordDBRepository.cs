@@ -71,7 +71,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                     {
                         var word = new WordModel();
                         word.Word = rdr["Word"].ToString();
-                        word.ID = (int)rdr["ID"];
+                        word.ID = (long)rdr["ID"];
                         wordsFromDB.Add(word);
                     }
                 }
