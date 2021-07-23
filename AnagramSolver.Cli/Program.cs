@@ -1,4 +1,4 @@
-﻿using AnagramSolver.EF.CodeFirst.Models;
+﻿using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -64,7 +64,7 @@ namespace AnagramSolver.Cli
 
         static void RemoveCachedWordTableInDB()
         {
-            using (var context = new VocabularyCodeFirstContext())
+            using (var context = new VocabularyDBContext())
             {
                 context.CachedWords.RemoveRange(context.CachedWords);
                 context.SaveChanges();

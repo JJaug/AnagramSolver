@@ -26,12 +26,11 @@ namespace AnagramSolver.EF.CodeFirst.Models
 
         //    modelBuilder.Entity<User>()
         //        .HasMany(c => c.UserWords)
-        //        .WithRequired()
         //        .HasForeignKey(c => c.UserId);
 
         //    modelBuilder.Entity<Word>()
         //        .HasMany(c => c.UserWords)
-        //        .WithRequired()
+        //        .IsRequired()
         //        .HasForeignKey(c => c.WordId);
         //}
     }

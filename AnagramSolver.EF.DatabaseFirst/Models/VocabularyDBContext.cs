@@ -77,21 +77,25 @@ namespace AnagramSolver.EF.DatabaseFirst.Models
             modelBuilder.Entity<UserWord>(entity =>
             {
                 entity.HasKey(e => new { e.UserId, e.WordId })
-                    .HasName("UsersWords");
+                    .HasName("UserWords");
 
                 entity.ToTable("UserWord");
+
+                entity.Property(e => e.UserId).HasColumnName("UserID");
+
+                entity.Property(e => e.WordId).HasColumnName("WordID");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.UserWords)
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserWord__UserId__534D60F1");
+                    .HasConstraintName("FK__UserWord__UserID__5812160E");
 
                 entity.HasOne(d => d.Word)
                     .WithMany(p => p.UserWords)
                     .HasForeignKey(d => d.WordId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__UserWord__WordId__5441852A");
+                    .HasConstraintName("FK__UserWord__WordID__59063A47");
             });
 
             modelBuilder.Entity<Word>(entity =>

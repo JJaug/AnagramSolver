@@ -3,7 +3,7 @@ using System.Text;
 
 namespace AnagramSolver.BusinessLogic.Classes
 {
-    public class HashPass
+    public class PasswordService
     {
         public byte[] GetHash(string inputString)
         {
