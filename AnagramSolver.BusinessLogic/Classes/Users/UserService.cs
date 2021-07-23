@@ -9,21 +9,22 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             _userRepository = new UserRepository();
         }
-        public void CreateUser(long id, string name, string lastName, string email, string pass, string favouriteWords)
+        public void CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
         {
 
             var hash = new PasswordService();
             var password = hash.GetHashString(pass);
             var allWords = favouriteWords.Split(" ");
-            var userWord = new UserWord();
-
+            var id = _userRepository.UploadToDb(firstName, lastName, email, password);
 
 
             foreach (var word in allWords)
             {
+                var userWord = new UserWord();
                 var wordFromDb = _userRepository.ConnectWithDb(word);
                 userWord.WordId = wordFromDb.Id;
                 userWord.UserId = id;
+                _userRepository.AddUserWord(userWord);
             }
         }
 

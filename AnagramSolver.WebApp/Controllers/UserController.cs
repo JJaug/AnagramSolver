@@ -18,7 +18,7 @@ namespace AnagramSolver.WebApp.Controllers
         [HttpPost]
         public IActionResult Create(UserDto userDto)
         {
-            _userService.CreateUser(userDto.Id, userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
+            _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
             return View();
         }
     }
