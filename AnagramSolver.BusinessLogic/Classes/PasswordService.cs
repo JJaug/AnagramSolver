@@ -1,9 +1,10 @@
-﻿using System.Security.Cryptography;
+﻿using AnagramSolver.Contracts.Interfaces;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace AnagramSolver.BusinessLogic.Classes
 {
-    public class PasswordService
+    public class PasswordService : IPasswordService
     {
         public byte[] GetHash(string inputString)
         {

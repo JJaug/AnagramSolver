@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AnagramSolver.Contracts.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
 {
-    public class PersistentRepository
+    public class PersistentRepository : IPersistentRepository
     {
         public void PopulateDataBaseFromFile()
         {

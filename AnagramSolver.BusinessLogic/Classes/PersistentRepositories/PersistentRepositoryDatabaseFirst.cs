@@ -1,4 +1,5 @@
-﻿using AnagramSolver.EF.DatabaseFirst.Models;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DatabaseFirst.Models;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -7,7 +8,7 @@ using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
 {
-    public class PersistentRepositoryDatabaseFirst
+    public class PersistentRepositoryDatabaseFirst : IPersistentRepository
     {
         public void PopulateDataBaseFromFile()
         {

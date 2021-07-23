@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.EF.DatabaseFirst.Models;
+using System.Collections.Generic;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
@@ -15,17 +16,18 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             var hash = new PasswordService();
             var password = hash.GetHashString(pass);
             var allWords = favouriteWords.Split(" ");
-            var id = _userRepository.UploadToDb(firstName, lastName, email, password);
-
+            var id = _userRepository.CreateUser(firstName, lastName, email, password);
+            var userWords = new List<UserWord>();
 
             foreach (var word in allWords)
             {
                 var userWord = new UserWord();
-                var wordFromDb = _userRepository.ConnectWithDb(word);
+                var wordFromDb = _userRepository.GetWord(word);
                 userWord.WordId = wordFromDb.Id;
                 userWord.UserId = id;
-                _userRepository.AddUserWord(userWord);
+                userWords.Add(userWord);
             }
+            _userRepository.AddUserWords(userWords);
         }
 
     }

@@ -1,12 +1,13 @@
-﻿using AnagramSolver.EF.DatabaseFirst.Models;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DatabaseFirst.Models;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public Word ConnectWithDb(string word)
+        public Word GetWord(string word)
         {
             using (var context = new VocabularyDBContext())
             {
@@ -15,7 +16,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             }
 
         }
-        public long UploadToDb(string firstName, string lastName, string email, string password)
+        public long CreateUser(string firstName, string lastName, string email, string password)
         {
             using (var context = new VocabularyDBContext())
             {
