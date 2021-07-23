@@ -5,7 +5,7 @@ using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
 
     public class WordDBRepository : IWordRepository
@@ -71,7 +71,7 @@ namespace AnagramSolver.BusinessLogic.Classes
                     {
                         var word = new WordModel();
                         word.Word = rdr["Word"].ToString();
-                        word.ID = (int)rdr["ID"];
+                        word.ID = (long)rdr["ID"];
                         wordsFromDB.Add(word);
                     }
                 }
@@ -83,7 +83,7 @@ namespace AnagramSolver.BusinessLogic.Classes
 
         public HashSet<string> GetSpecificWords(string word)
         {
-            var neededWords = new HashSet<string>();
+            var specificWords = new HashSet<string>();
             connectionString = Init();
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
@@ -95,12 +95,12 @@ namespace AnagramSolver.BusinessLogic.Classes
             {
                 while (rdr.Read())
                 {
-                    neededWords.Add(rdr["Word"].ToString());
+                    specificWords.Add(rdr["Word"].ToString());
                 }
 
             }
             con.Close();
-            return neededWords;
+            return specificWords;
         }
     }
 }

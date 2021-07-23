@@ -1,6 +1,7 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using NUnit.Framework;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -58,18 +59,38 @@ namespace AnagramSolver.Tests
         {
             _wordRepository = new WordRepository(_filePath + "zodynas.txt", 4);
             var words = _wordRepository.GetSpecificPage(1);
+            var listOfStringsInPageOne = new List<string>();
+            foreach (var word in words)
+            {
+                listOfStringsInPageOne.Add(word.Word);
+            }
             var allWords = _wordRepository.GetAllWords();
-            var first100 = allWords.Take(100).ToList();
-            Assert.That(words, Is.EqualTo(first100));
+            var listOfAllStrings = new List<string>();
+            foreach (var word in allWords)
+            {
+                listOfAllStrings.Add(word.Word);
+            }
+            var first100 = listOfAllStrings.Take(100).ToList();
+            Assert.That(listOfStringsInPageOne, Is.EqualTo(first100));
         }
         [Test]
         public void Should_ReturnSecond100Words_When_PaginatorInPageTwo()
         {
             _wordRepository = new WordRepository(_filePath + "zodynas.txt", 4);
-            var words = _wordRepository.GetSpecificPage(2);
+            var words = _wordRepository.GetSpecificPage(1);
+            var listOfStringsInPageTwo = new List<string>();
+            foreach (var word in words)
+            {
+                listOfStringsInPageTwo.Add(word.Word);
+            }
             var allWords = _wordRepository.GetAllWords();
-            var second100 = allWords.Skip(100).Take(100).ToList();
-            Assert.That(words, Is.EqualTo(second100));
+            var listOfAllStrings = new List<string>();
+            foreach (var word in allWords)
+            {
+                listOfAllStrings.Add(word.Word);
+            }
+            var second100 = listOfAllStrings.Take(100).ToList();
+            Assert.That(listOfStringsInPageTwo, Is.EqualTo(second100));
         }
     }
 }

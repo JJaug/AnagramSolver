@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace AnagramSolver.BusinessLogic.Classes
+namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
     public class WordRepository : IWordRepository
     {

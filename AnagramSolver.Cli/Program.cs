@@ -1,4 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.Classes;
+﻿using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -16,10 +16,11 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            using IHost host = CreateHostBuilder(args).Build();
+            //using IHost host = CreateHostBuilder(args).Build();
 
-            var fillDatabase = new PersistentRepository();
-            fillDatabase.PopulateDataBaseFromFile();
+            //var fillDatabase = new PersistentRepositoryCodeFirst();
+            //fillDatabase.PopulateDataBaseFromFile();
+            RemoveCachedWordTableInDB();
             var anagramApi = ReadSetting("AnagramApi");
             var minLength = int.Parse(ReadSetting("MinWordLength"));
             while (true)
@@ -54,11 +55,20 @@ namespace AnagramSolver.Cli
                     Console.WriteLine("Message :{0} ", e.Message);
                 }
 
-                await host.RunAsync();
+                //await host.RunAsync();
 
 
             }
 
+        }
+
+        static void RemoveCachedWordTableInDB()
+        {
+            using (var context = new VocabularyDBContext())
+            {
+                context.CachedWords.RemoveRange(context.CachedWords);
+                context.SaveChanges();
+            }
         }
 
         static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -78,18 +88,19 @@ namespace AnagramSolver.Cli
                 configurationRoot.GetSection(nameof(AppSettings))
                                  .Bind(options);
 
-                Console.WriteLine($"TransientFaultHandlingOptions.Enabled={options.FilePath}");
-                Console.WriteLine($"TransientFaultHandlingOptions.AutoRetryDelay={options.MaxNumberOfAnagrams}");
-            });
-           
+            }
+        );
+
+
         static string ReadSetting(string key)
         {
 
-        var appSettings = ConfigurationManager.AppSettings;
-        string specificSetting = appSettings[key] ?? "Not Found";
-        return specificSetting;
+            var appSettings = ConfigurationManager.AppSettings;
+            string specificSetting = appSettings[key] ?? "Not Found";
+            return specificSetting;
 
         }
+
         public class AppSettings
         {
             public string FilePath { get; set; }

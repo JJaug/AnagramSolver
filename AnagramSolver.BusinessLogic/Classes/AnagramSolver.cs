@@ -2,8 +2,6 @@
 using AnagramSolver.Models.Models;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Linq;
 
 namespace AnagramSolver.BusinessLogic.Classes
@@ -18,29 +16,8 @@ namespace AnagramSolver.BusinessLogic.Classes
         }
         public List<string> GetAnagrams(string command)
         {
-            var newList = new List<string>();
-            var appSettings = ConfigurationManager.AppSettings;
-            string connString = appSettings["ConnectionString"] ?? "Not Found";
-            SqlConnection con = new(connString);
-            string query = "select * from CachedWord";
-            SqlCommand cmd = new();
-            cmd.Connection = con;
-            cmd.CommandText = query;
-            con.Open();
-            SqlDataReader rdr = cmd.ExecuteReader();
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
-                {
-                    if (rdr["Word"].ToString().Contains(command))
-                    {
-                        newList.Add(rdr["Anagram"].ToString());
-                        return newList;
-                    }
-                }
-            }
-            con.Close();
-            var anagramToDB = "";
+            var listOfAnagrams = new List<string>();
+
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
             foreach (var word in _allWords)
@@ -54,21 +31,13 @@ namespace AnagramSolver.BusinessLogic.Classes
                     {
                         if (word.Word != command)
                         {
-                            anagramToDB += $"{word.Word}  ";
-                            newList.Add(word.Word);
+                            listOfAnagrams.Add(word.Word);
                         }
                     }
 
                 }
             }
-            con.Open();
-            var cmd2 = new SqlCommand("INSERT INTO CachedWord (Word, Anagram) VALUES (@word, @anagram)", con);
-            cmd2.Parameters.AddWithValue("@word", command);
-            cmd2.Parameters.AddWithValue("@anagram", anagramToDB);
-            cmd2.ExecuteNonQuery();
-
-            con.Close();
-            return newList;
+            return listOfAnagrams;
         }
     }
 }
