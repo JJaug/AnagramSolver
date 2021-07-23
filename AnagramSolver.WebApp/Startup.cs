@@ -1,3 +1,7 @@
+using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
+using AnagramSolver.BusinessLogic.Classes.SearchLogs;
+using AnagramSolver.BusinessLogic.Classes.WordRepositories;
+using AnagramSolver.Contracts.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +22,9 @@ namespace AnagramSolver.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IWordRepository, WordRepositoryDatabaseFirst>();
+            services.AddScoped<ICacheAnagram, CacheAnagramDatabaseFirst>();
+            services.AddScoped<ISearchLog, SearchLogDatabaseFirst>();
             services.AddControllersWithViews();
         }
 

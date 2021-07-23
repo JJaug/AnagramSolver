@@ -1,11 +1,12 @@
-﻿using AnagramSolver.EF.DatabaseFirst.Models;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DatabaseFirst.Models;
 using System.Collections.Generic;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
         public UserService()
         {
             _userRepository = new UserRepository();

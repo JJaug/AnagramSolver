@@ -1,7 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
-using AnagramSolver.BusinessLogic.Classes.SearchLogs;
-using AnagramSolver.BusinessLogic.Classes.WordRepositories;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -18,11 +15,11 @@ namespace AnagramSolver.WebApp.Controllers.Api
         private readonly IWordRepository _wordRepository;
         private readonly ICacheAnagram _cachedAnagrams;
         private readonly ISearchLog _searchLog;
-        public AnagramApiController()
+        public AnagramApiController(IWordRepository wordRepository, ICacheAnagram cachedanagrams, ISearchLog searchLog)
         {
-            _wordRepository = new WordRepositoryCodeFirst();
-            _cachedAnagrams = new CacheAnagramCodeFirst();
-            _searchLog = new SearchLogCodeFirst();
+            _wordRepository = wordRepository;
+            _cachedAnagrams = cachedanagrams;
+            _searchLog = searchLog;
 
         }
         [HttpGet("[action]/{wordForAnagrams}")]

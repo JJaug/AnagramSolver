@@ -1,9 +1,6 @@
-﻿using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
-using AnagramSolver.BusinessLogic.Classes.WordRepositories;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,15 +9,13 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
         private readonly IWordRepository _wordRepository;
         private readonly ICacheAnagram _cachedAnagrams;
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IWordRepository wordRepository, ICacheAnagram cachedanagrams)
         {
-            _logger = logger;
-            _wordRepository = new WordRepositoryCodeFirst();
-            _cachedAnagrams = new CacheAnagramCodeFirst();
+            _wordRepository = wordRepository;
+            _cachedAnagrams = cachedanagrams;
         }
         [HttpGet]
         public IActionResult Index()

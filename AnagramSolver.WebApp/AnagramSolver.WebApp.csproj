@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Files\" />
+    <Folder Include="Interfaces\" />
   </ItemGroup>
 
 </Project>
