@@ -28,14 +28,46 @@ namespace AnagramSolver.Cli
             var result = char.ToUpper(input[0]) + input.Substring(1);
             return result;
         }
+        static void ActionA()
+        {
+            var displayWithEvents = new DisplayWithEvents();
+            displayWithEvents.ClickEvent += (s, args) =>
+            {
+                Console.WriteLine("Something clicked...");
+            };
+            Action<string> toFile = ToFile;
+            displayWithEvents.FormattedPrint(toFile, "labas rytas");
+
+        }
+        static void ActionB()
+        {
+            var displayWithEvents = new DisplayWithEvents();
+            displayWithEvents.ClickEvent += (s, args) =>
+            {
+                Console.WriteLine("Something clicked...");
+            };
+            Action<string> toFile = ToFile;
+            displayWithEvents.FormattedPrint(toFile, "labas vakaras");
+
+        }
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
-            PrintDelegate print = ToFile;
+            Action<string> print = ToFile;
             print("labas");
-            StyleDelegate style = FirstLetterUp;
+            Func<string, string> style = FirstLetterUp;
             var _display = new Display(print);
             _display.FormattedPrint(style, "labas rytas");
+            Console.WriteLine("Type in A or B for event");
+            var key = Console.ReadLine();
+            if (key == "a")
+            {
+                ActionA();
+            }
+            else
+            {
+                ActionB();
+            }
 
             //using IHost host = CreateHostBuilder(args).Build();
 

@@ -2,6 +2,6 @@
 {
     public interface IDisplay
     {
-        public void FormattedPrint(StyleDelegate style, string input);
+        public void FormattedPrint(Func<string, string> style, string input);
     }
 }

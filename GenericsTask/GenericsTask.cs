@@ -6,7 +6,7 @@ namespace GenericsTask
     {
         public T MapValueToEnum(string value)
         {
-            if (!T.TryParse(value, out T result))
+            if (!Enum.TryParse(value, out T result))
             {
                 throw new Exception($"Value '{value}' is not part of Gender enum");
             }
