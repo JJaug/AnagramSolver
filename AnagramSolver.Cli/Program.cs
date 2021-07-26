@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,9 +14,29 @@ namespace AnagramSolver.Cli
 {
     class Program
     {
+
+        static void ToConsole(string input)
+        {
+            Console.WriteLine(input);
+        }
+        static void ToFile(string input)
+        {
+            File.WriteAllTextAsync("File.txt", input);
+        }
+        static string FirstLetterUp(string input)
+        {
+            var result = char.ToUpper(input[0]) + input.Substring(1);
+            return result;
+        }
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
+            PrintDelegate print = ToFile;
+            print("labas");
+            StyleDelegate style = FirstLetterUp;
+            var _display = new Display(print);
+            _display.FormattedPrint(style, "labas rytas");
+
             //using IHost host = CreateHostBuilder(args).Build();
 
             //var fillDatabase = new PersistentRepositoryCodeFirst();

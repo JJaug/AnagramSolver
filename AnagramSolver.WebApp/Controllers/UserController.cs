@@ -1,5 +1,4 @@
-﻿using AnagramSolver.BusinessLogic.Classes.Users;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,9 +7,9 @@ namespace AnagramSolver.WebApp.Controllers
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserController()
+        public UserController(IUserService userService)
         {
-            _userService = new UserService();
+            _userService = userService;
         }
         public IActionResult Index()
         {

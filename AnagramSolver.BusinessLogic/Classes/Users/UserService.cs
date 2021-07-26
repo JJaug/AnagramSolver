@@ -7,9 +7,9 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService()
+        public UserService(IUserRepository userRepository)
         {
-            _userRepository = new UserRepository();
+            _userRepository = userRepository;
         }
         public void CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
         {
@@ -17,7 +17,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             var hash = new PasswordService();
             var password = hash.GetHashString(pass);
             var allWords = favouriteWords.Split(" ");
-            var id = _userRepository.CreateUser(firstName, lastName, email, password);
+            var id = _userRepository.AddUser(firstName, lastName, email, password);
             var userWords = new List<UserWord>();
 
             foreach (var word in allWords)
@@ -29,6 +29,16 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
                 userWords.Add(userWord);
             }
             _userRepository.AddUserWords(userWords);
+        }
+        public string ReadUser(long id)
+        {
+            var userFromDb = _userRepository.GetUser(id);
+            var stringToShow = $"{userFromDb.FirstName}  {userFromDb.LastName}  {userFromDb.Email}";
+            return stringToShow;
+        }
+        public void DeleteUser(long id)
+        {
+            _userRepository.RemoveUser(id);
         }
 
     }

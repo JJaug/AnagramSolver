@@ -1,5 +1,6 @@
 using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
 using AnagramSolver.BusinessLogic.Classes.SearchLogs;
+using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
 using Microsoft.AspNetCore.Builder;
@@ -25,6 +26,7 @@ namespace AnagramSolver.WebApp
             services.AddScoped<IWordRepository, WordRepositoryDatabaseFirst>();
             services.AddScoped<ICacheAnagram, CacheAnagramDatabaseFirst>();
             services.AddScoped<ISearchLog, SearchLogDatabaseFirst>();
+            services.AddScoped<IUserService, UserService>();
             services.AddControllersWithViews();
         }
 

@@ -16,7 +16,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             }
 
         }
-        public long CreateUser(string firstName, string lastName, string email, string password)
+        public long AddUser(string firstName, string lastName, string email, string password)
         {
             using (var context = new VocabularyDBContext())
             {
@@ -40,6 +40,23 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             using (var context = new VocabularyDBContext())
             {
                 context.UserWords.AddRange(userWords);
+                context.SaveChanges();
+            }
+        }
+        public User GetUser(long id)
+        {
+            using (var context = new VocabularyDBContext())
+            {
+                var result = context.Users.FirstOrDefault(u => u.Id == id);
+                return result;
+            }
+        }
+        public void RemoveUser(long id)
+        {
+            using (var context = new VocabularyDBContext())
+            {
+                var wordToRemove = context.Users.FirstOrDefault(u => u.Id == id);
+                context.Users.Remove(wordToRemove);
                 context.SaveChanges();
             }
         }
