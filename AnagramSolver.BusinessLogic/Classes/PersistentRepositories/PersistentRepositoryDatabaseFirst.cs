@@ -1,8 +1,8 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.IO;
 using System.Linq;
 
@@ -10,10 +10,17 @@ namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
 {
     public class PersistentRepositoryDatabaseFirst : IPersistentRepository
     {
+        private readonly IConfiguration config;
+        private readonly VocabularyDBContext _context;
+        public PersistentRepositoryDatabaseFirst(VocabularyDBContext context, IConfiguration configuration)
+        {
+            _context = context;
+            config = configuration;
+        }
         public void PopulateDataBaseFromFile()
         {
-            var filePath = ReadSetting("FilePath");
-            var minLength = int.Parse(ReadSetting("MinWordLength"));
+            var filePath = config.GetSection("MyConfig").GetSection("FilePath").Value;
+            var minLength = int.Parse(config.GetSection("MyConfig").GetSection("MinWoedLength").Value);
 
             HashSet<string> fileLines;
             fileLines = new HashSet<string>(File.ReadLines(filePath));
@@ -30,33 +37,23 @@ namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
             }
             try
             {
-                using (var context = new VocabularyDBContext())
+
+                foreach (var word in vocabulary)
                 {
-                    foreach (var word in vocabulary)
-                    {
 
-                        var wordToAdd = new Word { Word1 = word };
-                        context.Words.Add(wordToAdd);
-                        if (context.Words.Count() % 30000 == 0)
-                            context.SaveChanges();
+                    var wordToAdd = new Word { Word1 = word };
+                    _context.Words.Add(wordToAdd);
+                    if (_context.Words.Count() % 30000 == 0)
+                        _context.SaveChanges();
 
-                    }
-                    context.SaveChanges();
                 }
+                _context.SaveChanges();
+
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
-
-
-        }
-
-        public string ReadSetting(string key)
-        {
-            var appSettings = ConfigurationManager.AppSettings;
-            string specificSetting = appSettings[key] ?? "Not Found";
-            return specificSetting;
         }
     }
 }

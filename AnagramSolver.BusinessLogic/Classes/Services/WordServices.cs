@@ -14,17 +14,6 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         public HashSet<AnagramModel> GetWords(int pageNumber)
         {
             var allWords = _wordRepository.GetSpecificPage(pageNumber);
-            return CreateAnagramModelHashSet(allWords);
-        }
-        public HashSet<AnagramModel> GetAnagrams(string wordForAnagrams)
-        {
-            var allWords = _wordRepository.GetAllWords();
-            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
-            return anagramsById;
-        }
-        public HashSet<AnagramModel> CreateAnagramModelHashSet(HashSet<WordModel> allWords)
-        {
             var vocabularyByModel = new HashSet<AnagramModel>();
             foreach (var word in allWords)
             {
@@ -33,6 +22,26 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
                 vocabularyByModel.Add(anagram);
             }
             return vocabularyByModel;
+        }
+        public HashSet<AnagramModel> GetAnagrams(string wordForAnagrams)
+        {
+            var allWords = _wordRepository.GetAllWords();
+            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
+            var anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
+            return anagramsById;
+        }
+        public HashSet<AnagramModel> CreateAnagramModelHashSet(HashSet<AnagramModel> wordsToChange)
+        {
+            var vocabularyByModel = new HashSet<AnagramModel>();
+            foreach (var word in wordsToChange)
+            {
+                vocabularyByModel.Add(word);
+            }
+            return vocabularyByModel;
+        }
+        public HashSet<string> GetWordsThatHaveGivenPart(string wordPart)
+        {
+            return _wordRepository.GetSpecificWords(wordPart);
         }
     }
 }

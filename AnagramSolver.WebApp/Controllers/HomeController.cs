@@ -1,21 +1,17 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Models.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AnagramSolver.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
-        private readonly IWordRepository _wordRepository;
+        private readonly IWordServices _wordServices;
         private readonly ICacheAnagram _cachedAnagrams;
-        public HomeController(IWordRepository wordRepository, ICacheAnagram cachedanagrams)
+        public HomeController(IWordServices wordService, ICacheAnagram cachedanagrams)
         {
-            _wordRepository = wordRepository;
+            _wordServices = wordService;
             _cachedAnagrams = cachedanagrams;
         }
         [HttpGet]
@@ -26,20 +22,14 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Form(string id)
         {
-            var vocabularyByModel = new HashSet<AnagramModel>();
-            var allWords = _wordRepository.GetAllWords();
-            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var cachedModels = _cachedAnagrams.GetCachedAnagram(id);
             var anagramsById = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _anagramSolver.GetAnagrams(id);
+                anagramsById = _wordServices.GetAnagrams(id);
                 _cachedAnagrams.PutAnagramToCache(id, anagramsById);
             }
-            foreach (var word in anagramsById)
-            {
-                vocabularyByModel.Add(word);
-            }
+            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             return View(vocabularyByModel);
         }
 

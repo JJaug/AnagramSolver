@@ -1,7 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -10,11 +10,16 @@ namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
 {
     public class PersistentRepository : IPersistentRepository
     {
+        private readonly IConfiguration config;
+        public PersistentRepository(IConfiguration configuration)
+        {
+            config = configuration;
+        }
         public void PopulateDataBaseFromFile()
         {
-            var filePath = ReadSetting("FilePath");
-            var connectionString = ReadSetting("ConnectionString");
-            var minLength = int.Parse(ReadSetting("MinWordLength"));
+            var filePath = config.GetSection("MyConfig").GetSection("FilePath").Value;
+            var connectionString = config.GetSection("MyConfig").GetSection("ConnectionString").Value;
+            var minLength = int.Parse(config.GetSection("MyConfig").GetSection("MinWordLength").Value);
 
 
             HashSet<string> fileLines;
@@ -48,14 +53,6 @@ namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
             {
                 Console.WriteLine(e.Message);
             }
-        }
-        public string ReadSetting(string key)
-        {
-
-            var appSettings = ConfigurationManager.AppSettings;
-            string specificSetting = appSettings[key] ?? "Not Found";
-            return specificSetting;
-
         }
     }
 }

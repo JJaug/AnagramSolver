@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,12 +9,13 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
     public class WordRepositoryDatabaseFirst : IWordRepository
     {
-        private const int wordsInPage = 100;
-        private const int _minLength = 4;
-        private VocabularyDBContext _context;
-        public WordRepositoryDatabaseFirst(VocabularyDBContext context)
+        private readonly VocabularyDBContext _context;
+        private readonly IConfiguration config;
+        private int wordsInPage;
+        public WordRepositoryDatabaseFirst(VocabularyDBContext context, IConfiguration configuration)
         {
             _context = context;
+            config = configuration;
         }
         public HashSet<WordModel> GetAllWords()
         {
@@ -22,13 +24,12 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
             var allWords = _context.Words.ToList();
             foreach (var word in allWords)
             {
-                if (word.Word1.Length >= _minLength)
-                {
-                    var wordModel = new WordModel();
-                    wordModel.ID = word.Id;
-                    wordModel.Word = word.Word1;
-                    wordsFromDB.Add(wordModel);
-                }
+
+                var wordModel = new WordModel();
+                wordModel.ID = word.Id;
+                wordModel.Word = word.Word1;
+                wordsFromDB.Add(wordModel);
+
             }
 
             return wordsFromDB;
@@ -36,19 +37,19 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 
         public HashSet<WordModel> GetSpecificPage(int pageNumber)
         {
+            wordsInPage = int.Parse(config.GetSection("MyConfig").GetSection("WordsInPage").Value);
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
             var wordsFromDB = new HashSet<WordModel>();
 
             var allWords = _context.Words.ToList();
             foreach (var word in allWords)
             {
-                if (word.Word1.Length >= _minLength)
-                {
-                    var wordModel = new WordModel();
-                    wordModel.Word = word.Word1;
-                    wordModel.ID = word.Id;
-                    wordsFromDB.Add(wordModel);
-                }
+
+                var wordModel = new WordModel();
+                wordModel.Word = word.Word1;
+                wordModel.ID = word.Id;
+                wordsFromDB.Add(wordModel);
+
             }
 
             return wordsFromDB.Skip(howManySkip).Take(wordsInPage).ToHashSet();

@@ -1,9 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.Models.Models;
-using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -25,8 +21,6 @@ namespace AnagramSolver.WebApp.Controllers
         }
         public IActionResult Details(string wordForAnagrams)
         {
-            var vocabularyByModel = new HashSet<AnagramModel>();
-
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
             var anagramsById = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
@@ -34,10 +28,7 @@ namespace AnagramSolver.WebApp.Controllers
                 anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
                 _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
             }
-            foreach (var word in anagramsById)
-            {
-                vocabularyByModel.Add(word);
-            }
+            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             ViewBag.vocabularyByModel = vocabularyByModel;
             return View(vocabularyByModel);
         }

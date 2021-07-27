@@ -1,5 +1,6 @@
 using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
 using AnagramSolver.BusinessLogic.Classes.SearchLogs;
+using AnagramSolver.BusinessLogic.Classes.Services;
 using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
@@ -33,6 +34,7 @@ namespace AnagramSolver.WebApp
             services.AddScoped<ISearchLog, SearchLogDatabaseFirst>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IWordServices, WordServices>();
             services.AddControllersWithViews();
 
         }

@@ -32,7 +32,7 @@ namespace AnagramSolver.Tests
         {
             var allAnagrams = _anagramSolver.GetAnagrams(command);
             var anagramToTest = string.Empty;
-            foreach(var anagramModel in allAnagrams)
+            foreach (var anagramModel in allAnagrams)
             {
                 anagramToTest = anagramModel.AnagramWord;
             }

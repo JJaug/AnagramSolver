@@ -7,21 +7,24 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
     public class CacheAnagramDatabaseFirst : ICacheAnagram
     {
+        private readonly VocabularyDBContext _context;
+        public CacheAnagramDatabaseFirst(VocabularyDBContext context)
+        {
+            _context = context;
+        }
         public CacheModel GetCachedAnagram(string command)
         {
             var cachedModel = new CacheModel();
-            using (var context = new VocabularyDBContext())
+            var cachedAnagram = _context.CachedWords.Find(command);
+            if (cachedAnagram != null)
             {
-                var cachedAnagram = context.CachedWords.Find(command);
-                if (cachedAnagram != null)
-                {
-                    var anagramModel = new AnagramModel();
-                    anagramModel.Word = command;
-                    anagramModel.AnagramWord = cachedAnagram.Anagram;
-                    cachedModel.Caches.Add(anagramModel);
-                    cachedModel.IsSuccessful = true;
-                }
+                var anagramModel = new AnagramModel();
+                anagramModel.Word = command;
+                anagramModel.AnagramWord = cachedAnagram.Anagram;
+                cachedModel.Caches.Add(anagramModel);
+                cachedModel.IsSuccessful = true;
             }
+
             return cachedModel;
         }
 
@@ -32,12 +35,11 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
             {
                 anagramToDB += $"{anagram.AnagramWord}  ";
             }
-            using (var context = new VocabularyDBContext())
-            {
-                var cachedWord = new CachedWord { Word = command, Anagram = anagramToDB };
-                context.CachedWords.Add(cachedWord);
-                context.SaveChanges();
-            }
+
+            var cachedWord = new CachedWord { Word = command, Anagram = anagramToDB };
+            _context.CachedWords.Add(cachedWord);
+            _context.SaveChanges();
+
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
-using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,12 +12,12 @@ namespace AnagramSolver.WebApp.Controllers.Api
     [Route("[controller]")]
     public class AnagramApiController : ControllerBase
     {
-        private readonly IWordRepository _wordRepository;
+        private readonly IWordServices _wordServices;
         private readonly ICacheAnagram _cachedAnagrams;
         private readonly ISearchLog _searchLog;
-        public AnagramApiController(IWordRepository wordRepository, ICacheAnagram cachedanagrams, ISearchLog searchLog)
+        public AnagramApiController(IWordServices wordServices, ICacheAnagram cachedanagrams, ISearchLog searchLog)
         {
-            _wordRepository = wordRepository;
+            _wordServices = wordServices;
             _cachedAnagrams = cachedanagrams;
             _searchLog = searchLog;
 
@@ -26,21 +25,14 @@ namespace AnagramSolver.WebApp.Controllers.Api
         [HttpGet("[action]/{wordForAnagrams}")]
         public string GetJsonString(string wordForAnagrams)
         {
-
-            var vocabularyByModel = new HashSet<AnagramModel>();
-            var allWords = _wordRepository.GetAllWords();
-            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
             var anagramsById = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
+                anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
                 _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
             }
-            foreach (var word in anagramsById)
-            {
-                vocabularyByModel.Add(word);
-            }
+            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
         }
@@ -49,20 +41,14 @@ namespace AnagramSolver.WebApp.Controllers.Api
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var listOfAnagrams = new HashSet<AnagramModel>();
-            var allWords = _wordRepository.GetAllWords();
-            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
             var anagramsById = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
+                anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
                 _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
             }
-            foreach (var word in anagramsById)
-            {
-                listOfAnagrams.Add(word);
-            }
+            var listOfAnagrams = _wordServices.CreateAnagramModelHashSet(anagramsById);
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
             var elapsedTime = ts.Milliseconds;
@@ -74,7 +60,7 @@ namespace AnagramSolver.WebApp.Controllers.Api
         [HttpGet("[action]/{word}")]
         public HashSet<string> GetSearchList(string wordPart)
         {
-            var wordsContainingSpecificPart = _wordRepository.GetSpecificWords(wordPart);
+            var wordsContainingSpecificPart = _wordServices.GetWordsThatHaveGivenPart(wordPart);
 
             return wordsContainingSpecificPart;
         }

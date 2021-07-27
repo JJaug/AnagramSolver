@@ -1,7 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Data.SqlClient;
 using System.Linq;
 
@@ -10,19 +10,16 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 
     public class WordDBRepository : IWordRepository
     {
-        private const int wordsInPage = 100;
-        private const int _minLength = 4;
+        private readonly IConfiguration config;
+        private int wordsInPage;
         private string connectionString;
-
-        public string Init()
+        public WordDBRepository(IConfiguration configuration)
         {
-            var appSettings = ConfigurationManager.AppSettings;
-            string connectionString = appSettings["ConnectionString"] ?? "Not Found";
-            return connectionString;
+            config = configuration;
         }
         public HashSet<WordModel> GetAllWords()
         {
-            connectionString = Init();
+            connectionString = config.GetSection("MyConfig").GetSection("ConnectionString").Value;
             SqlConnection con = new SqlConnection(connectionString);
             string query = "select * from Words";
             SqlCommand cmd = new SqlCommand();
@@ -36,13 +33,12 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
             {
                 while (rdr.Read())
                 {
-                    if (rdr["Word"].ToString().Length >= _minLength)
-                    {
-                        var word = new WordModel();
-                        word.Word = rdr["Word"].ToString();
-                        word.ID = (int)rdr["ID"];
-                        wordsFromDB.Add(word);
-                    }
+
+                    var word = new WordModel();
+                    word.Word = rdr["Word"].ToString();
+                    word.ID = (int)rdr["ID"];
+                    wordsFromDB.Add(word);
+
                 }
             }
             con.Close();
@@ -52,8 +48,9 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 
         public HashSet<WordModel> GetSpecificPage(int pageNumber)
         {
+            wordsInPage = int.Parse(config.GetSection("MyConfig").GetSection("WordsInPage").Value);
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
-            connectionString = Init();
+            connectionString = config.GetSection("MyConfig").GetSection("ConnectionString").Value;
             SqlConnection con = new SqlConnection(connectionString);
             string query = "select * from Words";
             SqlCommand cmd = new SqlCommand();
@@ -67,13 +64,12 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
             {
                 while (rdr.Read())
                 {
-                    if (rdr["Word"].ToString().Length >= _minLength)
-                    {
-                        var word = new WordModel();
-                        word.Word = rdr["Word"].ToString();
-                        word.ID = (long)rdr["ID"];
-                        wordsFromDB.Add(word);
-                    }
+
+                    var word = new WordModel();
+                    word.Word = rdr["Word"].ToString();
+                    word.ID = (long)rdr["ID"];
+                    wordsFromDB.Add(word);
+
                 }
             }
             con.Close();
@@ -84,7 +80,7 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
         public HashSet<string> GetSpecificWords(string word)
         {
             var specificWords = new HashSet<string>();
-            connectionString = Init();
+            connectionString = config.GetSection("MyConfig").GetSection("ConnectionString").Value;
             SqlConnection con = new SqlConnection(connectionString);
             con.Open();
             var cmd = new SqlCommand();
