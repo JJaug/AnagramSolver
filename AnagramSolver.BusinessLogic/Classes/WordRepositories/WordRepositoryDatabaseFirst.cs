@@ -10,23 +10,27 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
     {
         private const int wordsInPage = 100;
         private const int _minLength = 4;
+        private VocabularyDBContext _context;
+        public WordRepositoryDatabaseFirst(VocabularyDBContext context)
+        {
+            _context = context;
+        }
         public HashSet<WordModel> GetAllWords()
         {
             var wordsFromDB = new HashSet<WordModel>();
-            using (var context = new VocabularyDBContext())
+
+            var allWords = _context.Words.ToList();
+            foreach (var word in allWords)
             {
-                var allWords = context.Words.ToList();
-                foreach (var word in allWords)
+                if (word.Word1.Length >= _minLength)
                 {
-                    if (word.Word1.Length >= _minLength)
-                    {
-                        var wordModel = new WordModel();
-                        wordModel.ID = word.Id;
-                        wordModel.Word = word.Word1;
-                        wordsFromDB.Add(wordModel);
-                    }
+                    var wordModel = new WordModel();
+                    wordModel.ID = word.Id;
+                    wordModel.Word = word.Word1;
+                    wordsFromDB.Add(wordModel);
                 }
             }
+
             return wordsFromDB;
         }
 
@@ -34,20 +38,19 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
         {
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
             var wordsFromDB = new HashSet<WordModel>();
-            using (var context = new VocabularyDBContext())
+
+            var allWords = _context.Words.ToList();
+            foreach (var word in allWords)
             {
-                var allWords = context.Words.ToList();
-                foreach (var word in allWords)
+                if (word.Word1.Length >= _minLength)
                 {
-                    if (word.Word1.Length >= _minLength)
-                    {
-                        var wordModel = new WordModel();
-                        wordModel.Word = word.Word1;
-                        wordModel.ID = word.Id;
-                        wordsFromDB.Add(wordModel);
-                    }
+                    var wordModel = new WordModel();
+                    wordModel.Word = word.Word1;
+                    wordModel.ID = word.Id;
+                    wordsFromDB.Add(wordModel);
                 }
             }
+
             return wordsFromDB.Skip(howManySkip).Take(wordsInPage).ToHashSet();
         }
 
@@ -55,16 +58,15 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
         {
             var specificWords = new HashSet<string>();
             var wordModel = new WordModel();
-            using (var context = new VocabularyDBContext())
+
+            var wordsFromDb = _context.Words
+                .Where(w => w.Word1.Contains(wordPart))
+                .ToHashSet();
+            foreach (var word in wordsFromDb)
             {
-                var wordsFromDb = context.Words
-                    .Where(w => w.Word1.Contains(wordPart))
-                    .ToHashSet();
-                foreach (var word in wordsFromDb)
-                {
-                    specificWords.Add(word.Word1);
-                }
+                specificWords.Add(word.Word1);
             }
+
 
             return specificWords;
         }

@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using AnagramSolver.Models.Models;
 using System;
 using System.Collections.Generic;
 
@@ -7,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes.SearchLogs
 {
     public class SearchLogDatabaseFirst : ISearchLog
     {
-        public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, List<string> listOfAnagrams)
+        public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, HashSet<AnagramModel> listOfAnagrams)
         {
             using (var context = new VocabularyDBContext())
             {

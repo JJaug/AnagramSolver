@@ -3,8 +3,10 @@ using AnagramSolver.BusinessLogic.Classes.SearchLogs;
 using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DatabaseFirst.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -23,11 +25,16 @@ namespace AnagramSolver.WebApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Configuration.GetValue<string>("MyConfig:ConnectionString");
+            services.AddDbContext<VocabularyDBContext>(options =>
+            options.UseSqlServer(connectionString));
             services.AddScoped<IWordRepository, WordRepositoryDatabaseFirst>();
             services.AddScoped<ICacheAnagram, CacheAnagramDatabaseFirst>();
             services.AddScoped<ISearchLog, SearchLogDatabaseFirst>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddControllersWithViews();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

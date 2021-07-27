@@ -26,8 +26,11 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
                 {
                     if (rdr["Word"].ToString().Contains(command))
                     {
-                        var list = new List<string>();
-                        list.Add(rdr["Anagram"].ToString());
+                        var list = new HashSet<AnagramModel>();
+                        var anagramModel = new AnagramModel();
+                        anagramModel.Word = command;
+                        anagramModel.AnagramWord = rdr["Anagram"].ToString();
+                        list.Add(anagramModel);
                         cachedAnagrams.Caches = list;
                         cachedAnagrams.IsSuccessful = true;
                         return cachedAnagrams;
@@ -38,12 +41,12 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
             return cachedAnagrams;
         }
 
-        public void PutAnagramToCache(string command, List<string> listOfAnagrams)
+        public void PutAnagramToCache(string command, HashSet<AnagramModel> listOfAnagrams)
         {
             var anagramToDB = string.Empty;
             foreach (var anagram in listOfAnagrams)
             {
-                anagramToDB += $"{anagram}  ";
+                anagramToDB += $"{anagram.AnagramWord}  ";
             }
 
             var appSettings = ConfigurationManager.AppSettings;

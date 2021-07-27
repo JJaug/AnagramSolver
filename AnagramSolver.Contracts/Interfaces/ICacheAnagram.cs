@@ -6,6 +6,6 @@ namespace AnagramSolver.Contracts.Interfaces
     public interface ICacheAnagram
     {
         public CacheModel GetCachedAnagram(string command);
-        public void PutAnagramToCache(string command, List<string> listOfAnagrams);
+        public void PutAnagramToCache(string command, HashSet<AnagramModel> listOfAnagrams);
     }
 }

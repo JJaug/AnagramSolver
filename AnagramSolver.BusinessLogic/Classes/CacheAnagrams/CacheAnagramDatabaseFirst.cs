@@ -15,19 +15,22 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
                 var cachedAnagram = context.CachedWords.Find(command);
                 if (cachedAnagram != null)
                 {
-                    cachedModel.Caches.Add(cachedAnagram.Anagram);
+                    var anagramModel = new AnagramModel();
+                    anagramModel.Word = command;
+                    anagramModel.AnagramWord = cachedAnagram.Anagram;
+                    cachedModel.Caches.Add(anagramModel);
                     cachedModel.IsSuccessful = true;
                 }
             }
             return cachedModel;
         }
 
-        public void PutAnagramToCache(string command, List<string> listOfAnagrams)
+        public void PutAnagramToCache(string command, HashSet<AnagramModel> listOfAnagrams)
         {
             var anagramToDB = string.Empty;
             foreach (var anagram in listOfAnagrams)
             {
-                anagramToDB += $"{anagram}  ";
+                anagramToDB += $"{anagram.AnagramWord}  ";
             }
             using (var context = new VocabularyDBContext())
             {

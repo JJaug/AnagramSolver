@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -25,7 +26,8 @@ namespace AnagramSolver.WebApp.Controllers.Api
         [HttpGet("[action]/{wordForAnagrams}")]
         public string GetJsonString(string wordForAnagrams)
         {
-            var vocabularyByModel = new HashSet<AnagramViewModel>();
+
+            var vocabularyByModel = new HashSet<AnagramModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
@@ -37,20 +39,17 @@ namespace AnagramSolver.WebApp.Controllers.Api
             }
             foreach (var word in anagramsById)
             {
-                var anagram = new AnagramViewModel();
-                anagram.AnagramWord = word;
-                anagram.Word = wordForAnagrams;
-                vocabularyByModel.Add(anagram);
+                vocabularyByModel.Add(word);
             }
             string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
         }
         [HttpGet("[action]/{wordForAnagrams}")]
-        public List<string> GetForJS(string wordForAnagrams)
+        public HashSet<AnagramModel> GetForJS(string wordForAnagrams)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var listOfAnagrams = new List<string>();
+            var listOfAnagrams = new HashSet<AnagramModel>();
             var allWords = _wordRepository.GetAllWords();
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);

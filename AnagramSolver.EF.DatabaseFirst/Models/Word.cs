@@ -15,5 +15,9 @@ namespace AnagramSolver.EF.DatabaseFirst.Models
         public long Id { get; set; }
 
         public virtual ICollection<UserWord> UserWords { get; set; }
+        public static Word CreateTestWord()
+        {
+            return new Word { Id = 1, Word1 = "neprisikiskiakopusteliaudavome" };
+        }
     }
 }

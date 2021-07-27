@@ -14,9 +14,9 @@ namespace AnagramSolver.BusinessLogic.Classes
         {
             _allWords = allWords;
         }
-        public List<string> GetAnagrams(string command)
+        public HashSet<AnagramModel> GetAnagrams(string command)
         {
-            var listOfAnagrams = new List<string>();
+            var listOfAnagrams = new HashSet<AnagramModel>();
 
             char[] commandChars = command.ToCharArray();
             Array.Sort(commandChars);
@@ -31,7 +31,10 @@ namespace AnagramSolver.BusinessLogic.Classes
                     {
                         if (word.Word != command)
                         {
-                            listOfAnagrams.Add(word.Word);
+                            var anagramModel = new AnagramModel();
+                            anagramModel.AnagramWord = word.Word;
+                            anagramModel.Word = command;
+                            listOfAnagrams.Add(anagramModel);
                         }
                     }
 

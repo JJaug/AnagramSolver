@@ -1,14 +1,9 @@
-﻿using NUnit.Framework;
-using NSubstitute;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.Contracts.Interfaces;
-using AnagramSolver.BusinessLogic.Classes.Users;
-using AnagramSolver.WebApp.Models;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using NSubstitute;
+using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace AnagramSolver.Tests.Services
 {
@@ -22,7 +17,7 @@ namespace AnagramSolver.Tests.Services
         [SetUp]
         public void Setup()
         {
-            
+
             _userRepository = Substitute.For<IUserRepository>();
             _userService = new UserService(_userRepository);
         }
@@ -34,7 +29,7 @@ namespace AnagramSolver.Tests.Services
             var userLastName = "Jaugelis";
             var userEmail = "abc@cdv.lt";
             var user = new User { Id = userId, FirstName = userName, LastName = userLastName, Email = userEmail };
-            _userRepository.GetUser(userId).Returns(user);
+            _userRepository.GetUser(2).Returns(user);
             var stringToShow = $"{user.FirstName}  {user.LastName}  {user.Email}";
 
             var result = _userService.ReadUser(user.Id);
@@ -50,7 +45,7 @@ namespace AnagramSolver.Tests.Services
             var userEmail = "abc@cdv.lt";
             var userPass = "labas";
             var favouriteWord = "neprisikiskiakopusteliaudavome";
-            var wordFromDb = new Word { Id = 1, Word1 = "neprisikiskiakopusteliaudavome" };
+            var wordFromDb = Word.CreateTestWord();
             var userWord = new UserWord { UserId = 1, WordId = 1 };
             var listOfUserWords = new List<UserWord>();
             listOfUserWords.Add(userWord);
