@@ -2,12 +2,20 @@
 
 namespace AnagramSolver.Cli
 {
-    public class DisplayWithEvents /*: IDisplay*/
+    public class DisplayWithEvents : IDisplay
     {
         public EventHandler ClickEvent;
-        public void FormattedPrint(Action<string> toFile, string input)
+        private readonly Action<string> _print;
+        public DisplayWithEvents(Action<string> print)
         {
+            _print = print;
+        }
+        public void FormattedPrint(Func<string, string> letterUp, string input)
+        {
+
             ClickEvent.Invoke(this, EventArgs.Empty);
+            var uppercasedInput = letterUp(input);
+            _print(uppercasedInput);
         }
     }
 }

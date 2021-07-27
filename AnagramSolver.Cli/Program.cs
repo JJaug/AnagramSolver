@@ -30,24 +30,28 @@ namespace AnagramSolver.Cli
         }
         static void ActionA()
         {
-            var displayWithEvents = new DisplayWithEvents();
+            Action<string> print = ToFile;
+            var displayWithEvents = new DisplayWithEvents(print);
             displayWithEvents.ClickEvent += (s, args) =>
             {
                 Console.WriteLine("Something clicked...");
             };
-            Action<string> toFile = ToFile;
-            displayWithEvents.FormattedPrint(toFile, "labas rytas");
+            Func<string, string> letterUp = FirstLetterUp;
+            displayWithEvents.FormattedPrint(letterUp, "ooo sveiki");
+
 
         }
         static void ActionB()
         {
-            var displayWithEvents = new DisplayWithEvents();
+            Action<string> print = ToFile;
+            var displayWithEvents = new DisplayWithEvents(print);
             displayWithEvents.ClickEvent += (s, args) =>
             {
                 Console.WriteLine("Something clicked...");
             };
-            Action<string> toFile = ToFile;
-            displayWithEvents.FormattedPrint(toFile, "labas vakaras");
+            Func<string, string> letterUp = FirstLetterUp;
+            displayWithEvents.FormattedPrint(letterUp, "viso gero");
+
 
         }
         static readonly HttpClient client = new HttpClient();
