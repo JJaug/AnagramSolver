@@ -7,10 +7,6 @@ namespace GenericsTask
         public T MapValueToEnum(string value)
         {
             Type type = typeof(T);
-
-            //object val = TypeDescriptor.GetConverter(type)
-            //    .ConvertFromInvariantString(value);
-
             if (!Enum.TryParse<T>(value, out T result))
             {
                 throw new Exception($"Value '{value}' is not part of {type.Name} enum");
@@ -18,6 +14,5 @@ namespace GenericsTask
 
             return result;
         }
-
     }
 }

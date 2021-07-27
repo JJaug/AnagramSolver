@@ -10,27 +10,25 @@ namespace AnagramSolver.Tests
     {
 
         [Test]
-        [TestCase("Tuesday")]
-        public void Should_ReturnCorrectEnum_When_GivenDay(string day)
+        public void Should_ReturnCorrectEnum_When_GivenDay()
         {
+            var day = "Tuesday";
             var generics = new GenericsTask<Weekday>();
             Assert.That(generics.MapValueToEnum(day), Is.EqualTo(Weekday.Tuesday));
         }
         [Test]
-        [TestCase("Male")]
-        public void Should_ReturnCorrectEnum_When_GivenGender(string gender)
+        public void Should_ReturnCorrectEnum_When_GivenGender()
         {
+            var gender = "Male";
             var generics = new GenericsTask<Gender>();
             Assert.That(generics.MapValueToEnum(gender), Is.EqualTo(Gender.Male));
         }
         [Test]
-        [TestCase("labas")]
-        public void Should_ReturnThrowSentence_When_GivenWordDoesNotBelongToEnum(string word)
+        public void Should_ReturnThrowSentence_When_GivenWordDoesNotBelongToEnum()
         {
+            var word = "labas";
             var generics = new GenericsTask<Gender>();
-            Exception ex = Assert.Throws<Exception>(
-            delegate { throw new Exception($"Value '{word}' is not part of Gender enum"); });
-
+            var ex = Assert.Throws<Exception>(() => generics.MapValueToEnum(word));
             Assert.That(ex.Message, Is.EqualTo($"Value '{word}' is not part of Gender enum"));
         }
     }
