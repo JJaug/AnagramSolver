@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Models.Models;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace AnagramSolver.Tests
     [TestFixture]
     class AnagramSolverTests
     {
-        private BusinessLogic.Classes.AnagramSolver _anagramSolver;
+        private IAnagramSolver _anagramSolver;
         private readonly string[] values = { "rimti", "mirti", "sula", "alus", "balos", "labos", "balso" };
         [SetUp]
         public void Setup()

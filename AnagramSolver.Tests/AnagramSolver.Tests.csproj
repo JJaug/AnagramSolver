@@ -18,6 +18,7 @@
     <ProjectReference Include="..\AnagramSolver.Cli\AnagramSolver.Cli.csproj" />
     <ProjectReference Include="..\AnagramSolver.Contracts\AnagramSolver.Contracts.csproj" />
     <ProjectReference Include="..\AnagramSolver.Models\AnagramSolver.Models.csproj" />
+    <ProjectReference Include="..\AnagramSolver.WebApp\AnagramSolver.WebApp.csproj" />
     <ProjectReference Include="..\GenericsTask\GenericsTask.csproj" />
   </ItemGroup>
 

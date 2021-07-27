@@ -1,4 +1,5 @@
 ﻿using AnagramSolver.BusinessLogic.Classes.WordRepositories;
+using AnagramSolver.Contracts.Interfaces;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace AnagramSolver.Tests
     [TestFixture]
     public class WordRepositoryTests
     {
-        private WordRepository _wordRepository;
+        private IWordRepository _wordRepository;
         private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/";
 
 
