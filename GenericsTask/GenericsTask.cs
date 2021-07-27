@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 
 namespace GenericsTask
 {
@@ -7,10 +6,14 @@ namespace GenericsTask
     {
         public T MapValueToEnum(string value)
         {
-            var converter = TypeDescriptor.GetConverter(typeof(T));
+            Type type = typeof(T);
+
+            //object val = TypeDescriptor.GetConverter(type)
+            //    .ConvertFromInvariantString(value);
+
             if (!Enum.TryParse<T>(value, out T result))
             {
-                throw new Exception($"Value '{value}' is not part of Gender enum");
+                throw new Exception($"Value '{value}' is not part of {type.Name} enum");
             }
 
             return result;

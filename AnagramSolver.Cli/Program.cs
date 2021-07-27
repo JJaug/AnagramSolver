@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
+using GenericsTask;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static GenericsTask.Enums.Enum;
 
 namespace AnagramSolver.Cli
 {
@@ -57,6 +59,8 @@ namespace AnagramSolver.Cli
         static readonly HttpClient client = new HttpClient();
         static async Task Main(string[] args)
         {
+            var x = new GenericsTask<Gender>();
+            x.MapValueToEnum("labas");
             Action<string> print = ToFile;
             print("labas");
             Func<string, string> style = FirstLetterUp;
