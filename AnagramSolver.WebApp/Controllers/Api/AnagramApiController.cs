@@ -26,13 +26,12 @@ namespace AnagramSolver.WebApp.Controllers.Api
         public string GetJsonString(string wordForAnagrams)
         {
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
-            var anagramsById = cachedModels.Caches;
+            var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
+                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
-            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
         }
@@ -42,13 +41,12 @@ namespace AnagramSolver.WebApp.Controllers.Api
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
-            var anagramsById = cachedModels.Caches;
+            var listOfAnagrams = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
+                listOfAnagrams = _wordServices.GetAnagrams(wordForAnagrams);
+                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, listOfAnagrams);
             }
-            var listOfAnagrams = _wordServices.CreateAnagramModelHashSet(anagramsById);
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
             var elapsedTime = ts.Milliseconds;

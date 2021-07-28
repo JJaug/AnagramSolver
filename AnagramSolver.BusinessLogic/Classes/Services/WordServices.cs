@@ -11,15 +11,15 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         {
             _wordRepository = wordRepository;
         }
-        public HashSet<AnagramModel> GetWords(int pageNumber)
+        public HashSet<AnagramModel> GetWordsAsAnagramModelVocabulary(int pageNumber)
         {
             var allWords = _wordRepository.GetSpecificPage(pageNumber);
             var vocabularyByModel = new HashSet<AnagramModel>();
             foreach (var word in allWords)
             {
-                var anagram = new AnagramModel();
-                anagram.Word = word.Word;
-                vocabularyByModel.Add(anagram);
+                var wordInPage = new AnagramModel();
+                wordInPage.Word = word.Word;
+                vocabularyByModel.Add(wordInPage);
             }
             return vocabularyByModel;
         }
@@ -29,15 +29,6 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
             var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
             var anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
             return anagramsById;
-        }
-        public HashSet<AnagramModel> CreateAnagramModelHashSet(HashSet<AnagramModel> wordsToChange)
-        {
-            var vocabularyByModel = new HashSet<AnagramModel>();
-            foreach (var word in wordsToChange)
-            {
-                vocabularyByModel.Add(word);
-            }
-            return vocabularyByModel;
         }
         public HashSet<string> GetWordsThatHaveGivenPart(string wordPart)
         {

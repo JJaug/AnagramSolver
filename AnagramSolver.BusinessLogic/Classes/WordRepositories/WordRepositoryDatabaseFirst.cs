@@ -24,12 +24,10 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
             var allWords = _context.Words.ToList();
             foreach (var word in allWords)
             {
-
                 var wordModel = new WordModel();
                 wordModel.ID = word.Id;
                 wordModel.Word = word.Word1;
                 wordsFromDB.Add(wordModel);
-
             }
 
             return wordsFromDB;

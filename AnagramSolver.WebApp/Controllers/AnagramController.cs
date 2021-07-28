@@ -15,20 +15,19 @@ namespace AnagramSolver.WebApp.Controllers
 
         public IActionResult Index(int pageNumber = 1)
         {
-            var vocabularyByModel = _wordServices.GetWords(pageNumber);
+            var vocabularyByModel = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
             ViewBag.vocabularyByModel = vocabularyByModel;
             return View(model: pageNumber);
         }
         public IActionResult Details(string wordForAnagrams)
         {
             var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
-            var anagramsById = cachedModels.Caches;
+            var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, anagramsById);
+                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
-            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             ViewBag.vocabularyByModel = vocabularyByModel;
             return View(vocabularyByModel);
         }

@@ -23,13 +23,12 @@ namespace AnagramSolver.WebApp.Controllers
         public IActionResult Form(string id)
         {
             var cachedModels = _cachedAnagrams.GetCachedAnagram(id);
-            var anagramsById = cachedModels.Caches;
+            var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _wordServices.GetAnagrams(id);
-                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
+                vocabularyByModel = _wordServices.GetAnagrams(id);
+                _cachedAnagrams.PutAnagramToCache(id, vocabularyByModel);
             }
-            var vocabularyByModel = _wordServices.CreateAnagramModelHashSet(anagramsById);
             return View(vocabularyByModel);
         }
 
