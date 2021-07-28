@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
-    public class CacheAnagramDatabaseFirst : ICacheAnagram
+    public class CacheServices : ICacheServices
     {
-        private readonly VocabularyDBContext _context;
-        public CacheAnagramDatabaseFirst(VocabularyDBContext context)
+        private ICacheRepository _cacheRepository;
+        public CacheServices(ICacheRepository cacheRepository)
         {
-            _context = context;
+            _cacheRepository = cacheRepository;
         }
         public CacheModel GetCachedAnagram(string command)
         {
             var cachedModel = new CacheModel();
-            var cachedAnagram = _context.CachedWords.Find(command);
+            var cachedAnagram = _cacheRepository.FindCachedWord(command);
             if (cachedAnagram != null)
             {
                 var anagramModel = new AnagramModel();
@@ -37,8 +37,7 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
             }
 
             var cachedWord = new CachedWord { Word = command, Anagram = anagramToDB };
-            _context.CachedWords.Add(cachedWord);
-            _context.SaveChanges();
+            _cacheRepository.SaveWordToCache(cachedWord);
 
         }
     }

@@ -5,9 +5,9 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class AnagramController : Controller
     {
-        private readonly ICacheAnagram _cachedAnagrams;
+        private readonly ICacheServices _cachedAnagrams;
         private readonly IWordServices _wordServices;
-        public AnagramController(IWordServices wordServices, ICacheAnagram cachedanagrams)
+        public AnagramController(IWordServices wordServices, ICacheServices cachedanagrams)
         {
             _cachedAnagrams = cachedanagrams;
             _wordServices = wordServices;

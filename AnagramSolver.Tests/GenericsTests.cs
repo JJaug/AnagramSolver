@@ -1,7 +1,8 @@
 ﻿using GenericsTask;
 using NUnit.Framework;
 using System;
-using static GenericsTask.Enums.Enum;
+using static GenericsTask.Enums.GenderEnum;
+using static GenericsTask.Enums.WeekdayEnum;
 
 namespace AnagramSolver.Tests
 {

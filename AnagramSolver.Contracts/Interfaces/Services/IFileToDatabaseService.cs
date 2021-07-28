@@ -1,6 +1,6 @@
 ﻿namespace AnagramSolver.Contracts.Interfaces
 {
-    public interface IPersistentRepository
+    public interface IFileToDatabaseService
     {
         public void PopulateDataBaseFromFile();
     }

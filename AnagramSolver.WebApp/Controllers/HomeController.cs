@@ -8,8 +8,8 @@ namespace AnagramSolver.WebApp.Controllers
     public class HomeController : Controller
     {
         private readonly IWordServices _wordServices;
-        private readonly ICacheAnagram _cachedAnagrams;
-        public HomeController(IWordServices wordService, ICacheAnagram cachedanagrams)
+        private readonly ICacheServices _cachedAnagrams;
+        public HomeController(IWordServices wordService, ICacheServices cachedanagrams)
         {
             _wordServices = wordService;
             _cachedAnagrams = cachedanagrams;

@@ -13,9 +13,9 @@ namespace AnagramSolver.WebApp.Controllers.Api
     public class AnagramApiController : ControllerBase
     {
         private readonly IWordServices _wordServices;
-        private readonly ICacheAnagram _cachedAnagrams;
-        private readonly ISearchLog _searchLog;
-        public AnagramApiController(IWordServices wordServices, ICacheAnagram cachedanagrams, ISearchLog searchLog)
+        private readonly ICacheServices _cachedAnagrams;
+        private readonly ISearchLogServices _searchLog;
+        public AnagramApiController(IWordServices wordServices, ICacheServices cachedanagrams, ISearchLogServices searchLog)
         {
             _wordServices = wordServices;
             _cachedAnagrams = cachedanagrams;

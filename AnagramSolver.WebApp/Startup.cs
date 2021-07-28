@@ -1,4 +1,6 @@
 using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
+using AnagramSolver.BusinessLogic.Classes.PersistentRepositories;
+using AnagramSolver.BusinessLogic.Classes.Repositories;
 using AnagramSolver.BusinessLogic.Classes.SearchLogs;
 using AnagramSolver.BusinessLogic.Classes.Services;
 using AnagramSolver.BusinessLogic.Classes.Users;
@@ -29,12 +31,17 @@ namespace AnagramSolver.WebApp
             var connectionString = Configuration.GetValue<string>("MyConfig:ConnectionString");
             services.AddDbContext<VocabularyDBContext>(options =>
             options.UseSqlServer(connectionString));
-            services.AddScoped<IWordRepository, WordRepositoryDatabaseFirst>();
-            services.AddScoped<ICacheAnagram, CacheAnagramDatabaseFirst>();
-            services.AddScoped<ISearchLog, SearchLogDatabaseFirst>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ICacheServices, CacheServices>();
+            services.AddScoped<ISearchLogServices, SearchLogServices>();
+            services.AddScoped<IUserService, UserServices>();
             services.AddScoped<IWordServices, WordServices>();
+            services.AddScoped<IFileToDatabaseService, FileToDatabaseServices>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<ISearchLogRepository, SerachLogRepository>();
+            services.AddScoped<ICacheRepository, CacheRepository>();
+            services.AddScoped<IWordRepository, WordRepository>();
+            services.AddScoped<IFileToDatabaseRepository, FileToDatabaseRepository>();
+
             services.AddControllersWithViews();
 
         }

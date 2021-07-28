@@ -4,10 +4,10 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
-    public class UserService : IUserService
+    public class UserServices : IUserService
     {
         private readonly IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        public UserServices(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }

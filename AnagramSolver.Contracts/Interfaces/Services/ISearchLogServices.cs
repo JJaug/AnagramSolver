@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
-    public interface ISearchLog
+    public interface ISearchLogServices
     {
         public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, HashSet<AnagramModel> listOfAnagrams);
     }

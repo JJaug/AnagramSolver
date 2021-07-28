@@ -6,19 +6,18 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.BusinessLogic.Classes.SearchLogs
 {
-    public class SearchLogDatabaseFirst : ISearchLog
+    public class SearchLogServices : ISearchLogServices
     {
-        private readonly VocabularyDBContext _context;
-        public SearchLogDatabaseFirst(VocabularyDBContext context)
+        private ISearchLogRepository _searchLogRepository;
+        public SearchLogServices(ISearchLogRepository searchLogRepository)
         {
-            _context = context;
+            _searchLogRepository = searchLogRepository;
         }
         public void UpdateSearchLog(int elapsedTime, string wordForAnagrams, HashSet<AnagramModel> listOfAnagrams)
         {
 
             var logToAdd = new SearchLog { UserIp = "2.2.2.2", Word = wordForAnagrams, Anagrams = listOfAnagrams.Count, SearchTime = elapsedTime, CreatedAt = DateTime.Now };
-            _context.SearchLogs.Add(logToAdd);
-            _context.SaveChanges();
+            _searchLogRepository.PutInfoToSearchLog(logToAdd);
 
 
         }
