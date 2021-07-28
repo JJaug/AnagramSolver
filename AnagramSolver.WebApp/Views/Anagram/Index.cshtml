@@ -8,7 +8,7 @@
     <tr>
         <th>Word</th>
     </tr>
-    @foreach (var item in ViewBag.vocabularyByModel)
+    @foreach (var item in Model)
     {
         <tr>
             <td><a>@Html.ActionLink($"{@item.Word}", "Details", new { @id = @item.Word })</a></td>
@@ -18,16 +18,16 @@
 
 
 
-@if (Model - 2 > 0)
+@if (ViewBag.pageNumber - 2 > 0)
 {
-    <a>@Html.ActionLink($"Page{Model - 2}", $"Index", new { @id = Model - 2 })</a>
+    <a>@Html.ActionLink($"Page{ViewBag.pageNumber - 2}", $"Index", new { @id = ViewBag.pageNumber - 2 })</a>
 }
-@if (Model - 2 >= 0 )
+@if (ViewBag.pageNumber - 2 >= 0 )
 {
-    <a>@Html.ActionLink($"Previous Page", $"Index", new { @id = Model - 1})</a>
+    <a>@Html.ActionLink($"Previous Page", $"Index", new { @id = ViewBag.pageNumber - 1})</a>
 }
 
-<a>@Html.ActionLink($"Current Page", $"Index", new { @id = Model})</a>
-<a>@Html.ActionLink($"Next Page", $"Index", new { @id = Model + 1 })</a>
-<a>@Html.ActionLink($"Page{Model + 2}", $"Index", new { @id = Model + 2 })</a>
+<a>@Html.ActionLink($"Current Page", $"Index", new { @id = ViewBag.pageNumber })</a>
+<a>@Html.ActionLink($"Next Page", $"Index", new { @id = ViewBag.pageNumber + 1 })</a>
+<a>@Html.ActionLink($"Page{ViewBag.pageNumber + 2}", $"Index", new { @id = ViewBag.pageNumber + 2 })</a>
 

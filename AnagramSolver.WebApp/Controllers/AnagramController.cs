@@ -5,30 +5,29 @@ namespace AnagramSolver.WebApp.Controllers
 {
     public class AnagramController : Controller
     {
-        private readonly ICacheServices _cachedAnagrams;
+        private readonly ICacheServices _cachedServices;
         private readonly IWordServices _wordServices;
         public AnagramController(IWordServices wordServices, ICacheServices cachedanagrams)
         {
-            _cachedAnagrams = cachedanagrams;
+            _cachedServices = cachedanagrams;
             _wordServices = wordServices;
         }
 
         public IActionResult Index(int pageNumber = 1)
         {
             var vocabularyByModel = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
-            ViewBag.vocabularyByModel = vocabularyByModel;
-            return View(model: pageNumber);
+            ViewBag.pageNumber = pageNumber;
+            return View(vocabularyByModel);
         }
         public IActionResult Details(string wordForAnagrams)
         {
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
+            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
                 vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
+                _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
-            ViewBag.vocabularyByModel = vocabularyByModel;
             return View(vocabularyByModel);
         }
     }

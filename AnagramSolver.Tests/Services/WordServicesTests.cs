@@ -4,6 +4,7 @@ using AnagramSolver.Tests.Helpers;
 using Microsoft.Extensions.Configuration;
 using NSubstitute;
 using NUnit.Framework;
+using System.Linq;
 
 namespace AnagramSolver.Tests.Services
 {
@@ -25,20 +26,20 @@ namespace AnagramSolver.Tests.Services
         [TestCase(1)]
         public void Should_GetSpecificWordsInAnagramModelVocabulary_When_GivenPageNumber(int pageNumber)
         {
-            var allWords = _testWords.GetTestAllWords();
+            var allWords = _testWords.GetListOfWord();
             var wordsInPage = 5;
-            _wordRepository.GetSpecificPage(1, wordsInPage).Returns(allWords);
+            _wordRepository.GetWords().Returns(allWords);
 
-            var result = _wordServices.GetWordsAsAnagramModelVocabulary(1);
+            var result = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
 
-            Assert.That(result.Count, Is.EqualTo(5));
+            Assert.That(result.Count, Is.Not.Null);
         }
         [Test]
         [TestCase("balos")]
         [TestCase("sula")]
         public void Should_GetAnagramsFromAllWords_When_GivenWord(string word)
         {
-            var allWords = _testWords.GetTestAllWords();
+            var allWords = _testWords.GetListOfWord();
             _wordRepository.GetWords().Returns(allWords);
 
             var result = _wordServices.GetAnagrams(word);
@@ -47,11 +48,16 @@ namespace AnagramSolver.Tests.Services
         }
         [Test]
         [TestCase("s")]
+        [TestCase("b")]
         public void Should_ReturnWordsWithSpecificPart_When_GivenPartOfWord(string wordPart)
         {
-            var allWords = _testWords.GetTestAllWords();
-            _wordRepository.GetSpecificWords(wordPart);
+            var allWords = _testWords.GetListOfWord();
+            var specificWords = allWords.Where(a => a.Word1.Contains(wordPart)).ToHashSet();
+            _wordRepository.GetSpecificWords(wordPart).Returns(specificWords);
 
+            var result = _wordServices.GetWordsThatHaveGivenPart(wordPart);
+
+            Assert.That(specificWords.Count, Is.EqualTo(result.Count));
         }
 
     }

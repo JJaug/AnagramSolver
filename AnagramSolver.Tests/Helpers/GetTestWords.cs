@@ -6,10 +6,12 @@ namespace AnagramSolver.Tests.Helpers
 {
     public class GetTestWords
     {
-        public HashSet<Word> GetTestAllWords()
+        public List<Word> GetListOfWord()
         {
-            var allWords = new HashSet<Word>();
-            string[] words = { "labos", "balos", "mirti", "rimti", "alus", "sula", "salu", "visma", "giria", "girti", "rytas", "pieva", "lekiau", "kiaule", "saule", "dabar", "sveiki", "puiku", "tvarka", "varna" };
+            var allWords = new List<Word>();
+            string[] words = { "labos", "balos", "mirti", "rimti", "alus", "sula", "salu",
+                "visma", "giria", "girti", "rytas", "pieva", "lekiau", "kiaule", "saule",
+                "dabar", "sveiki", "puiku", "tvarka", "varna" };
             for (int i = 0; i < 20; i++)
             {
                 var wordModel = new Word { Id = i + 1, Word1 = words[i] };
@@ -17,5 +19,35 @@ namespace AnagramSolver.Tests.Helpers
             }
             return allWords;
         }
+        public HashSet<AnagramModel> GetHashSetOfAnagramModel()
+        {
+            var allWords = new HashSet<AnagramModel>();
+            string[] words = { "labos", "balos", "mirti", "rimti", "alus", "sula", "salu",
+                "visma", "giria", "girti", "rytas", "pieva", "lekiau", "kiaule", "saule",
+                "dabar", "sveiki", "puiku", "tvarka", "varna" };
+            foreach (var word in words)
+            {
+                var anagramModel = new AnagramModel();
+                anagramModel.Word = word;
+                allWords.Add(anagramModel);
+            }
+
+            return allWords;
+        }
+        public CacheModel GetCacheModelIsSuccessfulTrue()
+        {
+            var anagram = new AnagramModel { Word = "alus", AnagramWord = "sula" };
+            var cachedAnagram = new HashSet<AnagramModel> { anagram };
+            var cachedModel = new CacheModel { Caches = cachedAnagram, IsSuccessful = true };
+            return cachedModel;
+        }
+        public CacheModel GetCacheModelIsSuccessfulFalse()
+        {
+            var anagram = new AnagramModel { Word = "alus", AnagramWord = "sula" };
+            var cachedAnagram = new HashSet<AnagramModel> { anagram };
+            var cachedModel = new CacheModel { Caches = cachedAnagram, IsSuccessful = false };
+            return cachedModel;
+        }
+
     }
 }
