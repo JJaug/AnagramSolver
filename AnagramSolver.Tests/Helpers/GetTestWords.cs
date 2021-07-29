@@ -6,6 +6,18 @@ namespace AnagramSolver.Tests.Helpers
 {
     public class GetTestWords
     {
+        public List<string> GetListOfStrings()
+        {
+            var allWords = new List<string>();
+            string[] words = { "labos", "balos", "mirti", "rimti", "alus", "sula", "salu",
+                "visma", "giria", "girti", "rytas", "pieva", "lekiau", "kiaule", "saule",
+                "dabar", "sveiki", "puiku", "tvarka", "varna" };
+            for (int i = 0; i < 20; i++)
+            {
+                allWords.Add(words[i]);
+            }
+            return allWords;
+        }
         public List<Word> GetListOfWord()
         {
             var allWords = new List<Word>();

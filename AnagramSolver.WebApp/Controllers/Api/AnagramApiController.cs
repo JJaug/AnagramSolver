@@ -13,24 +13,24 @@ namespace AnagramSolver.WebApp.Controllers.Api
     public class AnagramApiController : ControllerBase
     {
         private readonly IWordServices _wordServices;
-        private readonly ICacheServices _cachedAnagrams;
-        private readonly ISearchLogServices _searchLog;
+        private readonly ICacheServices _cachedServices;
+        private readonly ISearchLogServices _searchLogServices;
         public AnagramApiController(IWordServices wordServices, ICacheServices cachedanagrams, ISearchLogServices searchLog)
         {
             _wordServices = wordServices;
-            _cachedAnagrams = cachedanagrams;
-            _searchLog = searchLog;
+            _cachedServices = cachedanagrams;
+            _searchLogServices = searchLog;
 
         }
         [HttpGet("[action]/{wordForAnagrams}")]
         public string GetJsonString(string wordForAnagrams)
         {
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
+            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
                 vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
+                _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
             string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
@@ -40,20 +40,20 @@ namespace AnagramSolver.WebApp.Controllers.Api
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(wordForAnagrams);
-            var listOfAnagrams = cachedModels.Caches;
+            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
+            var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                listOfAnagrams = _wordServices.GetAnagrams(wordForAnagrams);
-                _cachedAnagrams.PutAnagramToCache(wordForAnagrams, listOfAnagrams);
+                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
             stopWatch.Stop();
             TimeSpan ts = stopWatch.Elapsed;
             var elapsedTime = ts.Milliseconds;
 
-            _searchLog.UpdateSearchLog(elapsedTime, wordForAnagrams, listOfAnagrams);
+            _searchLogServices.UpdateSearchLog(elapsedTime, wordForAnagrams, vocabularyByModel);
 
-            return listOfAnagrams;
+            return vocabularyByModel;
         }
         [HttpGet("[action]/{word}")]
         public HashSet<string> GetSearchList(string wordPart)
