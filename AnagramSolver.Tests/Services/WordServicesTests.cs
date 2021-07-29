@@ -13,7 +13,7 @@ namespace AnagramSolver.Tests.Services
     {
         private IWordRepository _wordRepository;
         private IWordServices _wordServices;
-        private GetTestWords _testWords;
+        private TestData _testWords;
         private IConfiguration _configuration;
         [SetUp]
         public void Setup()
@@ -21,7 +21,7 @@ namespace AnagramSolver.Tests.Services
             _wordRepository = Substitute.For<IWordRepository>();
             _configuration = Substitute.For<IConfiguration>();
             _wordServices = new WordServices(_wordRepository, _configuration);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         [TestCase(1)]

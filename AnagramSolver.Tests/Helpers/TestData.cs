@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace AnagramSolver.Tests.Helpers
 {
-    public class GetTestWords
+    public class TestData
     {
         public List<string> GetListOfStrings()
         {

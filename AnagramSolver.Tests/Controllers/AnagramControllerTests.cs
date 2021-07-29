@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.BusinessLogic.Classes.CacheAnagrams;
+using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
 using AnagramSolver.Tests.Helpers;
 using AnagramSolver.WebApp.Controllers;
@@ -12,17 +13,19 @@ namespace AnagramSolver.Tests.Controllers
     [TestFixture]
     public class AnagramControllerTests
     {
+        private ICacheRepository _cacheRepository;
         private ICacheServices _cachedServices;
         private IWordServices _wordServices;
         private AnagramController _anagramController;
-        private GetTestWords _testWords;
+        private TestData _testWords;
         [SetUp]
         public void Setup()
         {
             _cachedServices = Substitute.For<ICacheServices>();
+            _cacheRepository = Substitute.For<ICacheRepository>();
             _wordServices = Substitute.For<IWordServices>();
             _anagramController = new AnagramController(_wordServices, _cachedServices);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         public void Should_GetWordsInPageOne_When_GivenPageNumberOne()
@@ -70,6 +73,18 @@ namespace AnagramSolver.Tests.Controllers
             Assert.AreNotEqual(allWords, model);
             Assert.That(cachedModel.IsSuccessful, Is.False);
         }
+        [Test]
+        public void Should_ProveThatCacheIsUsed_When_CacheHasSpecifiedWordInside()
+        {
+            var wordForAnagram = "alus";
+            var cachedModel = _testWords.GetCacheModelIsSuccessfulTrue();
+            _cachedServices.GetCachedAnagram(Arg.Any<string>()).Returns(cachedModel);
+            var cachedServices = new CacheServices(_cacheRepository);
 
+            cachedServices.GetCachedAnagram(wordForAnagram);
+
+            _cacheRepository.Received().FindCachedWord(wordForAnagram);
+
+        }
     }
 }

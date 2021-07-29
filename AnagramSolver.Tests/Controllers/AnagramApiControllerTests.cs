@@ -17,7 +17,7 @@ namespace AnagramSolver.Tests.Controllers
         private ICacheServices _cachedServices;
         private ISearchLogServices _searchLogServices;
         private AnagramApiController _anagramApiController;
-        private GetTestWords _testWords;
+        private TestData _testWords;
 
         [SetUp]
         public void Setup()
@@ -26,7 +26,7 @@ namespace AnagramSolver.Tests.Controllers
             _wordServices = Substitute.For<IWordServices>();
             _searchLogServices = Substitute.For<ISearchLogServices>();
             _anagramApiController = new AnagramApiController(_wordServices, _cachedServices, _searchLogServices);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         public void Should_GetJsonStringFromVocabularyByModel_When_GivenWordForAnagramUsingCache()

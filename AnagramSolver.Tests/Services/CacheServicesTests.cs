@@ -10,13 +10,13 @@ namespace AnagramSolver.Tests.Services
     [TestFixture]
     public class CacheServicesTests
     {
-        private GetTestWords _testWords;
+        private TestData _testWords;
         private ICacheRepository _cacheRepository;
         private ICacheServices _cacheServices;
         [SetUp]
         public void Setup()
         {
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
             _cacheRepository = Substitute.For<ICacheRepository>();
             _cacheServices = new CacheServices(_cacheRepository);
 

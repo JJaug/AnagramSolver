@@ -11,14 +11,14 @@ namespace AnagramSolver.Tests.Controllers
     {
         private IUserService _userService;
         private UserController _userController;
-        private GetTestWords _testWords;
+        private TestData _testWords;
 
         [SetUp]
         public void Setup()
         {
             _userService = Substitute.For<IUserService>();
             _userController = new UserController(_userService);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         public void Should_CreateUser_When_GivenUserDto()

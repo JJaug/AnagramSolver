@@ -13,14 +13,14 @@ namespace AnagramSolver.Tests.Services
     {
         private IUserRepository _userRepository;
         private IUserService _userService;
-        private GetTestWords _testWords;
+        private TestData _testWords;
 
         [SetUp]
         public void Setup()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _userService = new UserServices(_userRepository);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         public void Should_ReadUser_When_GivenUserID()

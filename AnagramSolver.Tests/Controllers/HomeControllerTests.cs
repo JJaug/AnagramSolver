@@ -15,14 +15,14 @@ namespace AnagramSolver.Tests.Controllers
         private ICacheServices _cachedServices;
         private IWordServices _wordServices;
         private HomeController _homeController;
-        private GetTestWords _testWords;
+        private TestData _testWords;
         [SetUp]
         public void Setup()
         {
             _cachedServices = Substitute.For<ICacheServices>();
             _wordServices = Substitute.For<IWordServices>();
             _homeController = new HomeController(_wordServices, _cachedServices);
-            _testWords = new GetTestWords();
+            _testWords = new TestData();
         }
         [Test]
         [TestCase("alus")]
