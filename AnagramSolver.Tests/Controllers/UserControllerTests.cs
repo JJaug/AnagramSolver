@@ -1,12 +1,8 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Tests.Helpers;
 using AnagramSolver.WebApp.Controllers;
 using NSubstitute;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AnagramSolver.Tests.Controllers
 {
@@ -15,14 +11,24 @@ namespace AnagramSolver.Tests.Controllers
     {
         private IUserService _userService;
         private UserController _userController;
+        private GetTestWords _testWords;
 
         [SetUp]
         public void Setup()
         {
             _userService = Substitute.For<IUserService>();
             _userController = new UserController(_userService);
+            _testWords = new GetTestWords();
         }
-        //[Test]
-        //public void Creates
+        [Test]
+        public void Should_CreateUser_When_GivenUserDto()
+        {
+            var userDto = _testWords.GetUserDto();
+            _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
+
+            var result = _userController.Create(userDto);
+
+            Assert.IsNotNull(result);
+        }
     }
 }

@@ -14,25 +14,27 @@ namespace AnagramSolver.Tests.Services
         private IWordRepository _wordRepository;
         private IWordServices _wordServices;
         private GetTestWords _testWords;
-        private IConfiguration configuration;
+        private IConfiguration _configuration;
         [SetUp]
         public void Setup()
         {
             _wordRepository = Substitute.For<IWordRepository>();
-            _wordServices = new WordServices(_wordRepository, configuration);
+            _configuration = Substitute.For<IConfiguration>();
+            _wordServices = new WordServices(_wordRepository, _configuration);
             _testWords = new GetTestWords();
         }
         [Test]
         [TestCase(1)]
         public void Should_GetSpecificWordsInAnagramModelVocabulary_When_GivenPageNumber(int pageNumber)
         {
+            var wordsInPage = "5";
             var allWords = _testWords.GetListOfWord();
-            var wordsInPage = 5;
+            _configuration["MyConfig:WordsInPage"].Returns(wordsInPage);
             _wordRepository.GetWords().Returns(allWords);
 
             var result = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
 
-            Assert.That(result.Count, Is.Not.Null);
+            Assert.That(result.Count, Is.EqualTo(5));
         }
         [Test]
         [TestCase("balos")]

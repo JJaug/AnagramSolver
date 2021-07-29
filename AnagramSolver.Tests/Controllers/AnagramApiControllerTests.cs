@@ -2,7 +2,6 @@
 using AnagramSolver.Models.Models;
 using AnagramSolver.Tests.Helpers;
 using AnagramSolver.WebApp.Controllers.Api;
-using Microsoft.AspNetCore.Mvc;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;

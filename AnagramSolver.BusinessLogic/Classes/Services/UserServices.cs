@@ -11,7 +11,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             _userRepository = userRepository;
         }
-        public void CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
+        public bool CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
         {
 
             var hash = new PasswordService();
@@ -29,6 +29,8 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
                 userWords.Add(userWord);
             }
             _userRepository.AddUserWords(userWords);
+
+            return true;
         }
         public string ReadUser(long id)
         {

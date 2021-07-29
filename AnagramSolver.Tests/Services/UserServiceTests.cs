@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using AnagramSolver.Tests.Helpers;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -12,18 +13,20 @@ namespace AnagramSolver.Tests.Services
     {
         private IUserRepository _userRepository;
         private IUserService _userService;
+        private GetTestWords _testWords;
 
         [SetUp]
         public void Setup()
         {
             _userRepository = Substitute.For<IUserRepository>();
             _userService = new UserServices(_userRepository);
+            _testWords = new GetTestWords();
         }
         [Test]
         public void Should_ReadUser_When_GivenUserID()
         {
-            var testUser = CreateTestUser();
-            _userRepository.GetUser(Arg.Any<int>()).Returns(testUser);
+            var testUser = _testWords.CreateTestUser();
+            _userRepository.GetUser(Arg.Any<long>()).Returns(testUser);
             var stringToShow = $"{testUser.FirstName}  {testUser.LastName}  {testUser.Email}";
 
             var result = _userService.ReadUser(testUser.Id);
@@ -33,7 +36,7 @@ namespace AnagramSolver.Tests.Services
         [Test]
         public void Should_CreateUser_When_GivenUserInfo()
         {
-            var testUser = CreateTestUser();
+            var testUser = _testWords.CreateTestUser();
             var favouriteWord = "neprisikiskiakopusteliaudavome";
             var wordFromDb = Word.CreateTestWord();
             var userWord = new UserWord { UserId = 1, WordId = 1 };
@@ -41,22 +44,12 @@ namespace AnagramSolver.Tests.Services
             listOfUserWords.Add(userWord);
             _userRepository.AddUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.Pass).Returns(testUser.Id);
             _userRepository.GetWord(favouriteWord).Returns(wordFromDb);
-            _userRepository.AddUserWords(listOfUserWords);
+            _userRepository.AddUserWords(listOfUserWords).Returns(true);
 
-            _userService.CreateUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.Pass, favouriteWord);
+            var isSuccessful = _userService.CreateUser(testUser.FirstName, testUser.LastName, testUser.Email, testUser.Pass, favouriteWord);
 
-            Assert.Pass();
+            Assert.IsTrue(isSuccessful);
         }
-        public User CreateTestUser()
-        {
-            var userId = 1;
-            var userName = "Jonas";
-            var userLastName = "Jaugelis";
-            var userEmail = "abc@cdv.lt";
-            var userPass = "labas";
-            var user = new User { Id = userId, FirstName = userName, LastName = userLastName, Email = userEmail, Pass = userPass };
-            return user;
 
-        }
     }
 }

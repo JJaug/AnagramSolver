@@ -34,12 +34,11 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             _context.SaveChanges();
 
         }
-        public void AddUserWords(List<UserWord> userWords)
+        public bool AddUserWords(List<UserWord> userWords)
         {
-
             _context.UserWords.AddRange(userWords);
             _context.SaveChanges();
-
+            return true;
         }
         public User GetUser(long id)
         {

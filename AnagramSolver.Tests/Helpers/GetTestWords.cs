@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
+using AnagramSolver.WebApp.Models;
 using System.Collections.Generic;
 
 namespace AnagramSolver.Tests.Helpers
@@ -59,6 +60,34 @@ namespace AnagramSolver.Tests.Helpers
             var cachedAnagram = new HashSet<AnagramModel> { anagram };
             var cachedModel = new CacheModel { Caches = cachedAnagram, IsSuccessful = false };
             return cachedModel;
+        }
+        public CachedWord GetCachedWord()
+        {
+            var cachedWord = new CachedWord { Word = "alus", Anagram = "sula" };
+            return cachedWord;
+        }
+        public UserDto GetUserDto()
+        {
+            var userDto = new UserDto
+            {
+                Id = 1,
+                FirstName = "Jonas",
+                LastName = "Jaugelis",
+                Email = "jonas@jonas.lt",
+                Pass = "labas",
+                FavouriteWords = "pieva"
+            };
+            return userDto;
+        }
+        public User CreateTestUser()
+        {
+            var userId = 1;
+            var userName = "Jonas";
+            var userLastName = "Jaugelis";
+            var userEmail = "abc@cdv.lt";
+            var userPass = "labas";
+            var user = new User { Id = userId, FirstName = userName, LastName = userLastName, Email = userEmail, Pass = userPass };
+            return user;
         }
 
     }
