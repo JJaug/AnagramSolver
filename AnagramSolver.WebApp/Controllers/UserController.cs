@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -17,9 +18,9 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(UserDto userDto)
+        public async Task<IActionResult> Create(UserDto userDto)
         {
-            _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
+            await _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
             return View();
         }
     }

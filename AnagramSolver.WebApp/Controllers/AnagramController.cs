@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -13,22 +14,25 @@ namespace AnagramSolver.WebApp.Controllers
             _wordServices = wordServices;
         }
 
-        public IActionResult Index(int pageNumber = 1)
+        public async Task<IActionResult> Index(int pageNumber = 1)
         {
-            var vocabularyByModel = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
+            var vocabularyByModel = await _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
             ViewBag.pageNumber = pageNumber;
             return View(vocabularyByModel);
         }
-        public IActionResult Details(string wordForAnagrams)
+        public async Task<IActionResult> Details(string wordForAnagrams)
         {
-            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
+            var cachedModels = await _cachedServices.GetCachedAnagram(wordForAnagrams);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                var anagramTask = await _wordServices.GetAnagrams(wordForAnagrams);
+                vocabularyByModel = anagramTask;
                 _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
             return View(vocabularyByModel);
         }
     }
 }
+
+

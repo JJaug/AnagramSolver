@@ -33,7 +33,7 @@ namespace AnagramSolver.BusinessLogic.Classes.PersistentRepositories
                     vocabulary.Add(word);
                 }
             }
-            _fileToDatabaseRepository.AddWordsToDatabase(vocabulary);
+            _fileToDatabaseRepository.AddWordsToDatabase(vocabulary).ConfigureAwait(false);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.Repositories
 {
@@ -10,15 +11,15 @@ namespace AnagramSolver.BusinessLogic.Classes.Repositories
         {
             _context = context;
         }
-        public CachedWord FindCachedWord(string command)
+        public async Task<CachedWord> FindCachedWord(string command)
         {
-            var cachedAnagram = _context.CachedWords.Find(command);
-            return cachedAnagram;
+            var cachedAnagram = _context.CachedWords.FindAsync(command);
+            return await cachedAnagram;
         }
 
-        public void SaveWordToCache(CachedWord wordToCache)
+        public async void SaveWordToCache(CachedWord wordToCache)
         {
-            _context.CachedWords.Add(wordToCache);
+            await _context.CachedWords.AddAsync(wordToCache);
             _context.SaveChanges();
         }
     }

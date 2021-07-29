@@ -3,6 +3,7 @@ using AnagramSolver.Models.Models;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.Services
 {
@@ -15,11 +16,11 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
             _wordRepository = wordRepository;
             config = configuration;
         }
-        public HashSet<AnagramModel> GetWordsAsAnagramModelVocabulary(int pageNumber)
+        public async Task<HashSet<AnagramModel>> GetWordsAsAnagramModelVocabulary(int pageNumber)
         {
             var wordsInPage = int.Parse(config["MyConfig:WordsInPage"]);
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
-            var allWords = _wordRepository.GetWords();
+            var allWords = await _wordRepository.GetWords();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {
@@ -37,9 +38,9 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
             }
             return vocabularyByModel.Skip(howManySkip).Take(wordsInPage).ToHashSet();
         }
-        public HashSet<AnagramModel> GetAnagrams(string wordForAnagrams)
+        public async Task<HashSet<AnagramModel>> GetAnagrams(string wordForAnagrams)
         {
-            var allWords = _wordRepository.GetWords();
+            var allWords = await _wordRepository.GetWords();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {
@@ -52,9 +53,9 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
             var anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
             return anagramsById;
         }
-        public HashSet<string> GetWordsThatHaveGivenPart(string wordPart)
+        public async Task<HashSet<string>> GetWordsThatHaveGivenPart(string wordPart)
         {
-            var wordsFromDb = _wordRepository.GetSpecificWords(wordPart);
+            var wordsFromDb = await _wordRepository.GetSpecificWords(wordPart);
             var specificWords = new HashSet<string>();
             foreach (var word in wordsFromDb)
             {

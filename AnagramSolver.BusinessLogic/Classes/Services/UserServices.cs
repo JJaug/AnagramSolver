@@ -1,6 +1,7 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
@@ -11,13 +12,13 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             _userRepository = userRepository;
         }
-        public bool CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
+        public async Task<bool> CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
         {
 
             var hash = new PasswordService();
             var password = hash.GetHashString(pass);
             var allWords = favouriteWords.Split(" ");
-            var id = _userRepository.AddUser(firstName, lastName, email, password);
+            var id = await _userRepository.AddUser(firstName, lastName, email, password);
             var userWords = new List<UserWord>();
 
             foreach (var word in allWords)
@@ -28,13 +29,13 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
                 userWord.UserId = id;
                 userWords.Add(userWord);
             }
-            _userRepository.AddUserWords(userWords);
+            await _userRepository.AddUserWords(userWords);
 
             return true;
         }
-        public string ReadUser(long id)
+        public async Task<string> ReadUser(long id)
         {
-            var userFromDb = _userRepository.GetUser(id);
+            var userFromDb = await _userRepository.GetUser(id);
             var stringToShow = $"{userFromDb.FirstName}  {userFromDb.LastName}  {userFromDb.Email}";
             return stringToShow;
         }

@@ -2,6 +2,7 @@
 using AnagramSolver.EF.DatabaseFirst.Models;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users
 {
@@ -12,47 +13,47 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             _context = context;
         }
-        public Word GetWord(string word)
+        public Task<Word> GetWord(string word)
         {
             var wordFromDB = _context.Words.FirstOrDefault(w => w.Word1 == word);
-            return wordFromDB;
+            return Task.FromResult(wordFromDB);
 
 
         }
-        public long AddUser(string firstName, string lastName, string email, string password)
+        public Task<long> AddUser(string firstName, string lastName, string email, string password)
         {
             var userToAdd = new User { FirstName = firstName, LastName = lastName, Email = email, Pass = password };
             _context.Users.Add(userToAdd);
             _context.SaveChanges();
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            return user.Id;
+            return Task.FromResult(user.Id);
         }
-        public void AddUserWord(UserWord userWord)
+        public async void AddUserWord(UserWord userWord)
         {
 
-            _context.UserWords.Add(userWord);
+            await _context.UserWords.AddAsync(userWord);
             _context.SaveChanges();
 
         }
-        public bool AddUserWords(List<UserWord> userWords)
+        public Task<bool> AddUserWords(List<UserWord> userWords)
         {
             _context.UserWords.AddRange(userWords);
             _context.SaveChanges();
-            return true;
+            return Task.FromResult(true);
         }
-        public User GetUser(long id)
+        public Task<User> GetUser(long id)
         {
 
             var result = _context.Users.FirstOrDefault(u => u.Id == id);
-            return result;
+            return Task.FromResult(result);
 
         }
-        public void RemoveUser(long id)
+        public async void RemoveUser(long id)
         {
 
             var wordToRemove = _context.Users.FirstOrDefault(u => u.Id == id);
             _context.Users.Remove(wordToRemove);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
 
         }
     }

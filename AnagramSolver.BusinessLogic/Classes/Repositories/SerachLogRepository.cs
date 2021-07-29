@@ -10,9 +10,9 @@ namespace AnagramSolver.BusinessLogic.Classes.Repositories
         {
             _context = context;
         }
-        public void PutInfoToSearchLog(SearchLog logToAdd)
+        public async void PutInfoToSearchLog(SearchLog logToAdd)
         {
-            _context.SearchLogs.Add(logToAdd);
+            await _context.SearchLogs.AddAsync(logToAdd);
             _context.SaveChanges();
         }
     }

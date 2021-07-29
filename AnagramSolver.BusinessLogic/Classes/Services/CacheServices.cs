@@ -2,6 +2,7 @@
 using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.Models.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
@@ -12,10 +13,10 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
         {
             _cacheRepository = cacheRepository;
         }
-        public CacheModel GetCachedAnagram(string command)
+        public async Task<CacheModel> GetCachedAnagram(string command)
         {
             var cachedModel = new CacheModel();
-            var cachedAnagram = _cacheRepository.FindCachedWord(command);
+            var cachedAnagram = await _cacheRepository.FindCachedWord(command);
             if (cachedAnagram != null)
             {
                 var anagramModel = new AnagramModel();

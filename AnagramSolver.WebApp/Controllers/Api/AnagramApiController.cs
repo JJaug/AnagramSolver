@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers.Api
 {
@@ -23,28 +24,28 @@ namespace AnagramSolver.WebApp.Controllers.Api
 
         }
         [HttpGet("[action]/{wordForAnagrams}")]
-        public string GetJsonString(string wordForAnagrams)
+        public async Task<string> GetJsonString(string wordForAnagrams)
         {
-            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
+            var cachedModels = await _cachedServices.GetCachedAnagram(wordForAnagrams);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                vocabularyByModel = await _wordServices.GetAnagrams(wordForAnagrams);
                 _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
             string jsonString = JsonSerializer.Serialize(vocabularyByModel);
             return jsonString;
         }
         [HttpGet("[action]/{wordForAnagrams}")]
-        public HashSet<AnagramModel> GetForJS(string wordForAnagrams)
+        public async Task<HashSet<AnagramModel>> GetForJS(string wordForAnagrams)
         {
             var stopWatch = new Stopwatch();
             stopWatch.Start();
-            var cachedModels = _cachedServices.GetCachedAnagram(wordForAnagrams);
+            var cachedModels = await _cachedServices.GetCachedAnagram(wordForAnagrams);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                vocabularyByModel = _wordServices.GetAnagrams(wordForAnagrams);
+                vocabularyByModel = await _wordServices.GetAnagrams(wordForAnagrams);
                 _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
             }
             stopWatch.Stop();
@@ -56,9 +57,9 @@ namespace AnagramSolver.WebApp.Controllers.Api
             return vocabularyByModel;
         }
         [HttpGet("[action]/{word}")]
-        public HashSet<string> GetSearchList(string wordPart)
+        public async Task<HashSet<string>> GetSearchList(string wordPart)
         {
-            var wordsContainingSpecificPart = _wordServices.GetWordsThatHaveGivenPart(wordPart);
+            var wordsContainingSpecificPart = await _wordServices.GetWordsThatHaveGivenPart(wordPart);
 
             return wordsContainingSpecificPart;
         }

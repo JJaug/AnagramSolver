@@ -2,6 +2,7 @@
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
 {
@@ -20,13 +21,13 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Form(string id)
+        public async Task<IActionResult> Form(string id)
         {
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(id);
+            var cachedModels = await _cachedAnagrams.GetCachedAnagram(id);
             var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                vocabularyByModel = _wordServices.GetAnagrams(id);
+                vocabularyByModel = await _wordServices.GetAnagrams(id);
                 _cachedAnagrams.PutAnagramToCache(id, vocabularyByModel);
             }
             return View(vocabularyByModel);

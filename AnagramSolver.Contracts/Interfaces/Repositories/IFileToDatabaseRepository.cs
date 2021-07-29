@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.Contracts.Interfaces
 {
     public interface IFileToDatabaseRepository
     {
-        public void AddWordsToDatabase(HashSet<string> vocabulary);
+        public Task AddWordsToDatabase(HashSet<string> vocabulary);
 
     }
 }
