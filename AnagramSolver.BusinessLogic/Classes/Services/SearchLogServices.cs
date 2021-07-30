@@ -8,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes.SearchLogs
 {
     public class SearchLogServices : ISearchLogServices
     {
-        private ISearchLogRepository _searchLogRepository;
+        private readonly ISearchLogRepository _searchLogRepository;
         public SearchLogServices(ISearchLogRepository searchLogRepository)
         {
             _searchLogRepository = searchLogRepository;

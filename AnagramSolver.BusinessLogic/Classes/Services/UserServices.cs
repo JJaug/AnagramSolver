@@ -33,9 +33,9 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
 
             return true;
         }
-        public async Task<string> ReadUser(long id)
+        public string ReadUser(long id)
         {
-            var userFromDb = await _userRepository.GetUser(id);
+            var userFromDb = _userRepository.GetUser(id);
             var stringToShow = $"{userFromDb.FirstName}  {userFromDb.LastName}  {userFromDb.Email}";
             return stringToShow;
         }

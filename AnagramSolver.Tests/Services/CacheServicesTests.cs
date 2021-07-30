@@ -28,7 +28,7 @@ namespace AnagramSolver.Tests.Services
             var cachedAnagram = _testWords.GetCachedWord();
             _cacheRepository.FindCachedWord(Arg.Any<string>()).Returns(cachedAnagram);
 
-            var cachedModel = _cacheServices.GetCachedAnagram(command);
+            var cachedModel = _cacheServices.GetCachedAnagram(command).Result;
 
             Assert.IsTrue(cachedModel.IsSuccessful);
 

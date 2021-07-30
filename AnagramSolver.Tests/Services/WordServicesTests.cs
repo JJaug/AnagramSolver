@@ -32,7 +32,7 @@ namespace AnagramSolver.Tests.Services
             _configuration["MyConfig:WordsInPage"].Returns(wordsInPage);
             _wordRepository.GetWords().Returns(allWords);
 
-            var result = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber);
+            var result = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber).Result;
 
             Assert.That(result.Count, Is.EqualTo(5));
         }
@@ -44,7 +44,7 @@ namespace AnagramSolver.Tests.Services
             var allWords = _testWords.GetListOfWord();
             _wordRepository.GetWords().Returns(allWords);
 
-            var result = _wordServices.GetAnagrams(word);
+            var result = _wordServices.GetAnagrams(word).Result;
 
             Assert.That(result.Count, Is.GreaterThanOrEqualTo(1));
         }
@@ -57,7 +57,7 @@ namespace AnagramSolver.Tests.Services
             var specificWords = allWords.Where(a => a.Word1.Contains(wordPart)).ToHashSet();
             _wordRepository.GetSpecificWords(wordPart).Returns(specificWords);
 
-            var result = _wordServices.GetWordsThatHaveGivenPart(wordPart);
+            var result = _wordServices.GetWordsThatHaveGivenPart(wordPart).Result;
 
             Assert.That(specificWords.Count, Is.EqualTo(result.Count));
         }

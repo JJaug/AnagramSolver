@@ -9,7 +9,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
 {
     public class WordServices : IWordServices
     {
-        private IConfiguration config;
+        private readonly IConfiguration config;
         private readonly IWordRepository _wordRepository;
         public WordServices(IWordRepository wordRepository, IConfiguration configuration)
         {
@@ -20,7 +20,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         {
             var wordsInPage = int.Parse(config["MyConfig:WordsInPage"]);
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
-            var allWords = await _wordRepository.GetWords();
+            var allWords = _wordRepository.GetWords();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {
@@ -40,7 +40,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         }
         public async Task<HashSet<AnagramModel>> GetAnagrams(string wordForAnagrams)
         {
-            var allWords = await _wordRepository.GetWords();
+            var allWords = _wordRepository.GetWords();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {
@@ -55,7 +55,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         }
         public async Task<HashSet<string>> GetWordsThatHaveGivenPart(string wordPart)
         {
-            var wordsFromDb = await _wordRepository.GetSpecificWords(wordPart);
+            var wordsFromDb = _wordRepository.GetSpecificWords(wordPart);
             var specificWords = new HashSet<string>();
             foreach (var word in wordsFromDb)
             {

@@ -8,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
 {
     public class CacheServices : ICacheServices
     {
-        private ICacheRepository _cacheRepository;
+        private readonly ICacheRepository _cacheRepository;
         public CacheServices(ICacheRepository cacheRepository)
         {
             _cacheRepository = cacheRepository;
@@ -32,6 +32,7 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
         public void PutAnagramToCache(string command, HashSet<AnagramModel> listOfAnagrams)
         {
             var anagramToDB = string.Empty;
+
             foreach (var anagram in listOfAnagrams)
             {
                 anagramToDB += $"{anagram.AnagramWord}  ";

@@ -34,7 +34,7 @@ namespace AnagramSolver.Tests.Controllers
             _wordServices.GetWordsAsAnagramModelVocabulary(Arg.Any<int>()).Returns(allWords);
             var pageNumber = 1;
 
-            var result = (ViewResult)_anagramController.Index(pageNumber);
+            var result = (ViewResult)_anagramController.Index(pageNumber).Result;
             var model = result.Model;
 
             Assert.AreEqual(allWords, model);
@@ -47,7 +47,7 @@ namespace AnagramSolver.Tests.Controllers
             var allWords = cachedModel.Caches;
             _cachedServices.GetCachedAnagram(wordForAnagrams).Returns(cachedModel);
 
-            var result = (ViewResult)_anagramController.Details(wordForAnagrams);
+            var result = (ViewResult)_anagramController.Details(wordForAnagrams).Result;
             var model = result.Model;
 
             Assert.AreEqual(allWords, model);
@@ -67,7 +67,7 @@ namespace AnagramSolver.Tests.Controllers
             _wordServices.GetAnagrams(wordForAnagrams).Returns(vocabularyByModel);
             _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
 
-            var result = (ViewResult)_anagramController.Details(wordForAnagrams);
+            var result = (ViewResult)_anagramController.Details(wordForAnagrams).Result;
             var model = result.Model;
 
             Assert.AreNotEqual(allWords, model);

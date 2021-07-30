@@ -10,7 +10,7 @@ namespace AnagramSolver.Contracts.Interfaces
         public Task<long> AddUser(string firstName, string lastName, string email, string password);
         public void AddUserWord(UserWord userWord);
         public Task<bool> AddUserWords(List<UserWord> userWords);
-        public Task<User> GetUser(long id);
+        public User GetUser(long id);
         public void RemoveUser(long id);
 
 

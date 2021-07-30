@@ -2,6 +2,7 @@
 using AnagramSolver.Models.Models;
 using AnagramSolver.Tests.Helpers;
 using AnagramSolver.WebApp.Controllers.Api;
+using AnagramSolver.WebApp.Services;
 using NSubstitute;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ namespace AnagramSolver.Tests.Controllers
         private IWordServices _wordServices;
         private ICacheServices _cachedServices;
         private ISearchLogServices _searchLogServices;
+        private IUserLoginService _userLoginService;
+
         private AnagramApiController _anagramApiController;
         private TestData _testWords;
 
@@ -25,7 +28,8 @@ namespace AnagramSolver.Tests.Controllers
             _cachedServices = Substitute.For<ICacheServices>();
             _wordServices = Substitute.For<IWordServices>();
             _searchLogServices = Substitute.For<ISearchLogServices>();
-            _anagramApiController = new AnagramApiController(_wordServices, _cachedServices, _searchLogServices);
+            _userLoginService = Substitute.For<IUserLoginService>();
+            _anagramApiController = new AnagramApiController(_wordServices, _cachedServices, _searchLogServices, _userLoginService);
             _testWords = new TestData();
         }
         [Test]
@@ -103,7 +107,7 @@ namespace AnagramSolver.Tests.Controllers
             var specificWords = allWords.Where(w => w.Contains(wordPart)).ToHashSet();
             _wordServices.GetWordsThatHaveGivenPart(wordPart).Returns(specificWords);
 
-            var result = _anagramApiController.GetSearchList(wordPart);
+            var result = _anagramApiController.GetSearchList(wordPart).Result;
 
             Assert.That(specificWords.Count, Is.EqualTo(result.Count));
             Assert.AreEqual(specificWords, result);

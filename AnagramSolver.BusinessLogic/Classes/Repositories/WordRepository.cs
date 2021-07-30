@@ -2,7 +2,6 @@
 using AnagramSolver.EF.DatabaseFirst.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
 {
@@ -14,18 +13,18 @@ namespace AnagramSolver.BusinessLogic.Classes.WordRepositories
             _context = context;
         }
 
-        public Task<HashSet<Word>> GetSpecificWords(string wordPart)
+        public HashSet<Word> GetSpecificWords(string wordPart)
         {
             var wordsFromDb = _context.Words
                 .Where(w => w.Word1.Contains(wordPart))
                 .ToHashSet();
 
-            return Task.FromResult(wordsFromDb);
+            return wordsFromDb;
         }
-        public Task<List<Word>> GetWords()
+        public List<Word> GetWords()
         {
             var allWords = _context.Words.ToList();
-            return Task.FromResult(allWords);
+            return allWords;
         }
     }
 }

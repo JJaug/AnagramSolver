@@ -8,7 +8,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
 {
     public class UserRepository : IUserRepository
     {
-        private VocabularyDBContext _context;
+        private readonly VocabularyDBContext _context;
         public UserRepository(VocabularyDBContext context)
         {
             _context = context;
@@ -41,11 +41,11 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             _context.SaveChanges();
             return Task.FromResult(true);
         }
-        public Task<User> GetUser(long id)
+        public User GetUser(long id)
         {
 
             var result = _context.Users.FirstOrDefault(u => u.Id == id);
-            return Task.FromResult(result);
+            return result;
 
         }
         public async void RemoveUser(long id)

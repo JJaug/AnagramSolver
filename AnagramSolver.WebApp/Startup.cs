@@ -7,6 +7,9 @@ using AnagramSolver.BusinessLogic.Classes.Users;
 using AnagramSolver.BusinessLogic.Classes.WordRepositories;
 using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
+using AnagramSolver.WebApp.Helpers;
+using AnagramSolver.WebApp.Services;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -43,7 +46,11 @@ namespace AnagramSolver.WebApp
             services.AddScoped<IFileToDatabaseRepository, FileToDatabaseRepository>();
 
             services.AddControllersWithViews();
+            services.AddAuthentication("BasicAuthentication")
+                .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>("BasicAuthentication", null);
 
+            // configure DI for application services
+            services.AddScoped<IUserLoginService, UserLoginService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

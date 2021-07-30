@@ -32,7 +32,7 @@ namespace AnagramSolver.Tests.Controllers
             var allWords = cachedModel.Caches;
             _cachedServices.GetCachedAnagram(wordForAnagrams).Returns(cachedModel);
 
-            var result = (ViewResult)_homeController.Form(wordForAnagrams);
+            var result = (ViewResult)_homeController.Form(wordForAnagrams).Result;
             var model = result.Model;
 
             Assert.AreEqual(allWords, model);
@@ -52,7 +52,7 @@ namespace AnagramSolver.Tests.Controllers
             _wordServices.GetAnagrams(wordForAnagrams).Returns(vocabularyByModel);
             _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
 
-            var result = (ViewResult)_homeController.Form(wordForAnagrams);
+            var result = (ViewResult)_homeController.Form(wordForAnagrams).Result;
             var model = result.Model;
 
             Assert.AreNotEqual(allWords, model);

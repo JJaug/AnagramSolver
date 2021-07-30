@@ -1,7 +1,6 @@
 ﻿@{
     Layout = "_Layout";
 }
-@Model
 
 
 <table border="1" cellpadding="2" cellspacing="2">
@@ -11,7 +10,7 @@
     @foreach (var item in Model)
     {
         <tr>
-            <td><a>@Html.ActionLink($"{@item.Word}", "Details", new { @id = @item.Word })</a></td>
+            <td><a>@Html.ActionLink($"{@item.Word}", "Details", new { @wordForAnagrams = @item.Word })</a></td>
         </tr>
     }
 </table>

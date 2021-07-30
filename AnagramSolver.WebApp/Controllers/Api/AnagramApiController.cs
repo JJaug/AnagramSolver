@@ -1,5 +1,8 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.Models.Models;
+using AnagramSolver.WebApp.Models;
+using AnagramSolver.WebApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -16,11 +19,13 @@ namespace AnagramSolver.WebApp.Controllers.Api
         private readonly IWordServices _wordServices;
         private readonly ICacheServices _cachedServices;
         private readonly ISearchLogServices _searchLogServices;
-        public AnagramApiController(IWordServices wordServices, ICacheServices cachedanagrams, ISearchLogServices searchLog)
+        private readonly IUserLoginService _userLoginService;
+        public AnagramApiController(IWordServices wordServices, ICacheServices cachedanagrams, ISearchLogServices searchLog, IUserLoginService userService)
         {
             _wordServices = wordServices;
             _cachedServices = cachedanagrams;
             _searchLogServices = searchLog;
+            _userLoginService = userService;
 
         }
         [HttpGet("[action]/{wordForAnagrams}")]
@@ -62,6 +67,25 @@ namespace AnagramSolver.WebApp.Controllers.Api
             var wordsContainingSpecificPart = await _wordServices.GetWordsThatHaveGivenPart(wordPart);
 
             return wordsContainingSpecificPart;
+        }
+        [Authorize]
+        [AllowAnonymous]
+        [HttpPost("authenticate")]
+        public async Task<IActionResult> Authenticate([FromBody] AuthenticateModel model)
+        {
+            var user = await _userLoginService.Authenticate(model.Username, model.Password);
+
+            if (user == null)
+                return BadRequest(new { message = "Username or password is incorrect" });
+
+            return Ok(user);
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var users = await _userLoginService.GetAll();
+            return Ok(users);
         }
     }
 }

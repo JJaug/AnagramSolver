@@ -13,8 +13,8 @@ namespace AnagramSolver.BusinessLogic.Classes.Repositories
         }
         public async Task<CachedWord> FindCachedWord(string command)
         {
-            var cachedAnagram = _context.CachedWords.FindAsync(command);
-            return await cachedAnagram;
+            var cachedWord = await _context.CachedWords.FindAsync(command);
+            return cachedWord;
         }
 
         public async void SaveWordToCache(CachedWord wordToCache)
