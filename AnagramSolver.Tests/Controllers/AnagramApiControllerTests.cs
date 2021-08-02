@@ -41,7 +41,7 @@ namespace AnagramSolver.Tests.Controllers
             _cachedServices.GetCachedAnagram(wordForAnagrams).Returns(cachedModel);
             var jsonFromTestWords = JsonSerializer.Serialize(allWords);
 
-            var result = _anagramApiController.GetJsonString(wordForAnagrams);
+            var result = _anagramApiController.GetJsonString(wordForAnagrams).Result;
 
             Assert.AreEqual(jsonFromTestWords, result);
         }
@@ -62,7 +62,7 @@ namespace AnagramSolver.Tests.Controllers
             _wordServices.GetAnagrams(wordForAnagrams).Returns(vocabularyByModel);
             _cachedServices.PutAnagramToCache(wordForAnagrams, vocabularyByModel);
 
-            var result = _anagramApiController.GetJsonString(wordForAnagrams);
+            var result = _anagramApiController.GetJsonString(wordForAnagrams).Result;
 
             Assert.AreNotEqual(jsonFromTestWords, result);
             Assert.AreEqual(jsonFromWordForAnagrams, result);
@@ -75,7 +75,7 @@ namespace AnagramSolver.Tests.Controllers
             var allWords = cachedModel.Caches;
             _cachedServices.GetCachedAnagram(wordForAnagrams).Returns(cachedModel);
 
-            var result = _anagramApiController.GetForJS(wordForAnagrams);
+            var result = _anagramApiController.GetForJS(wordForAnagrams).Result;
 
             Assert.AreEqual(allWords, result);
             Assert.That(cachedModel.IsSuccessful, Is.True);

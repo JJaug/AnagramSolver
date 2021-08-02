@@ -56,11 +56,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         public async Task<HashSet<string>> GetWordsThatHaveGivenPart(string wordPart)
         {
             var wordsFromDb = _wordRepository.GetSpecificWords(wordPart);
-            var specificWords = new HashSet<string>();
-            foreach (var word in wordsFromDb)
-            {
-                specificWords.Add(word.Word1);
-            }
+            var specificWords = wordsFromDb.Select(w => w.Word1).ToHashSet();
             return specificWords;
         }
     }
