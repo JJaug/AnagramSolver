@@ -24,11 +24,10 @@ namespace AnagramSolver.Tests.Controllers
         public void Should_CreateUser_When_GivenUserDto()
         {
             var userDto = _testWords.GetUserDto();
-            _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
 
             var result = _userController.Create(userDto);
 
-            Assert.IsNotNull(result);
+            Assert.IsNotNull(result.Result);
         }
     }
 }

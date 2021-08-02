@@ -1,6 +1,5 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.EF.DatabaseFirst.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace AnagramSolver.BusinessLogic.Classes.Users

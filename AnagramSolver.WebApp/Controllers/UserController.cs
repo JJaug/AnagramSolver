@@ -22,7 +22,8 @@ namespace AnagramSolver.WebApp.Controllers
         public async Task<IActionResult> Create(UserDto userDto)
         {
             var userToAdd = new User { FirstName = userDto.FirstName, LastName = userDto.LastName, Email = userDto.Email, Pass = userDto.Pass };
-            var favouriteWords = userDto.FavouriteWords;
+            await _userService.CreateUser(userToAdd);
+            _userService.AddFavouriteWords(userDto.Email, userDto.FavouriteWords);
             return View();
         }
     }

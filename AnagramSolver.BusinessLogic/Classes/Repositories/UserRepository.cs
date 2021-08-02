@@ -23,24 +23,10 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             var user = _context.Users.FirstOrDefault(u => u.Email == email);
             return user;
         }
-        public Task<long> AddUser(string firstName, string lastName, string email, string password)
-        {
-            var userToAdd = new User { FirstName = firstName, LastName = lastName, Email = email, Pass = password };
-            _context.Users.Add(userToAdd);
-            _context.SaveChanges();
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
-            return Task.FromResult(user.Id);
-        }
         public async void AddUserWord(UserWord userWord)
         {
             await _context.UserWords.AddAsync(userWord);
             _context.SaveChanges();
-        }
-        public Task<bool> AddUserWords(List<UserWord> userWords)
-        {
-            _context.UserWords.AddRange(userWords);
-            _context.SaveChanges();
-            return Task.FromResult(true);
         }
         public IEnumerable<User> GetAll()
         {
