@@ -17,8 +17,11 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             var wordFromDB = _context.Words.FirstOrDefault(w => w.Word1 == word);
             return Task.FromResult(wordFromDB);
-
-
+        }
+        public User GetByEmail(string email)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            return user;
         }
         public Task<long> AddUser(string firstName, string lastName, string email, string password)
         {
@@ -30,10 +33,8 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         }
         public async void AddUserWord(UserWord userWord)
         {
-
             await _context.UserWords.AddAsync(userWord);
             _context.SaveChanges();
-
         }
         public Task<bool> AddUserWords(List<UserWord> userWords)
         {
@@ -41,20 +42,40 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
             _context.SaveChanges();
             return Task.FromResult(true);
         }
-        public User GetUser(long id)
+        public IEnumerable<User> GetAll()
         {
-
-            var result = _context.Users.FirstOrDefault(u => u.Id == id);
-            return result;
-
+            var allUsers = _context.Users.ToList();
+            return allUsers;
         }
-        public async void RemoveUser(long id)
+
+        public User GetById(int id)
         {
+            var userFromDb = _context.Users.FirstOrDefault(w => w.Id == id);
+            return userFromDb;
+        }
 
-            var wordToRemove = _context.Users.FirstOrDefault(u => u.Id == id);
-            _context.Users.Remove(wordToRemove);
-            await _context.SaveChangesAsync();
+        public void Insert(User obj)
+        {
+            _context.Users.Add(obj);
+            Save();
+        }
 
+        public void Update(User obj)
+        {
+            _context.Users.Remove(_context.Users.FirstOrDefault(w => w.Id == obj.Id));
+            _context.Users.Add(obj);
+            Save();
+        }
+
+        public void Delete(int id)
+        {
+            _context.Users.Remove(_context.Users.FirstOrDefault(w => w.Id == id));
+            Save();
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

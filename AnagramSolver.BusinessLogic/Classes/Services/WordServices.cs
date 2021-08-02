@@ -20,7 +20,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         {
             var wordsInPage = int.Parse(config["MyConfig:WordsInPage"]);
             var howManySkip = (pageNumber * wordsInPage) - wordsInPage;
-            var allWords = _wordRepository.GetWords();
+            var allWords = _wordRepository.GetAll();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {
@@ -40,7 +40,7 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
         }
         public async Task<HashSet<AnagramModel>> GetAnagrams(string wordForAnagrams)
         {
-            var allWords = _wordRepository.GetWords();
+            var allWords = _wordRepository.GetAll();
             var wordsFromDB = new HashSet<WordModel>();
             foreach (var word in allWords)
             {

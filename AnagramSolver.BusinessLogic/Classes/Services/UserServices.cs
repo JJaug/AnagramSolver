@@ -12,36 +12,37 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         {
             _userRepository = userRepository;
         }
-        public async Task<bool> CreateUser(string firstName, string lastName, string email, string pass, string favouriteWords)
+        public async Task<bool> CreateUser(User user)
         {
 
             var hash = new PasswordService();
-            var password = hash.GetHashString(pass);
+            var password = hash.GetHashString(user.Pass);
+            var userToAdd = new User { FirstName = user.FirstName, LastName = user.LastName, Email = user.Email, Pass = password };
+            _userRepository.Insert(userToAdd);
+            return true;
+        }
+        public void AddFavouriteWords(string email, string favouriteWords)
+        {
             var allWords = favouriteWords.Split(" ");
-            var id = await _userRepository.AddUser(firstName, lastName, email, password);
-            var userWords = new List<UserWord>();
-
             foreach (var word in allWords)
             {
                 var userWord = new UserWord();
                 var wordFromDb = _userRepository.GetWord(word);
+                var userFromDb = _userRepository.GetByEmail(email);
                 userWord.WordId = wordFromDb.Id;
-                userWord.UserId = id;
-                userWords.Add(userWord);
+                userWord.UserId = userFromDb.Id;
+                _userRepository.AddUserWord(userWord);
             }
-            await _userRepository.AddUserWords(userWords);
-
-            return true;
         }
-        public string ReadUser(long id)
+        public string ReadUser(int id)
         {
-            var userFromDb = _userRepository.GetUser(id);
+            var userFromDb = _userRepository.GetById(id);
             var stringToShow = $"{userFromDb.FirstName}  {userFromDb.LastName}  {userFromDb.Email}";
             return stringToShow;
         }
-        public void DeleteUser(long id)
+        public void DeleteUser(int id)
         {
-            _userRepository.RemoveUser(id);
+            _userRepository.Delete(id);
         }
 
     }

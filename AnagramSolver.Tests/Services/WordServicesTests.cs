@@ -30,7 +30,7 @@ namespace AnagramSolver.Tests.Services
             var wordsInPage = "5";
             var allWords = _testWords.GetListOfWord();
             _configuration["MyConfig:WordsInPage"].Returns(wordsInPage);
-            _wordRepository.GetWords().Returns(allWords);
+            _wordRepository.GetAll().Returns(allWords);
 
             var result = _wordServices.GetWordsAsAnagramModelVocabulary(pageNumber).Result;
 
@@ -42,7 +42,7 @@ namespace AnagramSolver.Tests.Services
         public void Should_GetAnagramsFromAllWords_When_GivenWord(string word)
         {
             var allWords = _testWords.GetListOfWord();
-            _wordRepository.GetWords().Returns(allWords);
+            _wordRepository.GetAll().Returns(allWords);
 
             var result = _wordServices.GetAnagrams(word).Result;
 
