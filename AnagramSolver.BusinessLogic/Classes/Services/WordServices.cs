@@ -53,11 +53,11 @@ namespace AnagramSolver.BusinessLogic.Classes.Services
             var anagramsById = _anagramSolver.GetAnagrams(wordForAnagrams);
             return anagramsById;
         }
-        public async Task<HashSet<string>> GetWordsThatHaveGivenPart(string wordPart)
+        public Task<HashSet<string>> GetWordsThatHaveGivenPart(string wordPart)
         {
             var wordsFromDb = _wordRepository.GetSpecificWords(wordPart);
             var specificWords = wordsFromDb.Select(w => w.Word1).ToHashSet();
-            return specificWords;
+            return Task.FromResult(specificWords);
         }
     }
 }

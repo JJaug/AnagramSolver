@@ -35,7 +35,7 @@ namespace AnagramSolver.BusinessLogic.Classes.CacheAnagrams
             }
             catch (WrongCommandException e)
             {
-                System.Console.WriteLine(e.Message);
+                System.Console.WriteLine(e);
             }
             return null;
         }

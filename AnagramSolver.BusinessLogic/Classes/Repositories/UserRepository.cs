@@ -30,14 +30,12 @@ namespace AnagramSolver.BusinessLogic.Classes.Users
         }
         public IEnumerable<User> GetAll()
         {
-            var allUsers = _context.Users.ToList();
-            return allUsers;
+            return _context.Users.ToList();
         }
 
         public User GetById(int id)
         {
-            var userFromDb = _context.Users.FirstOrDefault(w => w.Id == id);
-            return userFromDb;
+            return _context.Users.FirstOrDefault(w => w.Id == id);
         }
 
         public void Insert(User obj)
