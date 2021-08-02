@@ -1,25 +1,29 @@
-﻿using AnagramSolver.BusinessLogic.Classes.Users;
-using AnagramSolver.Contracts.Interfaces;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.EF.DatabaseFirst.Models;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserService _userService;
-        public UserController()
+
+        public UserController(IUserService userService)
         {
-            _userService = new UserService();
+            _userService = userService;
         }
         public IActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(UserDto userDto)
+        public async Task<IActionResult> Create(UserDto userDto)
         {
-            _userService.CreateUser(userDto.FirstName, userDto.LastName, userDto.Email, userDto.Pass, userDto.FavouriteWords);
+            var userToAdd = new User { FirstName = userDto.FirstName, LastName = userDto.LastName, Email = userDto.Email, Pass = userDto.Pass };
+            await _userService.CreateUser(userToAdd);
+            _userService.AddFavouriteWords(userDto.Email, userDto.FavouriteWords);
             return View();
         }
     }

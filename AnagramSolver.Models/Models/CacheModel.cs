@@ -4,7 +4,7 @@ namespace AnagramSolver.Models.Models
 {
     public class CacheModel
     {
-        public List<string> Caches { get; set; } = new List<string>();
+        public HashSet<AnagramModel> Caches { get; set; } = new HashSet<AnagramModel>();
         public bool IsSuccessful { get; set; }
     }
 }

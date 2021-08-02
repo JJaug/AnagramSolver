@@ -45,3 +45,9 @@ WHERE Word='alus'
 SELECT UserIp, COUNT(UserIp)
 FROM SearchLog
 GROUP BY UserIp
+
+CREATE TABLE UsersWords (
+	UserId bigint Foreign key references Users (ID),
+	WordId bigint Foreign key references Words (ID)
+
+);

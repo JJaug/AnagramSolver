@@ -1,4 +1,5 @@
-﻿using AnagramSolver.Models.Models;
+﻿using AnagramSolver.Contracts.Interfaces;
+using AnagramSolver.Models.Models;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -8,7 +9,7 @@ namespace AnagramSolver.Tests
     [TestFixture]
     class AnagramSolverTests
     {
-        private BusinessLogic.Classes.AnagramSolver _anagramSolver;
+        private IAnagramSolver _anagramSolver;
         private readonly string[] values = { "rimti", "mirti", "sula", "alus", "balos", "labos", "balso" };
         [SetUp]
         public void Setup()
@@ -25,16 +26,18 @@ namespace AnagramSolver.Tests
         }
 
         [Test]
-        [TestCase("sula", "alus")]
-        [TestCase("alus", "sula")]
         [TestCase("mirti", "rimti")]
         [TestCase("rimti", "mirti")]
         public void Should_ReturnOneAnagram_When_GivenOneWord(string command, string anagram)
         {
             var allAnagrams = _anagramSolver.GetAnagrams(command);
-
-            Assert.That(allAnagrams[0], Is.EqualTo(anagram));
-            Assert.AreEqual(anagram, allAnagrams[0]);
+            var anagramToTest = string.Empty;
+            foreach (var anagramModel in allAnagrams)
+            {
+                anagramToTest = anagramModel.AnagramWord;
+            }
+            Assert.That(anagramToTest, Is.EqualTo(anagram));
+            Assert.AreEqual(anagram, anagramToTest);
         }
 
         [Test]
@@ -61,8 +64,12 @@ namespace AnagramSolver.Tests
         public void Should_ReturnOneAnagram_When_GivenMoreThanOneWord(string command, string anagram)
         {
             var allAnagrams = _anagramSolver.GetAnagrams(command);
-
-            Assert.That(allAnagrams[0], Is.EqualTo(anagram));
+            var anagramToTest = string.Empty;
+            foreach (var anagramModel in allAnagrams)
+            {
+                anagramToTest = anagramModel.AnagramWord;
+            }
+            Assert.That(anagramToTest, Is.EqualTo(anagram));
         }
 
         [Test]

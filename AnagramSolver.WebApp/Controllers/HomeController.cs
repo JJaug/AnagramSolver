@@ -1,20 +1,18 @@
 ﻿using AnagramSolver.Contracts.Interfaces;
 using AnagramSolver.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace AnagramSolver.WebApp.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly string _filePath = AppDomain.CurrentDomain.SetupInformation.ApplicationBase + "Data/zodynas.txt";
-        private readonly IWordRepository _wordRepository;
-        private readonly ICacheAnagram _cachedAnagrams;
-        public HomeController(IWordRepository wordRepository, ICacheAnagram cachedanagrams)
+        private readonly IWordServices _wordServices;
+        private readonly ICacheServices _cachedAnagrams;
+        public HomeController(IWordServices wordService, ICacheServices cachedanagrams)
         {
-            _wordRepository = wordRepository;
+            _wordServices = wordService;
             _cachedAnagrams = cachedanagrams;
         }
         [HttpGet]
@@ -23,23 +21,14 @@ namespace AnagramSolver.WebApp.Controllers
             return View();
         }
 
-        public IActionResult Form(string id)
+        public async Task<IActionResult> Form(string id)
         {
-            var vocabularyByModel = new HashSet<AnagramViewModel>();
-            var allWords = _wordRepository.GetAllWords();
-            var _anagramSolver = new BusinessLogic.Classes.AnagramSolver(allWords);
-            var cachedModels = _cachedAnagrams.GetCachedAnagram(id);
-            var anagramsById = cachedModels.Caches;
+            var cachedModels = await _cachedAnagrams.GetCachedAnagram(id);
+            var vocabularyByModel = cachedModels.Caches;
             if (!cachedModels.IsSuccessful)
             {
-                anagramsById = _anagramSolver.GetAnagrams(id);
-                _cachedAnagrams.PutAnagramToCache(id, anagramsById);
-            }
-            foreach (var word in anagramsById)
-            {
-                var anagram = new AnagramViewModel();
-                anagram.AnagramWord = word;
-                vocabularyByModel.Add(anagram);
+                vocabularyByModel = await _wordServices.GetAnagrams(id);
+                _cachedAnagrams.PutAnagramToCache(id, vocabularyByModel);
             }
             return View(vocabularyByModel);
         }
